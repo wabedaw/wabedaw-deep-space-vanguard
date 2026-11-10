@@ -1,0 +1,32 @@
+{
+  "name": "深空先锋 · Deep Space Vanguard",
+  "short_name": "深空先锋",
+  "description": "驾驶 V-7 VEGA 截击机执行深空任务：穿越太空、外星地表与敌方基地，击败 38 位首领，直捣终焉之星。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#03050b",
+  "theme_color": "#03050b",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
