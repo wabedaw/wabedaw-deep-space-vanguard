@@ -1,0 +1,58 @@
+{
+  "note": "Balance values the game reads at run time (DATA.balance). Change them here, not in the code; tools/build.mjs checks every value is present and a finite number. Times are in seconds, speeds in field pixels per second. Not here on purpose: values the game's texts spell out (10 W / 10 M per super weapon or nova, 10 s, 3 nova charges, 100 hull), which would need the texts changed too.",
+  "player": {
+    "speed": 430,
+    "missilesStart": 6,
+    "missilesMax": 10,
+    "missileRegen": 7,
+    "fireCooldown": 0.11,
+    "missileCooldown": 0.26,
+    "missileEmptyCooldown": 0.4,
+    "shieldRegen": 13,
+    "shieldDelay": 3
+  },
+  "pickups": {
+    "weaponChance": 0.26,
+    "weaponChanceAtMax": 0.06,
+    "missileBelow": 0.55,
+    "shieldBelow": 0.8,
+    "missiles": 4,
+    "hullRepair": 30
+  },
+  "world": {
+    "sectorSeconds": 45,
+    "holePull": 340,
+    "flowMax": 1.7,
+    "flowHalfLife": 16
+  },
+  "difficulty": {
+    "perSector": 0.16,
+    "perCycle": 0.8
+  },
+  "combo": {
+    "window": 2.4,
+    "killsPerStep": 6,
+    "maxMultiplier": 8
+  },
+  "contact": {
+    "terrain": 6,
+    "rock": 8,
+    "rockPerRadius": 0.45,
+    "ironRock": 10,
+    "ironRockPerRadius": 0.25,
+    "giantRock": 32,
+    "ship": 25,
+    "boss": 35,
+    "escort": 30
+  },
+  "enemyFire": {
+    "orb": 12,
+    "needle": 10,
+    "shell": 24,
+    "homing": 16,
+    "shrap": 8,
+    "wave": 12,
+    "rocket": 14,
+    "bomb": 22
+  }
+}

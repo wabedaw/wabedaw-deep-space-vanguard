@@ -31,7 +31,7 @@ Zenith Orbit,天顶轨道,天頂軌道,天頂軌道,js/core/00-language-english-
 Frozen Stargate,冰封星门,冰封星門,凍結スターゲート,js/core/00-language-english-by-default-chinese.js:59
 Glacius Cryo World,冰晶堡垒星,冰晶堡壘星,氷晶要塞星,js/core/00-language-english-by-default-chinese.js:59
 Planetary defense satellites detected,侦测到行星防御卫星,偵測到行星防禦衛星,惑星防衛衛星を探知,js/world/03-background.js:200
-SECTOR 01,扇区 01,扇區 01,セクター 01,js/core/04-game-state.js:18
+SECTOR 01,扇区 01,扇區 01,セクター 01,js/core/04-game-state.js:24
 Sound · music and effects on,声音 · 音乐与音效全开,聲音 · 音樂與音效全開,サウンド · BGM・効果音 ON,js/audio/05-audio.js:71
 Effects only · music off,仅音效 · 音乐关闭,僅音效 · 音樂關閉,効果音のみ · BGM OFF,js/audio/05-audio.js:71
 Muted,已静音,已靜音,ミュート,js/audio/05-audio.js:71
@@ -75,7 +75,7 @@ Alien Outpost,外星前哨基地,外星前哨基地,異星前哨基地,js/bosses
 Storm Canyon,风暴峡谷,風暴峽谷,暴風峡谷,js/bosses/09-planet-fortress.js:261
 Fleet Harbor,舰队港湾,艦隊港灣,艦隊泊地,js/bosses/09-planet-fortress.js:261
 Colossus Citadel,巨像要塞,巨像要塞,巨像要塞,js/bosses/09-planet-fortress.js:261
-SECTOR ,扇区 ,扇區 ,セクター ,js/bosses/09-planet-fortress.js:263 js/ui/67-ui.js:19
+SECTOR ,扇区 ,扇區 ,セクター ,js/bosses/09-planet-fortress.js:263 js/ui/67-ui.js:20
 Destroy turrets and launchers to drop the core shield,先摧毁炮塔与发射架，瓦解核心护盾,先摧毀砲塔與發射架，瓦解核心護盾,砲台と発射台を破壊してコアのシールドを解除,js/bosses/15-stage-boss-colossus-ground-fortress.js:24
 Glacier lance lock · dodge the red warning lanes,冰川要塞光矛锁定 · 避开红色预警线,冰川要塞光矛鎖定 · 避開紅色預警線,氷河要塞ランス照準 · 赤い警告ラインを回避,js/enemies/16-lethal-lances-horizontal-lane-lasers.js:126
 Forge lance lock · dodge the red warning lanes,熔炉要塞光矛锁定 · 避开红色预警线,熔爐要塞光矛鎖定 · 避開紅色預警線,溶鉱炉要塞ランス照準 · 赤い警告ラインを回避,js/enemies/16-lethal-lances-horizontal-lane-lasers.js:126
@@ -134,8 +134,8 @@ SPORE MEMBRANE,孢膜之门 · SPORE MEMBRANE,孢膜之門 · SPORE MEMBRANE,胞
 FLESH GATE,血肉闸门 · FLESH GATE,血肉閘門 · FLESH GATE,血肉の門 · FLESH GATE,js/bosses/32-theme-b-boss-roster-patterns-and.js:14
 NEURAL GATE,神经闸门 · NEURAL GATE,神經閘門 · NEURAL GATE,神経ゲート · NEURAL GATE,js/bosses/32-theme-b-boss-roster-patterns-and.js:15
 THE HIVE MIND,母巢意识 · HIVE MIND,母巢意識 · HIVE MIND,母巣意識 · HIVE MIND,js/bosses/32-theme-b-boss-roster-patterns-and.js:16
-ALIEN SURFACE · ,外星地表 · ,外星地表 · ,異星地表 · ,js/world/33-stage-transition-cinematics.js:50 js/world/49-stage-transitions.js:29 js/world/49-stage-transitions.js:94
-BASE INTERIOR · ,基地内部 · ,基地內部 · ,基地内部 · ,js/world/33-stage-transition-cinematics.js:65 js/world/49-stage-transitions.js:39 js/world/49-stage-transitions.js:94
+ALIEN SURFACE · ,外星地表 · ,外星地表 · ,異星地表 · ,js/world/33-stage-transition-cinematics.js:50 js/world/49-stage-transitions.js:29 js/world/49-stage-transitions.js:95
+BASE INTERIOR · ,基地内部 · ,基地內部 · ,基地内部 · ,js/world/33-stage-transition-cinematics.js:65 js/world/49-stage-transitions.js:39 js/world/49-stage-transitions.js:95
 BASE ESCAPED · BACK TO THE STARS · ,逃离基地 · 重返星海 · ,逃離基地 · 重返星海 · ,基地脱出 · 再び星の海へ · ,js/world/33-stage-transition-cinematics.js:76 js/world/49-stage-transitions.js:50
 Landing Zone · Frost Plains,着陆区 · 霜原,著陸區 · 霜原,着陸地点 · 霜の平原,js/stages/36-theme-c-surface-glacius.js:2
 Glacier Valley,冰川河谷,冰川河谷,氷河渓谷,js/stages/36-theme-c-surface-glacius.js:2
@@ -235,11 +235,11 @@ Clears enemy fire and hits every enemy · stores up to 3,清空敌方子弹并�
 FLIGHT GUIDE,飞行指引,飛行指引,飛行ガイド,js/ui/48-first-flight-coaching-weapon-switch.js:90
 ✓ DONE,✓ 完成,✓ 完成,✓ 完了,js/ui/48-first-flight-coaching-weapon-switch.js:92
 BACK TO THE STARS · ,重返星海 · ,重返星海 · ,再び星の海へ · ,js/world/49-stage-transitions.js:61
-CONSUMED,被吞噬,被吞噬,吸い込まれた,js/world/49-stage-transitions.js:118
-Weapon upgrade,武器升级,武器升級,武器強化,js/world/49-stage-transitions.js:204
-Shield recharged,护盾充能,護盾充能,シールド回復,js/world/49-stage-transitions.js:205
-Missiles +4,飞弹 +4,飛彈 +4,ミサイル +4,js/world/49-stage-transitions.js:206
-Hull repaired +30,舰体修复 +30,艦體修復 +30,機体修復 +30,js/world/49-stage-transitions.js:207
+CONSUMED,被吞噬,被吞噬,吸い込まれた,js/world/49-stage-transitions.js:119
+Weapon upgrade,武器升级,武器升級,武器強化,js/world/49-stage-transitions.js:205
+Shield recharged,护盾充能,護盾充能,シールド回復,js/world/49-stage-transitions.js:206
+Missiles +4,飞弹 +4,飛彈 +4,ミサイル +4,js/world/49-stage-transitions.js:207
+Hull repaired +30,舰体修复 +30,艦體修復 +30,機体修復 +30,js/world/49-stage-transitions.js:208
 VEGA LANCE · ,织女光矛 · ,織女光矛 · ,ベガ・ランス · ,js/player/51-player-weapons-spread-laser-beam.js:8
 STARBREAKER · ULTIMATE,歼星炮 · 终极武器,殲星砲 · 終極武器,スターブレイカー · 究極兵器,js/player/51-player-weapons-spread-laser-beam.js:8
 BEAM LASER,激光束,雷射光束,ビームレーザー,js/player/51-player-weapons-spread-laser-beam.js:8
@@ -251,60 +251,62 @@ Weapon · ,武器切换 · ,武器切換 · ,武器切替 · ,js/player/51-playe
  · missile key = nova pulse, · 飞弹键 = 湮星脉冲, · 飛彈鍵 = 湮星脈衝, · ミサイルキー = ノヴァ・パルス,js/player/51-player-weapons-spread-laser-beam.js:19
 LANCE,光矛,光矛,ランス,js/player/51-player-weapons-spread-laser-beam.js:24
 SPREAD,散射,散射,スプレッド,js/player/51-player-weapons-spread-laser-beam.js:24
-BEAM,光束,光束,ビーム,js/player/51-player-weapons-spread-laser-beam.js:24 shell/markup.html:116
+BEAM,光束,光束,ビーム,js/player/51-player-weapons-spread-laser-beam.js:24 shell/markup.html:117
 ULTRA,终极,終極,究極,js/player/51-player-weapons-spread-laser-beam.js:24
-MISSILE,飞弹,飛彈,ミサイル,js/player/51-player-weapons-spread-laser-beam.js:25 shell/markup.html:114
+MISSILE,飞弹,飛彈,ミサイル,js/player/51-player-weapons-spread-laser-beam.js:25 shell/markup.html:115
 INVINCIBLE · hole cleared,无敌 · 黑洞已清除,無敵 · 黑洞已清除,無敵 · ブラックホール消去,js/world/57-black-hole-capture.js:13
+Wingmate down · fight on,队友被击落 · 继续战斗,隊友被擊落 · 繼續戰鬥,僚機撃墜 · 戦闘続行,js/world/57-black-hole-capture.js:31 js/core/60-update.js:330
 MODULE DOWN,模块摧毁,模組摧毀,モジュール破壊,js/combat/59-boss-parts.js:20
 TURRET DOWN,炮塔摧毁,砲塔摧毀,砲台破壊,js/combat/59-boss-parts.js:20
 Iron meteors are indestructible · use them as cover,玄铁陨石无法击碎 · 可以当作掩体,玄鐵隕石無法擊碎 · 可以當作掩體,玄鉄隕石は破壊不能 · 遮蔽物として使える,js/core/60-update.js:54
-Missiles empty · resupplying,飞弹耗尽 · 自动补给中,飛彈耗盡 · 自動補給中,ミサイル切れ · 自動補給中,js/core/60-update.js:176
-Gravitational anomaly detected,侦测到引力异常,偵測到引力異常,重力異常を探知,js/core/60-update.js:212
-WEAPON MK.,武器 MK.,武器 MK.,武器 MK.,js/core/60-update.js:310
- · ARC UNLOCKED, · 辐射解锁, · 輻射解鎖, · アーク解放,js/core/60-update.js:310
- · BURST UNLOCKED, · 爆裂解锁, · 爆裂解鎖, · バースト解放,js/core/60-update.js:310
-Max firepower +500,火力已满 +500,火力已滿 +500,火力MAX +500,js/core/60-update.js:310
+Missiles empty · resupplying,飞弹耗尽 · 自动补给中,飛彈耗盡 · 自動補給中,ミサイル切れ · 自動補給中,js/core/60-update.js:180
+Gravitational anomaly detected,侦测到引力异常,偵測到引力異常,重力異常を探知,js/core/60-update.js:216
+WEAPON MK.,武器 MK.,武器 MK.,武器 MK.,js/core/60-update.js:317
+ · ARC UNLOCKED, · 辐射解锁, · 輻射解鎖, · アーク解放,js/core/60-update.js:317
+ · BURST UNLOCKED, · 爆裂解锁, · 爆裂解鎖, · バースト解放,js/core/60-update.js:317
+Max firepower +500,火力已满 +500,火力已滿 +500,火力MAX +500,js/core/60-update.js:317
 SINGULARITY · ,引力奇点 · ,引力奇點 · ,重力特異点 · ,js/player/62-v-7-vega-interceptor-layered-hull.js:628
 NO-RETURN LINE · DO NOT CROSS,不可逃逸线 · 进入即被吞噬,不可逃逸線 · 進入即被吞噬,帰還不能線 · 越えれば呑み込まれる,js/player/62-v-7-vega-interceptor-layered-hull.js:630
-SCORE,得分 SCORE,得分 SCORE,SCORE,js/ui/63-hud.js:21
-COMBO ×,连击 ×,連擊 ×,コンボ ×,js/ui/63-hud.js:29
-BEST ,最高 ,最高 ,最高 ,js/ui/63-hud.js:41
-RANGE ,航程 ,航程 ,距離 ,js/ui/63-hud.js:42
-AUTO FIRE,自动射击,自動射擊,オート射撃,js/ui/63-hud.js:44
-MANUAL FIRE,手动射击,手動射擊,手動射撃,js/ui/63-hud.js:44
-SHIELD,护盾,護盾,シールド,js/ui/63-hud.js:50
-HULL,舰体,艦體,機体,js/ui/63-hud.js:51
-MSL,飞弹,飛彈,MSL,js/ui/63-hud.js:54
-NOVA READY,脉冲就绪,脈衝就緒,ノヴァ準備完了,js/ui/63-hud.js:66
-NOVA CHARGING,脉冲充能,脈衝充能,ノヴァ充填中,js/ui/63-hud.js:66
-RING GUNS ,星环炮台 ,星環砲台 ,リング砲台 ,js/ui/63-hud.js:77
-PYLONS ,护盾塔 ,護盾塔 ,シールド塔 ,js/ui/63-hud.js:77
-LOCKS ,门锁 ,門鎖 ,ロック ,js/ui/63-hud.js:77
-WINGS ,光翼 ,光翼 ,光翼 ,js/ui/63-hud.js:77
-MODULES ,模块 ,模組 ,モジュール ,js/ui/63-hud.js:77
-SHIELD ,能量护盾 ,能量護盾 ,シールド ,js/ui/63-hud.js:77
-PHASE ,阶段 ,階段 ,フェーズ ,js/ui/63-hud.js:77
-NEAR THE NO-RETURN LINE,接近不可逃逸线,接近不可逃逸線,帰還不能線に接近,js/ui/63-hud.js:89
-GRAVITY PULL,引力牵引,引力牽引,引力圏内,js/ui/63-hud.js:89
-WARNING · MOTHERSHIP INBOUND,警告 · 大型敌舰接近,警告 · 大型敵艦接近,警告 · 大型敵艦接近,js/ui/63-hud.js:113
-PAST THE POINT OF NO RETURN,已越过不可逃逸线,已越過不可逃逸線,帰還不能線を越えた,js/ui/63-hud.js:120
-ENGINES OVERWHELMED · NO ESCAPE,引擎失效 · 无法逃脱,引擎失效 · 無法逃脫,エンジン出力限界 · 脱出不能,js/ui/63-hud.js:122
-Auto fire · ON,自动射击 · 开,自動射擊 · 開,オート射撃 · ON,js/core/66-input.js:16 js/core/gamepad.js:28
-Auto fire · OFF (hold Space to fire),自动射击 · 关（按住空格射击）,自動射擊 · 關（按住空白鍵射擊）,オート射撃 · OFF（スペース長押しで射撃）,js/core/66-input.js:16
-Auto fire · OFF (hold RT to fire),自动射击 · 关（按住 RT 射击）,自動射擊 · 關（按住 RT 射擊）,オート射撃 · OFF（RT長押しで射撃）,js/core/gamepad.js:28
-Mission report · signal lost past the horizon,任务报告 · 信号消失于事件视界,任務報告 · 訊號消失於事件視界,任務報告 · 事象の地平線の彼方で信号途絶,js/ui/67-ui.js:35
-Mission report · hull pierced by a lance,任务报告 · 舰体被光矛贯穿,任務報告 · 艦體被光矛貫穿,任務報告 · 機体がランスに貫かれた,js/ui/67-ui.js:35
-Mission report · signal lost,任务报告 · 信号中断,任務報告 · 訊號中斷,任務報告 · 信号途絶,js/ui/67-ui.js:35 shell/markup.html:41
-Lost to the singularity<small>PAST THE POINT OF NO RETURN</small>,坠入黑洞<small>CONSUMED BY SINGULARITY</small>,墜入黑洞<small>CONSUMED BY SINGULARITY</small>,特異点に消失<small>CONSUMED BY SINGULARITY</small>,js/ui/67-ui.js:36
-Lanced<small>LETHAL BEAM IMPACT</small>,光矛贯穿<small>LANCE IMPACT</small>,光矛貫穿<small>LANCE IMPACT</small>,ランス貫通<small>LANCE IMPACT</small>,js/ui/67-ui.js:36
-Vessel lost<small>HULL INTEGRITY 0%</small>,舰体损毁<small>VESSEL LOST</small>,艦體損毀<small>VESSEL LOST</small>,機体大破<small>VESSEL LOST</small>,js/ui/67-ui.js:36 shell/markup.html:42
-Space,太空,太空,宇宙,js/ui/67-ui.js:66 js/ui/68-developer-mode-password-gated-panel.js:9
-Alien surface,外星地表,外星地表,異星地表,js/ui/67-ui.js:66
-Enemy base,敌方基地,敵方基地,敵基地,js/ui/67-ui.js:66
-Omega Star,终焉之星,終焉之星,終焉の星,js/ui/67-ui.js:66
-Continue,继续,繼續,続きから,js/ui/67-ui.js:67
- · NG+, · 二周目, · 二周目, · 2周目,js/ui/67-ui.js:68 js/ui/69-leaderboard-every-pilot-s-best-run.js:106
-Continue: ,继续：,繼續：,続きから：,js/ui/67-ui.js:69
+DOWN,已击落,已擊落,撃墜,js/ui/63-hud.js:21
+SHIELD,护盾,護盾,シールド,js/ui/63-hud.js:25 js/ui/63-hud.js:80
+HULL,舰体,艦體,機体,js/ui/63-hud.js:26 js/ui/63-hud.js:81
+MSL,飞弹,飛彈,MSL,js/ui/63-hud.js:27 js/ui/63-hud.js:84
+SCORE,得分 SCORE,得分 SCORE,SCORE,js/ui/63-hud.js:51
+COMBO ×,连击 ×,連擊 ×,コンボ ×,js/ui/63-hud.js:59
+BEST ,最高 ,最高 ,最高 ,js/ui/63-hud.js:71
+RANGE ,航程 ,航程 ,距離 ,js/ui/63-hud.js:72
+AUTO FIRE,自动射击,自動射擊,オート射撃,js/ui/63-hud.js:74
+MANUAL FIRE,手动射击,手動射擊,手動射撃,js/ui/63-hud.js:74
+NOVA READY,脉冲就绪,脈衝就緒,ノヴァ準備完了,js/ui/63-hud.js:97
+NOVA CHARGING,脉冲充能,脈衝充能,ノヴァ充填中,js/ui/63-hud.js:97
+RING GUNS ,星环炮台 ,星環砲台 ,リング砲台 ,js/ui/63-hud.js:108
+PYLONS ,护盾塔 ,護盾塔 ,シールド塔 ,js/ui/63-hud.js:108
+LOCKS ,门锁 ,門鎖 ,ロック ,js/ui/63-hud.js:108
+WINGS ,光翼 ,光翼 ,光翼 ,js/ui/63-hud.js:108
+MODULES ,模块 ,模組 ,モジュール ,js/ui/63-hud.js:108
+SHIELD ,能量护盾 ,能量護盾 ,シールド ,js/ui/63-hud.js:108
+PHASE ,阶段 ,階段 ,フェーズ ,js/ui/63-hud.js:108
+NEAR THE NO-RETURN LINE,接近不可逃逸线,接近不可逃逸線,帰還不能線に接近,js/ui/63-hud.js:120
+GRAVITY PULL,引力牵引,引力牽引,引力圏内,js/ui/63-hud.js:120
+WARNING · MOTHERSHIP INBOUND,警告 · 大型敌舰接近,警告 · 大型敵艦接近,警告 · 大型敵艦接近,js/ui/63-hud.js:144
+PAST THE POINT OF NO RETURN,已越过不可逃逸线,已越過不可逃逸線,帰還不能線を越えた,js/ui/63-hud.js:151
+ENGINES OVERWHELMED · NO ESCAPE,引擎失效 · 无法逃脱,引擎失效 · 無法逃脫,エンジン出力限界 · 脱出不能,js/ui/63-hud.js:153
+Auto fire · ON,自动射击 · 开,自動射擊 · 開,オート射撃 · ON,js/core/66-input.js:19 js/core/gamepad.js:52
+Auto fire · OFF (hold Space to fire),自动射击 · 关（按住空格射击）,自動射擊 · 關（按住空白鍵射擊）,オート射撃 · OFF（スペース長押しで射撃）,js/core/66-input.js:19
+Auto fire · OFF (hold RT to fire),自动射击 · 关（按住 RT 射击）,自動射擊 · 關（按住 RT 射擊）,オート射撃 · OFF（RT長押しで射撃）,js/core/gamepad.js:52
+Mission report · signal lost past the horizon,任务报告 · 信号消失于事件视界,任務報告 · 訊號消失於事件視界,任務報告 · 事象の地平線の彼方で信号途絶,js/ui/67-ui.js:36
+Mission report · hull pierced by a lance,任务报告 · 舰体被光矛贯穿,任務報告 · 艦體被光矛貫穿,任務報告 · 機体がランスに貫かれた,js/ui/67-ui.js:36
+Mission report · signal lost,任务报告 · 信号中断,任務報告 · 訊號中斷,任務報告 · 信号途絶,js/ui/67-ui.js:36 shell/markup.html:41
+Lost to the singularity<small>PAST THE POINT OF NO RETURN</small>,坠入黑洞<small>CONSUMED BY SINGULARITY</small>,墜入黑洞<small>CONSUMED BY SINGULARITY</small>,特異点に消失<small>CONSUMED BY SINGULARITY</small>,js/ui/67-ui.js:37
+Lanced<small>LETHAL BEAM IMPACT</small>,光矛贯穿<small>LANCE IMPACT</small>,光矛貫穿<small>LANCE IMPACT</small>,ランス貫通<small>LANCE IMPACT</small>,js/ui/67-ui.js:37
+Vessel lost<small>HULL INTEGRITY 0%</small>,舰体损毁<small>VESSEL LOST</small>,艦體損毀<small>VESSEL LOST</small>,機体大破<small>VESSEL LOST</small>,js/ui/67-ui.js:37 shell/markup.html:42
+Space,太空,太空,宇宙,js/ui/67-ui.js:67 js/ui/68-developer-mode-password-gated-panel.js:9
+Alien surface,外星地表,外星地表,異星地表,js/ui/67-ui.js:67
+Enemy base,敌方基地,敵方基地,敵基地,js/ui/67-ui.js:67
+Omega Star,终焉之星,終焉之星,終焉の星,js/ui/67-ui.js:67
+Continue,继续,繼續,続きから,js/ui/67-ui.js:68
+ · NG+, · 二周目, · 二周目, · 2周目,js/ui/67-ui.js:69 js/ui/69-leaderboard-every-pilot-s-best-run.js:106
+Continue: ,继续：,繼續：,続きから：,js/ui/67-ui.js:70
 Password,密码,密碼,パスワード,js/ui/68-developer-mode-password-gated-panel.js:8
 Surface,地表,地表,地上,js/ui/68-developer-mode-password-gated-panel.js:9
 Base,基地,基地,基地,js/ui/68-developer-mode-password-gated-panel.js:9
@@ -390,7 +392,7 @@ All pilots · best runs,全体飞行员 · 最高分,全體飛行員 · 最高�
 Leaderboard<small>TOP PILOTS</small>,排行榜<small>LEADERBOARD</small>,排行榜<small>LEADERBOARD</small>,ランキング<small>LEADERBOARD</small>,shell/markup.html:71
 My callsign,我的呼号,我的呼號,コールサイン,shell/markup.html:75
 Save,保存,儲存,保存,shell/markup.html:77
-Close<span>ESC</span>,关闭<span>ESC</span>,關閉<span>ESC</span>,閉じる<span>ESC</span>,shell/markup.html:79 shell/markup.html:106
+Close<span>ESC</span>,关闭<span>ESC</span>,關閉<span>ESC</span>,閉じる<span>ESC</span>,shell/markup.html:79 shell/markup.html:107
 Testing only · runs are not recorded,测试专用 · 不计入纪录,測試專用 · 不計入紀錄,テスト専用 · 記録されません,shell/markup.html:85
 Dev console<small>DEVELOPER MODE</small>,开发者模式<small>DEVELOPER MODE</small>,開發者模式<small>DEVELOPER MODE</small>,開発者モード<small>DEVELOPER MODE</small>,shell/markup.html:86
 Enter the developer password,请输入开发者密码,請輸入開發者密碼,開発者パスワードを入力,shell/markup.html:88
@@ -402,9 +404,10 @@ Straight to a boss fight,直接进入BOSS战,直接進入BOSS戰,ボス戦へ直
 Invincible,无敌（不会坠毁）,無敵（不會墜毀）,無敵（撃墜されない）,shell/markup.html:100
 Max weapons + unlimited missiles,满级火力 + 无限飞弹,滿級火力 + 無限飛彈,火力MAX + ミサイル無限,shell/markup.html:101
 Ultimate weapon · VEGA LANCE,终极武器 · 织女光矛,終極武器 · 織女光矛,究極兵器 · ベガ・ランス,shell/markup.html:102
-Lock developer mode,锁定开发者模式,鎖定開發者模式,開発者モードをロック,shell/markup.html:107
+Two pilots (test),双人（测试）,雙人（測試）,2人プレイ（テスト）,shell/markup.html:103
+Lock developer mode,锁定开发者模式,鎖定開發者模式,開発者モードをロック,shell/markup.html:108
 ASHWING game view,烬翼：弑光 游戏画面,燼翼：弒光 遊戲畫面,アッシュウィング ゲーム画面,shell/markup.html:3
-Sound,声音,聲音,サウンド,shell/markup.html:112
-Pause,暂停,暫停,ポーズ,shell/markup.html:113
-Nova pulse,湮星脉冲,湮星脈衝,ノヴァ・パルス,shell/markup.html:115
-Switch weapon,切换武器,切換武器,武器切替,shell/markup.html:116
+Sound,声音,聲音,サウンド,shell/markup.html:113
+Pause,暂停,暫停,ポーズ,shell/markup.html:114
+Nova pulse,湮星脉冲,湮星脈衝,ノヴァ・パルス,shell/markup.html:116
+Switch weapon,切换武器,切換武器,武器切替,shell/markup.html:117

@@ -2,18 +2,18 @@
 const HIVEP = [HIVE, '220,255,200', '120,200,90', WHITE];
 const FORT_MODS_B = ['turret', 'missile', 'laser', 'hangar', 'turret', 'laser', 'missile', 'turret', 'laser', 'hangar'];
 Object.assign(BOSSES, {
-  scarab: { name: I18('圣甲虫级巢舰 · SCARAB', 'SCARAB-CLASS HIVE CRUISER'), hp: 900, score: 8000 },
-  medusa: { name: I18('水母级孢子母舰 · MEDUSA', 'MEDUSA-CLASS SPORE CARRIER'), hp: 1200, score: 11000 },
-  prismarch: { name: I18('棱晶主宰 · PRISMARCH', 'PRISMARCH CRYSTAL OVERMIND'), hp: 1500, score: 14000 },
-  aegis: { name: I18('双环巢星 · AEGIS', 'AEGIS HIVE WORLD'), hp: 1500, score: 22000 },
-  phoenix: { name: I18('火凤级攻击舰 · PHOENIX', 'PHOENIX-CLASS STRIKER'), hp: 2400, score: 7500 },
-  anvil: { name: I18('铁砧级重炮舰 · ANVIL', 'ANVIL-CLASS SIEGE SHIP'), hp: 3600, score: 10500 },
-  wyrm: { name: I18('熔岩巨蛇 · WYRM', 'MAGMA WYRM'), hp: 4000, score: 13500 },
-  forge: { name: I18('熔炉要塞 · FORGE', 'FORGE VOLCANIC CITADEL'), hp: 5600, score: 32000 },
-  hgate1: { name: I18('孢膜之门 · SPORE MEMBRANE', 'SPORE MEMBRANE'), hp: 1600, score: 9500 },
-  hgate2: { name: I18('血肉闸门 · FLESH GATE', 'FLESH GATE'), hp: 2600, score: 12500 },
-  hgate3: { name: I18('神经闸门 · NEURAL GATE', 'NEURAL GATE'), hp: 3400, score: 15500 },
-  hivemind: { name: I18('母巢意识 · HIVE MIND', 'THE HIVE MIND'), hp: 6600, score: 42000 },
+  scarab: { name: I18('圣甲虫级巢舰 · SCARAB', 'SCARAB-CLASS HIVE CRUISER') },
+  medusa: { name: I18('水母级孢子母舰 · MEDUSA', 'MEDUSA-CLASS SPORE CARRIER') },
+  prismarch: { name: I18('棱晶主宰 · PRISMARCH', 'PRISMARCH CRYSTAL OVERMIND') },
+  aegis: { name: I18('双环巢星 · AEGIS', 'AEGIS HIVE WORLD') },
+  phoenix: { name: I18('火凤级攻击舰 · PHOENIX', 'PHOENIX-CLASS STRIKER') },
+  anvil: { name: I18('铁砧级重炮舰 · ANVIL', 'ANVIL-CLASS SIEGE SHIP') },
+  wyrm: { name: I18('熔岩巨蛇 · WYRM', 'MAGMA WYRM') },
+  forge: { name: I18('熔炉要塞 · FORGE', 'FORGE VOLCANIC CITADEL') },
+  hgate1: { name: I18('孢膜之门 · SPORE MEMBRANE', 'SPORE MEMBRANE') },
+  hgate2: { name: I18('血肉闸门 · FLESH GATE', 'FLESH GATE') },
+  hgate3: { name: I18('神经闸门 · NEURAL GATE', 'NEURAL GATE') },
+  hivemind: { name: I18('母巢意识 · HIVE MIND', 'THE HIVE MIND') },
 });
 Object.assign(BOSS_PAT, {
   scarab: [['fan', 'turrets', 'spiral', 'shells'], ['shells', 'fan', 'homing', 'turrets', 'swarm', 'counter'], ['flower', 'swarm', 'homing', 'counter', 'turrets', 'laser', 'lance']],

@@ -7,6 +7,7 @@ function startGame() {
   menuEl.hidden = true; overEl.hidden = true; pauseEl.hidden = true;
   const seed = S.nextSeed != null ? S.nextSeed >>> 0 : SEED_URL != null ? SEED_URL : (Math.random() * 4294967296) >>> 0;
   RNG.seed(seed);
+  setPlayerCount(S.playersNext || (DEV.run && DEV.run.duo ? 2 : 0) || PLAYERS_URL || 1); S.playersNext = 0;
   resetGame();
   S.seed = seed; S.nextSeed = null;
   S.dev = DEV.run; LB.last = null; tutReset();
@@ -14,7 +15,7 @@ function startGame() {
   P.superPrev = null;
   S.mode = 'play';
   pauseBtn.hidden = false; misBtn.hidden = !COARSE; weaponBtn.hidden = !COARSE; updateWeaponBtn(); updateNovaBtn(); document.body.classList.add('in-play');
-  P.y = H + 40; P.gy = -210;
+  P.y = H + 40; P.gy = -210; formFollowers();
   { const st = S.startStage || (+((location.hash.match(/^#stage(\d+)$/) || [])[1]) || 1); S.startStage = 0; if (st > 1) startAtStage(st); }
   if (location.hash === '#fortress') { S.sector = 10; S.sectorT = SECTOR_LEN - 2.5; P.lvl = 6; P.mis = P.misMax; S.banner = { big: I18('扇区 ', 'SECTOR ') + String(S.sector).padStart(2, '0'), sub: SECTOR_NAMES[9], t: 0, dur: 2.4 }; }
   sfx.sector();
@@ -50,7 +51,7 @@ function quitToMenu() {
   pauseBtn.hidden = true; misBtn.hidden = true; weaponBtn.hidden = true; $('novaBtn').hidden = true; document.body.classList.remove('in-play');
   clearBeams();
   for (const a of [lasers, missiles, ebul, ships, holes, powers]) a.length = 0;
-  S.boss = null; S.events.length = 0; P.alive = false; P.cap = null;
+  S.boss = null; S.events.length = 0; for (const p of PLAYERS) { p.alive = false; p.cap = null; }
   if (planet) planet.sats = [];
   if (AC) AC.resume();
   measureHero();
@@ -90,7 +91,7 @@ $('againBtn').addEventListener('click', () => { S.startStage = S.diedStage || 1;
 $('resumeBtn').addEventListener('click', togglePause);
 $('quitBtn').addEventListener('click', quitToMenu);
 pauseBtn.addEventListener('click', togglePause);
-misBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); audioInit(); S.misReq = true; });
+misBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); audioInit(); KB.misReq = true; });
 weaponBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); audioInit(); switchWeapon(); });
 $('novaBtn').addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); audioInit(); useNova(); });
 

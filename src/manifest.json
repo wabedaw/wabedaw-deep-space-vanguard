@@ -30,6 +30,10 @@
       "section": "game state"
     },
     {
+      "file": "js/core/players.js",
+      "section": "players: P is the pilot the code is about; PLAYERS holds them all (M1 step 4)"
+    },
+    {
       "file": "js/core/achievements.js",
       "section": "achievements & lifetime stats (read-only observer of the simulation)"
     },
@@ -176,6 +180,10 @@
     {
       "file": "js/bosses/40-theme-c-boss-roster-patterns-and.js",
       "section": "theme C: boss roster, patterns and shared glue"
+    },
+    {
+      "file": "js/bosses/boss-data.js",
+      "section": "boss data: hit points and score from src/data/bosses.json"
     },
     {
       "file": "js/bosses/41-omega-star.js",

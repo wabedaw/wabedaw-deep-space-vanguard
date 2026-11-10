@@ -238,8 +238,6 @@
   "CONSUMED": "吸い込まれた",
   "Weapon upgrade": "武器強化",
   "Shield recharged": "シールド回復",
-  "Missiles +4": "ミサイル +4",
-  "Hull repaired +30": "機体修復 +30",
   "VEGA LANCE · ": "ベガ・ランス · ",
   "STARBREAKER · ULTIMATE": "スターブレイカー · 究極兵器",
   "BEAM LASER": "ビームレーザー",
@@ -407,5 +405,10 @@
   "Nova pulse": "ノヴァ・パルス",
   "Switch weapon": "武器切替",
   "Steam global ranking · each pilot’s best run · developer-mode runs don’t count": "Steam 世界ランキング · 各パイロットのベストスコア · 開発者モードの記録は対象外",
-  "Can’t reach the Steam leaderboard right now · showing this device’s runs": "Steam ランキングに接続できません · この端末の記録を表示中"
+  "Can’t reach the Steam leaderboard right now · showing this device’s runs": "Steam ランキングに接続できません · この端末の記録を表示中",
+  "Wingmate down · fight on": "僚機撃墜 · 戦闘続行",
+  "DOWN": "撃墜",
+  "Two pilots (test)": "2人プレイ（テスト）",
+  "Missiles +{0}": "ミサイル +{0}",
+  "Hull repaired +{0}": "機体修復 +{0}"
 }

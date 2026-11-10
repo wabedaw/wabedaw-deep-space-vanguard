@@ -88,9 +88,10 @@ function saveStage(st) { if (S.dev) return; stageReached(st); if (st > (SAVE.get
 function bestStage() { return Math.max(1, SAVE.get('stage') | 0); }
 function startAtStage(st) {
   S.sector = (st - 1) * 10 + 1; S.sectorT = 0;
-  P.lvl = [1, 5, 7, 8, 8, 9, 9, 10, 10][Math.min(st, 9) - 1]; P.mis = P.misMax;
+  for (const p of PLAYERS) { p.lvl = [1, 5, 7, 8, 8, 9, 9, 10, 10][Math.min(st, 9) - 1]; p.mis = p.misMax; }
   if (isSurfaceStage(st)) { enterSurface(); P.x = -30; P.y = H * .4; P.gx = 320; P.gy = 0; }
   else if (isBaseStage(st)) { enterBase(); P.x = -30; P.y = H * .5; P.gx = 320; P.gy = 0; }
+  formFollowers();
   S.banner = { big: stageTag(st), sub: (isSurfaceStage(st) ? I18('外星地表 · ', 'ALIEN SURFACE · ') : isBaseStage(st) ? I18('基地内部 · ', 'BASE INTERIOR · ') : '') + sectorName(), t: 0, dur: 3.4 };
 }
 function drawTransFx() {
@@ -203,13 +204,14 @@ function spawnHole(x, y, vy) {
 const PU = {
   W: { c: ION, label: I18('武器升级', 'Weapon upgrade'), ch: 'W' },
   S: { c: '130,175,255', label: I18('护盾充能', 'Shield recharged'), ch: 'S' },
-  M: { c: FLARE, label: I18('飞弹 +4', 'Missiles +4'), ch: 'M' },
-  H: { c: '120,255,175', label: I18('舰体修复 +30', 'Hull repaired +30'), ch: '+' },
+  M: { c: FLARE, label: I18f('飞弹 +{0}', 'Missiles +{0}', BAL.pickups.missiles), ch: 'M' },
+  H: { c: '120,255,175', label: I18f('舰体修复 +{0}', 'Hull repaired +{0}', BAL.pickups.hullRepair), ch: '+' },
 };
 function dropPower(x, y, type) {
   if (!type) {
     const r = rnd();
-    type = r < (P.lvl < 10 ? .26 : .06) ? 'W' : r < .55 ? 'M' : r < .8 ? 'S' : 'H';
+    const c = BAL.pickups;
+    type = r < (P.lvl < 10 ? c.weaponChance : c.weaponChanceAtMax) ? 'W' : r < c.missileBelow ? 'M' : r < c.shieldBelow ? 'S' : 'H';
   }
   powers.push({ x, y, type, t: 0, vy: 70 });
 }

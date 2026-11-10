@@ -1,18 +1,18 @@
 /* ---------- theme C: boss roster, patterns and shared glue ---------- */
 const FORT_MODS_C = ['turret', 'laser', 'missile', 'hangar', 'turret', 'laser', 'turret', 'missile', 'laser', 'hangar', 'turret', 'laser'];
 Object.assign(BOSSES, {
-  glacier: { name: I18('冰川级无畏舰 · GLACIER', 'GLACIER-CLASS DREADNOUGHT'), hp: 650, score: 12000 },
-  aurora: { name: I18('极光级航母 · AURORA', 'AURORA-CLASS CARRIER'), hp: 750, score: 15000 },
-  zenith: { name: I18('天顶环站 · ZENITH', 'ZENITH RING STATION'), hp: 850, score: 18000 },
-  cryo: { name: I18('冰晶堡垒星 · GLACIUS', 'GLACIUS CRYO WORLD'), hp: 1000, score: 26000 },
-  frostwing: { name: I18('霜翼级截击舰 · FROSTWING', 'FROSTWING-CLASS INTERCEPTOR'), hp: 2600, score: 8500 },
-  icebreaker: { name: I18('破冰级重舰 · ICEBREAKER', 'ICEBREAKER-CLASS RAM SHIP'), hp: 3600, score: 11500 },
-  cyclone: { name: I18('气旋级风暴舰 · CYCLONE', 'CYCLONE-CLASS STORM SHIP'), hp: 4000, score: 14500 },
-  frostcit: { name: I18('冰川要塞 · GLACIER CITADEL', 'GLACIER CITADEL'), hp: 5000, score: 36000 },
-  cgate1: { name: I18('晶格之门 · LATTICE GATE', 'LATTICE GATE'), hp: 1500, score: 10500 },
-  cgate2: { name: I18('棱镜闸门 · PRISM GATE', 'PRISM GATE'), hp: 2400, score: 13500 },
-  cgate3: { name: I18('奇点闸门 · SINGULARITY GATE', 'SINGULARITY GATE'), hp: 3200, score: 16500 },
-  zero: { name: I18('绝对零度 · ABSOLUTE ZERO', 'ABSOLUTE ZERO'), hp: 6000, score: 46000 },
+  glacier: { name: I18('冰川级无畏舰 · GLACIER', 'GLACIER-CLASS DREADNOUGHT') },
+  aurora: { name: I18('极光级航母 · AURORA', 'AURORA-CLASS CARRIER') },
+  zenith: { name: I18('天顶环站 · ZENITH', 'ZENITH RING STATION') },
+  cryo: { name: I18('冰晶堡垒星 · GLACIUS', 'GLACIUS CRYO WORLD') },
+  frostwing: { name: I18('霜翼级截击舰 · FROSTWING', 'FROSTWING-CLASS INTERCEPTOR') },
+  icebreaker: { name: I18('破冰级重舰 · ICEBREAKER', 'ICEBREAKER-CLASS RAM SHIP') },
+  cyclone: { name: I18('气旋级风暴舰 · CYCLONE', 'CYCLONE-CLASS STORM SHIP') },
+  frostcit: { name: I18('冰川要塞 · GLACIER CITADEL', 'GLACIER CITADEL') },
+  cgate1: { name: I18('晶格之门 · LATTICE GATE', 'LATTICE GATE') },
+  cgate2: { name: I18('棱镜闸门 · PRISM GATE', 'PRISM GATE') },
+  cgate3: { name: I18('奇点闸门 · SINGULARITY GATE', 'SINGULARITY GATE') },
+  zero: { name: I18('绝对零度 · ABSOLUTE ZERO', 'ABSOLUTE ZERO') },
 });
 Object.assign(BOSS_PAT, {
   glacier: [['fan', 'turrets', 'shells', 'aimed'], ['turrets', 'laser', 'lance', 'fan', 'homing', 'shells'], ['twin', 'lances', 'turrets', 'cascade', 'counter', 'rain', 'avalanche']],
@@ -49,8 +49,8 @@ const FTC = {
 const OMEGA_C = '255,110,90', GODC = '255,222,150';
 const FINAL_NAMES = [I18('终焉宙域', 'Omega Approach'), I18('内部战壕', 'The Trench'), I18('星核 · 始源之光', 'The Core · First Light'), '', '', '', '', '', '', ''];
 Object.assign(BOSSES, {
-  omega: { name: I18('终焉之星 · OMEGA STAR', 'THE OMEGA STAR'), hp: 5200, score: 60000 },
-  god: { name: I18('始源之光 · 奥米伽', 'OMEGA · THE FIRST LIGHT'), hp: 26000, score: 150000 },
+  omega: { name: I18('终焉之星 · OMEGA STAR', 'THE OMEGA STAR') },
+  god: { name: I18('始源之光 · 奥米伽', 'OMEGA · THE FIRST LIGHT') },
 });
 Object.assign(BOSS_PAT, {
   omega: [['aimed', 'superlaser', 'fan', 'swarm', 'homing', 'spiral'], ['swarm', 'superlaser', 'rain', 'counter', 'lances', 'homing'], ['superlaser', 'cascade', 'wheel', 'swarm', 'wall', 'twin', 'flower']],

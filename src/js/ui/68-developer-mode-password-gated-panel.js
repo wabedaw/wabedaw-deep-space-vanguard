@@ -3,8 +3,8 @@ const DEV_HASH = 4017947777;
 const devHash = s => { let h = 0x811c9dc5; for (const c of 'dsv-dev:' + s) { h ^= c.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h; };
 let devUnlocked = SAVE.get('dev') === true;
 const DEV = { run: null, st: 1, from: 'menu' };
-const devOv = $('devOv'), devPw = $('devPw'), devGod = $('devGod'), devMax = $('devMax'), devUlt = $('devUlt'), pauseDevBtn = $('pauseDevBtn');
-{ const o = SAVE.get('devOpts'); if (o && typeof o === 'object') { devGod.checked = !!o.god; devMax.checked = !!o.max; devUlt.checked = o.ult !== false; } }
+const devOv = $('devOv'), devPw = $('devPw'), devGod = $('devGod'), devMax = $('devMax'), devUlt = $('devUlt'), devDuo = $('devDuo'), pauseDevBtn = $('pauseDevBtn');
+{ const o = SAVE.get('devOpts'); if (o && typeof o === 'object') { devGod.checked = !!o.god; devMax.checked = !!o.max; devUlt.checked = o.ult !== false; devDuo.checked = !!o.duo; } }
 devPw.placeholder = I18('密码', 'Password');
 const DEV_KIND = { space: I18('太空', 'Space'), surface: I18('地表', 'Surface'), base: I18('基地', 'Base'), final: I18('终局', 'Finale') };
 const pad2 = n => String(n).padStart(2, '0');
@@ -64,7 +64,7 @@ function closeDev(launching) {
   else if (S.mode === 'menu') { menuEl.hidden = false; $('devBtn').focus({ preventScroll: true }); }
 }
 function devStart(st, lv, boss) {
-  DEV.run = { god: devGod.checked, max: devMax.checked, ult: devUlt.checked };
+  DEV.run = { god: devGod.checked, max: devMax.checked, ult: devUlt.checked, duo: devDuo.checked };
   SAVE.set('devOpts', Object.assign({}, DEV.run));
   closeDev(true);
   if (S.mode !== 'menu') quitToMenu();

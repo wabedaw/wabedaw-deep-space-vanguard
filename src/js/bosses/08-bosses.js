@@ -1,17 +1,17 @@
 /* ---------- bosses ---------- */
 const BOSSES = {
-  siren: { name: I18('塞壬级母舰 · SIREN', 'SIREN-CLASS MOTHERSHIP'), hp: 700, score: 6000 },
-  hydra: { name: I18('九头蛇级无畏舰 · HYDRA', 'HYDRA-CLASS DREADNOUGHT'), hp: 1050, score: 9000 },
-  leviathan: { name: I18('利维坦级巢母 · LEVIATHAN', 'LEVIATHAN-CLASS HIVE MOTHER'), hp: 1400, score: 12000 },
-  fortress: { name: I18('堡垒行星 · BASTION', 'BASTION FORTRESS WORLD'), hp: 1400, score: 20000 },
-  colossus: { name: I18('巨像要塞 · COLOSSUS', 'COLOSSUS GROUND CITADEL'), hp: 2500, score: 30000 },
-  thunder: { name: I18('雷鸟级攻击舰 · THUNDERBIRD', 'THUNDERBIRD-CLASS GUNSHIP'), hp: 1000, score: 7000 },
-  whale: { name: I18('巨鲸级空中母舰 · SKYWHALE', 'SKYWHALE-CLASS AIR CARRIER'), hp: 1700, score: 10000 },
-  tempest: { name: I18('风暴级光矛舰 · TEMPEST', 'TEMPEST-CLASS LANCE FRIGATE'), hp: 1800, score: 13000 },
-  gate1: { name: I18('外闸门 · OUTER GATE', 'OUTER GATE'), hp: 900, score: 9000 },
-  gate2: { name: I18('防爆闸门 · BLAST GATE', 'BLAST GATE'), hp: 1600, score: 12000 },
-  gate3: { name: I18('核心闸门 · CORE GATE', 'CORE GATE'), hp: 2200, score: 15000 },
-  core: { name: I18('能量核心 · NEXUS CORE', 'NEXUS ENERGY CORE'), hp: 6000, score: 40000 },
+  siren: { name: I18('塞壬级母舰 · SIREN', 'SIREN-CLASS MOTHERSHIP') },
+  hydra: { name: I18('九头蛇级无畏舰 · HYDRA', 'HYDRA-CLASS DREADNOUGHT') },
+  leviathan: { name: I18('利维坦级巢母 · LEVIATHAN', 'LEVIATHAN-CLASS HIVE MOTHER') },
+  fortress: { name: I18('堡垒行星 · BASTION', 'BASTION FORTRESS WORLD') },
+  colossus: { name: I18('巨像要塞 · COLOSSUS', 'COLOSSUS GROUND CITADEL') },
+  thunder: { name: I18('雷鸟级攻击舰 · THUNDERBIRD', 'THUNDERBIRD-CLASS GUNSHIP') },
+  whale: { name: I18('巨鲸级空中母舰 · SKYWHALE', 'SKYWHALE-CLASS AIR CARRIER') },
+  tempest: { name: I18('风暴级光矛舰 · TEMPEST', 'TEMPEST-CLASS LANCE FRIGATE') },
+  gate1: { name: I18('外闸门 · OUTER GATE', 'OUTER GATE') },
+  gate2: { name: I18('防爆闸门 · BLAST GATE', 'BLAST GATE') },
+  gate3: { name: I18('核心闸门 · CORE GATE', 'CORE GATE') },
+  core: { name: I18('能量核心 · NEXUS CORE', 'NEXUS ENERGY CORE') },
 };
 const BOSS_ORDER = ['siren', 'hydra', 'leviathan'];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];

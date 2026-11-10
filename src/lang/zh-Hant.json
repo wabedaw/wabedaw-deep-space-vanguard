@@ -238,8 +238,6 @@
   "CONSUMED": "被吞噬",
   "Weapon upgrade": "武器升級",
   "Shield recharged": "護盾充能",
-  "Missiles +4": "飛彈 +4",
-  "Hull repaired +30": "艦體修復 +30",
   "VEGA LANCE · ": "織女光矛 · ",
   "STARBREAKER · ULTIMATE": "殲星砲 · 終極武器",
   "BEAM LASER": "雷射光束",
@@ -407,5 +405,10 @@
   "Nova pulse": "湮星脈衝",
   "Switch weapon": "切換武器",
   "Steam global ranking · each pilot’s best run · developer-mode runs don’t count": "Steam 全球排行 · 每位飛行員保留最高分 · 開發者模式成績不計入",
-  "Can’t reach the Steam leaderboard right now · showing this device’s runs": "暫時連不上 Steam 排行榜 · 下面是這台裝置上的成績"
+  "Can’t reach the Steam leaderboard right now · showing this device’s runs": "暫時連不上 Steam 排行榜 · 下面是這台裝置上的成績",
+  "Wingmate down · fight on": "隊友被擊落 · 繼續戰鬥",
+  "DOWN": "已擊落",
+  "Two pilots (test)": "雙人（測試）",
+  "Missiles +{0}": "飛彈 +{0}",
+  "Hull repaired +{0}": "艦體修復 +{0}"
 }

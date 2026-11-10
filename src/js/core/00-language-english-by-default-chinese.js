@@ -57,7 +57,7 @@ const DUST = ['205,180,150', '170,140,110', '255,190,120'];
 const SECTOR_NAMES = [I18('猎户座旋臂外缘', 'Orion Spur Rim'), I18('柯伊伯残骸带', 'Kuiper Debris Belt'), I18('赫利俄斯星云', 'Helios Nebula'), I18('引力透镜区', 'Lensing Zone'), I18('天鹰座暗流', 'Aquila Undertow'), I18('塞壬母舰空域', 'Siren Fleet Space'), I18('事件视界走廊', 'Event Horizon Corridor'), I18('仙女座前哨', 'Andromeda Outpost'), I18('银心辐射带', 'Galactic Core Flux'), I18('堡垒星域', 'Bastion Reach')];
 const SECTOR_NAMES_B = [I18('虫巢外围', 'Hive Outskirts'), I18('孢子云带', 'Spore Cloud Belt'), I18('甲虫巡航线', 'Scarab Patrol Lane'), I18('翡翠尘埃', 'Emerald Dust'), I18('蜂群回廊', 'Swarm Corridor'), I18('水母栖息区', 'Medusa Shoals'), I18('棱晶荒原', 'Prism Barrens'), I18('巢网深处', 'Deep Hive Web'), I18('主宰领域', 'Overmind Domain'), I18('双环巢星', 'The Aegis Hive')];
 const SECTOR_NAMES_C = [I18('霜冻前线', 'Frost Front'), I18('彗星风暴', 'Comet Storm'), I18('冰川航道', 'Glacier Lane'), I18('极光帘幕', 'Aurora Veil'), I18('冰晶碎带', 'Shard Belt'), I18('联合舰队集结地', 'Armada Muster'), I18('零度深空', 'Zero-Kelvin Deep'), I18('天顶轨道', 'Zenith Orbit'), I18('冰封星门', 'Frozen Stargate'), I18('冰晶堡垒星', 'Glacius Cryo World')];
-const SECTOR_LEN = 45;
+const SECTOR_LEN = BAL.world.sectorSeconds;
 
 let W = 0, H = 0, DPR = 1;
 const VIEW = { s: 1, cw: 1, ch: 1, dpr: 1, ox: 0, oy: 0, vx: 0, vy: 0 };   // field -> window mapping, set by resize()

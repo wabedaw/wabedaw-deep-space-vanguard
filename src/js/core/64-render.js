@@ -21,9 +21,9 @@ function renderFrame() {
   drawParticles();
   drawProjectiles();
   drawBeams();
-  drawPlayerBeam();
+  eachPlayer(drawPlayerBeam);
   drawUlt();
-  drawPlayer();
+  eachPlayer(p => { drawPlayer(); if (p.id) drawPilotTag(p); });
   drawLances();
   if (S.mode === 'menu' || S.mode === 'launch') drawHero();
   drawLock();

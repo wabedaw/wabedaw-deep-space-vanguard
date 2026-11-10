@@ -9,7 +9,7 @@ const LERP_JUMP = 160;                 // a longer move in one step is a telepor
 const lerpLists = () => [lasers, missiles, ebul, rocks, ships, holes, powers, parts, waves, texts, beams, lances, ultDarts, stars, dust];
 function forLerp(fn) {
   for (const L of lerpLists()) for (const o of L) { fn(o); if (o.parts) for (const p of o.parts) fn(p); }
-  fn(P);
+  for (const p of PLAYERS) fn(p);
   if (planet) { fn(planet); if (planet.sats) for (const s of planet.sats) fn(s); }
   if (galaxy) fn(galaxy);
 }

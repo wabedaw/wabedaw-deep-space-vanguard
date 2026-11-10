@@ -10,7 +10,7 @@ function trackProgress() {
   if (S.dev || S.mode !== 'play') { ACHV.boss = S.boss; return; }
   // a boss left the field because it was destroyed (stage changes and quitting also clear S.boss)
   const prev = ACHV.boss;
-  if (prev && prev !== S.boss && (prev.dying || prev.killed) && P.alive) { award('ACH_FIRST_BOSS'); countStat('STAT_BOSSES'); }
+  if (prev && prev !== S.boss && (prev.dying || prev.killed) && anyAlive()) { award('ACH_FIRST_BOSS'); countStat('STAT_BOSSES'); }
   ACHV.boss = S.boss;
   if (mult() >= 8) award('ACH_COMBO_MAX');
   if (stageOf(S.sector) >= 11) award('ACH_NG_PLUS');

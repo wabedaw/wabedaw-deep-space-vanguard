@@ -1,5 +1,5 @@
 /* ---------- adaptive flight speed: kill fast and the flight speeds up; kill slowly and it eases back to the base pace ---------- */
-const FLOW_MAX = 1.7, FLOW_H = 16;
+const FLOW_MAX = BAL.world.flowMax, FLOW_H = BAL.world.flowHalfLife;
 const flowLive = () => S.mode === 'play' && !S.boss && !S.bossPending && !S.trans && P.alive;
 function flowKill(e) {
   if (e.type === 'boss' || e.escort || !flowLive()) return;

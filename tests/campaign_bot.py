@@ -1,14 +1,16 @@
 import asyncio, sys, json, time, os
 from playwright.async_api import async_playwright
 SRC, TAG, VW, VH = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
+PILOTS = int(sys.argv[5]) if len(sys.argv) > 5 else 1   # 2: player 2 flies too (invincible, holds its position)
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out') + '/'; os.makedirs(OUT, exist_ok=True)
 html = open(SRC, encoding='utf-8').read().replace("const hot = window.claude && window.claude.hot;",
-  "window.__dbg={S,P,K,update,render,startGame,ships,holes,ebul,lances,beams,powers,killShip,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get GW() { return GW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;")
+  "window.__dbg={S,P,K,PLAYERS,update,render,startGame,ships,holes,ebul,lances,beams,powers,killShip,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get GW() { return GW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;")
 JS = r"""
 window.er = []; window.fc = 0; window.ev = []; window.prev = {};
 window.bot = () => {
   const D = window.__dbg, S = D.S, P = D.P, W = D.W, H = D.H;
   P.hull = 100; P.shield = 100; P.inv = 9; P.mis = P.misMax;
+  for (const q of D.PLAYERS) { q.hull = 100; q.shield = 100; q.inv = 9; q.mis = q.misMax; if (q.cap) { q.cap = null; } }
   if (D.holes.length) { window.holeN = (window.holeN || 0) + (D.holes[0].__seen ? 0 : 1); D.holes[0].__seen = 1; if (P.cap || D.holes.some(h => Math.hypot(h.x - P.x, h.y - P.y) < h.R * 1.15)) { D.holes.length = 0; P.cap = null; } }
   const st = Math.ceil(S.sector / 10), floor = [0, 3, 5, 7, 8, 9, 9, 10, 10, 10, 10][Math.min(st, 10)] || 10; if (P.lvl < floor) P.lvl = floor;
   const B = S.boss; P.weapon = B ? 'beam' : 'spread';
@@ -34,7 +36,7 @@ window.run = (secs) => {
   for (let i = 0; i < n; i++) {
     try { bot(); D.update(1 / 60); if (++window.fc % 20 === 0) D.render(); } catch (e) { if (er.length < 12) er.push(e.message + ' @ ' + (e.stack || '').split('\n')[1] + ' sec ' + S.sector); }
     const B = S.boss, cur = { sector: S.sector, trans: S.trans ? S.trans.kind : '', boss: B ? (B.label || B.kind) : '', mode: S.mode, alive: D.P.alive, side: S.side };
-    for (const k in cur) if (cur[k] !== window.prev[k]) { ev.push({ t: +(S.t).toFixed(1), k, v: cur[k], extra: k === 'boss' && B ? { hp: Math.round(B.maxhp), parts: B.parts.length } : k === 'sector' ? { name: (D.S.banner && D.S.banner.sub) || '', iw: D.IW ? D.IW.theme : 0, gw: D.GW ? D.GW.theme : 0 } : undefined }); }
+    for (const k in cur) if (cur[k] !== window.prev[k]) { ev.push({ t: +(S.t).toFixed(1), k, v: cur[k], extra: k === 'alive' && !cur.alive ? { deathBy: S.deathBy, hull: D.P.hull, inv: +D.P.inv.toFixed(2), cap: !!D.P.cap, x: Math.round(D.P.x), y: Math.round(D.P.y), others: D.PLAYERS.slice(1).map(q => [q.alive, Math.round(q.x), Math.round(q.y)]), boss: B ? B.kind : '' } : k === 'boss' && B ? { hp: Math.round(B.maxhp), parts: B.parts.length } : k === 'sector' ? { name: (D.S.banner && D.S.banner.sub) || '', iw: D.IW ? D.IW.theme : 0, gw: D.GW ? D.GW.theme : 0 } : undefined }); }
     window.prev = cur;
   }
   const out = ev.splice(0); return { ev: out, sector: S.sector, t: +S.t.toFixed(1), er: er.splice(0), ships: D.ships.length, ebul: D.ebul.length };
@@ -48,7 +50,7 @@ async def main():
         pg.set_default_timeout(600000)
         await pg.set_content('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>' + html + '</body></html>')
         await pg.wait_for_timeout(300); await pg.evaluate("() => {" + JS + "}")
-        await pg.evaluate("() => { const D = window.__dbg; D.S.startStage = 1; D.startGame(); }")
+        await pg.evaluate(f"() => {{ const D = window.__dbg; D.S.startStage = 1; D.S.playersNext = {PILOTS}; D.startGame(); }}")
         log = open(OUT + TAG + '-events.jsonl', 'w')
         t0 = time.time(); sec_since = {}; last_sector = None; sector_start = 0; boss_start = None; shot_stage = set(); shot_boss = set(); trans_shot = set(); stuck = []
         game_t = 0; done = False; ng_seen = False
@@ -78,6 +80,7 @@ async def main():
             if sec >= 101 and game_t - sector_start > 20: done = True
         ach = await pg.evaluate("() => typeof SAVE === 'object' ? { ach: Object.keys(SAVE.data.ach).sort(), stats: SAVE.data.stats } : null")
         print(TAG, 'ACHIEVEMENTS', json.dumps(ach), flush=True)
+        print(TAG, 'SEED', await pg.evaluate("() => window.__dbg.S.seed"), flush=True)
         print(TAG, 'DONE', json.dumps({'wall': round(time.time() - t0), 'game_t': game_t, 'sector': sec, 'stuck': stuck, 'pageerrors': errs[:4]}), flush=True)
         log.close(); await b.close()
 asyncio.run(main())

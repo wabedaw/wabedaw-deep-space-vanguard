@@ -17,6 +17,7 @@ function updateBeams(dt) {
     if (b.owner && (b.owner.dead || b.owner.cap || b.owner.hidden || b.owner.dying)) { stopBeam(b); continue; }
     b.t += dt;
     if (b.owner) { b.x = b.owner.x + b.ox; b.y = b.owner.y + b.oy; }
+    aimAt(b);
     const ft = b.t - b.charge;
     if (b.mode === 'track' && P.alive && !P.cap) {
       let da = aimAng(b.x, b.y) - b.ang; while (da > Math.PI) da -= TAU; while (da < -Math.PI) da += TAU;
@@ -28,10 +29,11 @@ function updateBeams(dt) {
     if (ft > b.fire) { stopBeam(b); continue; }
     if (b.firing) {
       const cx = Math.cos(b.ang), cy = Math.sin(b.ang);
-      if (P.alive && !P.cap) {
+      for (const pl of PLAYERS) withPlayer(pl, () => {
+        if (!P.alive || P.cap) return;
         const dx = P.x - b.x, dy = P.y - b.y, along = dx * cx + dy * cy;
         if (along > 0 && Math.abs(-dx * cy + dy * cx) < b.w * .5 + 9) { if (P.inv <= 0) sparks(P.x, P.y, 6, ['255,255,255', b.c]); hurt(b.dmg); }
-      }
+      });
       for (const k of rocks) {
         if (k.dead || k.giant || k.iron) continue;
         const dx = k.x - b.x, dy = k.y - b.y;
@@ -42,6 +44,7 @@ function updateBeams(dt) {
       parts.push({ k: 'spark', x: b.x + Math.cos(a) * rr, y: b.y + Math.sin(a) * rr, vx: -Math.cos(a) * rr * 5, vy: -Math.sin(a) * rr * 5, life: .18, max: .18, c: pick([b.c, '255,255,255']), w: 1.2 });
     }
   }
+  usePlayer(PLAYERS[0]);
   sweep(beams);
 }
 

@@ -16,18 +16,18 @@ function insideHole(o, f = 1) {
 function updateSim(dt) {
   S.t += dt;
   const playing = S.mode === 'play';
-  MUS.setMode(S.mode === 'menu' || S.mode === 'launch' ? 'menu' : (S.mode === 'over' || !P.alive) ? 'over' : (S.boss || S.bossPending) ? 'boss' : 'play');
-  const spT = playing && P.alive ? 1 + clamp(-P.vy / 420, 0, 1) * .6 : S.mode === 'launch' ? 1.6 + 4.5 * clamp(S.launchT / LAUNCH_DUR, 0, 1) : S.mode === 'menu' ? 1.5 : 1;
+  MUS.setMode(S.mode === 'menu' || S.mode === 'launch' ? 'menu' : (S.mode === 'over' || !anyAlive()) ? 'over' : (S.boss || S.bossPending) ? 'boss' : 'play');
+  const spT = playing && anyAlive() ? 1 + clamp(-leadPlayer().vy / 420, 0, 1) * .6 : S.mode === 'launch' ? 1.6 + 4.5 * clamp(S.launchT / LAUNCH_DUR, 0, 1) : S.mode === 'menu' ? 1.5 : 1;
   S.speedK += (spT - S.speedK) * Math.min(1, dt * 3);
   if (IW) updateBaseWorld(dt); else if (S.side) updateSideWorld(dt); else updateBackground(dt, S.speedK * (S.mode === 'play' && !S.trans ? (themeC() ? 1.6 : 1) * (S.flow || 1) : 1));
 
   // scheduled events
-  for (let i = S.events.length - 1; i >= 0; i--) { const ev = S.events[i]; ev.t -= dt; if (ev.t <= 0) { S.events.splice(i, 1); ev.fn(); } }
+  for (let i = S.events.length - 1; i >= 0; i--) { const ev = S.events[i]; ev.t -= dt; if (ev.t <= 0) { S.events.splice(i, 1); withPlayer(leadPlayer(), ev.fn); } }
 
-  P.beamOn = false; P.ultOn = false;
+  for (const p of PLAYERS) { p.beamOn = false; p.ultOn = false; }
   if (playing) {
-    if (S.trans) updateTransition(dt);
-    else { if (P.alive) updatePlayer(dt); updateFlow(dt); updateUlt(dt); updateTut(dt); if (stageKind(stageOf(S.sector)) === 'final') finalLogic(dt); else if (IW) baseSpawnLogic(dt); else if (S.side) sideSpawnLogic(dt); else spawnLogic(dt); }
+    if (S.trans) { withPlayer(leadPlayer(), () => updateTransition(dt)); formFollowers(); }
+    else { S.holeNear = 0; eachPlayer(p => { if (p.alive) updatePlayer(dt); updateUltPilot(dt); }); updateFlow(dt); updateUlt(dt); updateTut(dt); if (stageKind(stageOf(S.sector)) === 'final') finalLogic(dt); else if (IW) baseSpawnLogic(dt); else if (S.side) sideSpawnLogic(dt); else spawnLogic(dt); }
     S.dist += dt * .021 * S.speedK;
   } else if (S.mode === 'menu' || S.mode === 'launch') {
     S.tRock -= dt;
@@ -43,7 +43,7 @@ function updateSim(dt) {
     h.x += Math.sin(h.t * .4) * 8 * dt;
     for (const p of h.disk) p.a += p.w * dt;
     for (const p of h.flow) { const w = .25 + 3000 / (p.rad * p.rad); p.a += h.spin * w * dt; p.rad -= (18 + 5200 / p.rad) * dt; if (p.rad < h.r * 1.35) { p.rad = rand(h.cap * .85, h.R); p.a = rand(0, TAU); } }
-    if (h.y - h.R * .4 > H && !(P.cap && P.cap.h === h)) holes.splice(i, 1);
+    if (h.y - h.R * .4 > H && !PLAYERS.some(p => p.cap && p.cap.h === h)) holes.splice(i, 1);
   }
 
   // rocks
@@ -56,7 +56,9 @@ function updateSim(dt) {
   }
 
   // ships
-  for (const e of ships) { updateShip(e, dt); }
+  // enemies act with P = the pilot nearest them (players.js)
+  for (const e of ships) { aimAt(e); updateShip(e, dt); }
+  usePlayer(PLAYERS[0]);
 
   // lasers
   for (const l of lasers) {
@@ -75,10 +77,11 @@ function updateSim(dt) {
   // powerups
   for (const u of powers) {
     u.t += dt; if (S.side) { u.x -= (S.scroll * .5 + 30) * dt; u.y += Math.sin(u.t * 2) * 20 * dt; if (u.x < -30) u.dead = true; } else u.y += u.vy * dt;
-    if (P.alive && playing && !P.cap) {
-      const dx = P.x - u.x, dy = P.y - u.y, d = Math.hypot(dx, dy);
+    const pl = nearestPlayer(u.x, u.y);   // the nearest pilot pulls the pickup in and collects it
+    if (pl.alive && playing && !pl.cap) {
+      const dx = pl.x - u.x, dy = pl.y - u.y, d = Math.hypot(dx, dy);
       if (d < 130) { u.x += dx / d * 260 * dt; u.y += dy / d * 260 * dt; }
-      if (d < 26) { applyPower(u); u.dead = true; }
+      if (d < 26) { withPlayer(pl, () => applyPower(u)); u.dead = true; }
     }
     if (u.y > H + 30) u.dead = true;
   }
@@ -93,8 +96,8 @@ function updateSim(dt) {
   for (const w of waves) { w.life -= dt; w.r += (w.max - w.r) * Math.min(1, dt * 7); }
   for (const t of texts) { t.life -= dt; t.y -= (t.big ? 18 : 40) * dt; }
 
-  if (playing && P.alive && !P.cap && !S.trans) collisions();
-  { const want = playing && P.alive && P.beamOn; if (!want) P.focus = Math.max(0, (P.focus || 0) - dt / .4); if (want && !P.beamSnd) P.beamSnd = sfx.beamHum(P.lvl); else if (!want && P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; } }
+  if (playing && !S.trans && PLAYERS.some(p => p.alive && !p.cap)) { collisions(); eachPlayer(p => { if (p.alive && !p.cap) collidePlayer(); }); }
+  eachPlayer(() => { const want = playing && P.alive && P.beamOn; if (!want) P.focus = Math.max(0, (P.focus || 0) - dt / .4); if (want && !P.beamSnd) P.beamSnd = sfx.beamHum(P.lvl); else if (!want && P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; } });
 
   // combo
   S.comboT -= dt; if (S.comboT <= 0) S.combo = 0;
@@ -108,7 +111,7 @@ function updateSim(dt) {
   // hole rumble
   if (holeGain && AC) {
     let k = 0;
-    if (S.mode === 'play' && P.alive) for (const h of holes) k = Math.max(k, 1 - Math.hypot(h.x - P.x, h.y - P.y) / h.R);
+    if (S.mode === 'play') for (const p of PLAYERS) if (p.alive) for (const h of holes) k = Math.max(k, 1 - Math.hypot(h.x - p.x, h.y - p.y) / h.R);
     holeGain.gain.setTargetAtTime(clamp(k, 0, 1) * .45, AC.currentTime, .15);
     musFilterT -= dt;
     if (musFilterT <= 0 && MUS.mode !== 'over') { musFilterT = .12; musFilter.frequency.setTargetAtTime(18000 - clamp(k, 0, 1) ** .7 * 16800, AC.currentTime, .25); }
@@ -126,20 +129,21 @@ function updatePlayer(dt) {
   let ix = (K.right ? 1 : 0) - (K.left ? 1 : 0), iy = (K.down ? 1 : 0) - (K.up ? 1 : 0), n = ix && iy ? .7071 : 1;
   // analog stick (gamepad.js) adds to the keys; the combined vector is capped at full speed
   if (K.ax || K.ay) { ix += K.ax; iy += K.ay; const m = Math.hypot(ix, iy); n = m > 1 ? 1 / m : 1; }
-  const sp = 430;
+  const sp = BAL.player.speed;
   P.vx += (ix * n * sp - P.vx) * Math.min(1, dt * 9);
   P.vy += (iy * n * sp - P.vy) * Math.min(1, dt * 9);
   P.gx *= Math.max(0, 1 - dt * 1.4); P.gy *= Math.max(0, 1 - dt * 1.4);
-  let hx = 0, hy = 0; S.holeNear = 0;
+  let hx = 0, hy = 0, near = 0;
   for (const h of holes) {
     const dx = h.x - P.x, dy = h.y - P.y, d = Math.hypot(dx, dy) || 1;
     if (d < h.R) {
       const k = Math.pow(clamp((h.R - d) / (h.R - h.cap), 0, 1), 2.2), pull = HOLE_PULL * k;
       hx += dx / d * pull - dy / d * pull * .32 * h.spin; hy += dy / d * pull + dx / d * pull * .32 * h.spin;
-      S.holeNear = Math.max(S.holeNear, clamp(1 - (d - h.cap) / (h.R - h.cap), 0, 1));
+      near = Math.max(near, clamp(1 - (d - h.cap) / (h.R - h.cap), 0, 1));
     }
   }
-  const dcap = (900 - 520 * S.holeNear) * dt, dl = Math.hypot(P.dx, P.dy);
+  P.holeNear = near; S.holeNear = Math.max(S.holeNear, near);   // S.holeNear: the closest call of any pilot (HUD, sound)
+  const dcap = (900 - 520 * near) * dt, dl = Math.hypot(P.dx, P.dy);
   if (dl > dcap) { P.dx *= dcap / dl; P.dy *= dcap / dl; }
   const ox = P.x, oy = P.y;
   P.x += (P.vx + P.gx + hx) * dt + P.dx; P.y += (P.vy + P.gy + hy) * dt + P.dy;
@@ -151,8 +155,8 @@ function updatePlayer(dt) {
     else if (S.boss && S.boss.gate && S.boss.entered) P.x = Math.min(P.x, S.boss.x - S.boss.hw * .5 - S.boss.rl - 30);
     else if (S.boss && S.boss.kind === 'core' && S.boss.entered) P.x = Math.min(P.x, S.boss.x - S.boss.sr - 30);
     const top = solidTopAt(P.x) - 20;
-    if (P.y > top) { if (P.y - top > 5) { hurt(6); sparks(P.x, P.y + 14, 4, DUST, -Math.PI / 2, 1.4); } P.y = top; P.vy = Math.min(P.vy, 0); P.gy = Math.min(P.gy, 0); }
-    if (IW) { const ct = ceilAt(P.x) + 20; if (P.y < ct) { if (ct - P.y > 5) { hurt(6); sparks(P.x, P.y - 14, 4, DUST, Math.PI / 2, 1.4); } P.y = ct; P.vy = Math.max(P.vy, 0); P.gy = Math.max(P.gy, 0); } }
+    if (P.y > top) { if (P.y - top > 5) { hurt(BAL.contact.terrain); sparks(P.x, P.y + 14, 4, DUST, -Math.PI / 2, 1.4); } P.y = top; P.vy = Math.min(P.vy, 0); P.gy = Math.min(P.gy, 0); }
+    if (IW) { const ct = ceilAt(P.x) + 20; if (P.y < ct) { if (ct - P.y > 5) { hurt(BAL.contact.terrain); sparks(P.x, P.y - 14, 4, DUST, Math.PI / 2, 1.4); } P.y = ct; P.vy = Math.max(P.vy, 0); P.gy = Math.max(P.gy, 0); } }
     P.y = Math.max(P.y, inset.t + 56);
   } else {
     P.x = clamp(P.x, inset.l + 26, W - inset.r - 26);
@@ -168,17 +172,17 @@ function updatePlayer(dt) {
   const trig = S.auto || K.fire;
   if (P.weapon === 'ult') ultFire(dt, trig);
   else if (P.weapon === 'beam') { P.beamOn = trig; if (trig) updatePlayerBeam(dt); }
-  else if (trig && P.fireCd <= 0) { fireLaser(); P.fireCd = .11; }
+  else if (trig && P.fireCd <= 0) { fireLaser(); P.fireCd = BAL.player.fireCooldown; }
   P.misCd -= dt;
-  if (P.weapon === 'ult' && ultAvail()) { if (S.misReq || K.missile) ultNova(); }
-  else if ((S.misReq || K.missile) && P.misCd <= 0) {
-    if (P.mis > 0) { launchMissile(); P.misCd = .26; }
-    else if (S.misReq) { sfx.empty(); S.toast = { txt: I18('飞弹耗尽 · 自动补给中', 'Missiles empty · resupplying'), t: 1.4 }; P.misCd = .4; }
+  if (P.weapon === 'ult' && ultAvail()) { if (K.misReq || K.missile) ultNova(); }
+  else if ((K.misReq || K.missile) && P.misCd <= 0) {
+    if (P.mis > 0) { launchMissile(); P.misCd = BAL.player.missileCooldown; }
+    else if (K.misReq) { sfx.empty(); S.toast = { txt: I18('飞弹耗尽 · 自动补给中', 'Missiles empty · resupplying'), t: 1.4 }; P.misCd = BAL.player.missileEmptyCooldown; }
   }
-  S.misReq = false;
-  P.misRegen += dt; if (P.misRegen > 7) { P.misRegen = 0; if (P.mis < P.misMax) P.mis++; }
+  K.misReq = false;
+  P.misRegen += dt; if (P.misRegen > BAL.player.missileRegen) { P.misRegen = 0; if (P.mis < P.misMax) P.mis++; }
   if (P.hull < 30) { S.alarmT = (S.alarmT || 0) - dt; if (S.alarmT <= 0) { sfx.alarm(); S.alarmT = 1.25; } }
-  P.shieldDelay -= dt; if (P.shieldDelay <= 0) P.shield = Math.min(100, P.shield + 13 * dt);
+  P.shieldDelay -= dt; if (P.shieldDelay <= 0) P.shield = Math.min(100, P.shield + BAL.player.shieldRegen * dt);
   P.inv -= dt; P.hitT -= dt; P.shieldHit -= dt; P.muzzle -= dt; P.bayT = Math.max(0, (P.bayT || 0) - dt);
 
   // exhaust
@@ -186,7 +190,7 @@ function updatePlayer(dt) {
     if (S.side) { parts.push({ k: 'ember', x: P.x - 31, y: P.y + (s < 0 ? -2.5 : 3) + rand(-1, 1), vx: -rand(160, 260), vy: rand(-15, 15), life: rand(.12, .25), max: .25, c: pick(['120,200,255', '200,240,255']), r: rand(1.2, 2.2) }); continue; }
     parts.push({ k: 'ember', x: P.x + s * (1 - Math.abs(P.bank) * .28) + rand(-1, 1), y: P.y + 30, vx: rand(-15, 15), vy: rand(160, 260), life: rand(.12, .25), max: .25, c: pick(['120,200,255', '200,240,255']), r: rand(1.2, 2.2) });
   }
-  S.lock = findTarget(P.x, P.y);
+  if (P === PLAYERS[0]) S.lock = findTarget(P.x, P.y);
 }
 
 function spawnLogic(dt) {
@@ -274,6 +278,9 @@ function collisions() {
     for (const k of rocks) { if (k.dead) continue; const dx = l.x - k.x, dy = l.y - k.y; if (dx * dx + dy * dy < (k.r * .9) ** 2) { l.dead = l.hit = true; damage(k, l.dmg, l.x, l.y, false); break; } }
   }
   for (const l of lasers) if (l.hit && l.boom && !l.boomed) { l.boomed = true; laserBoom(l.x, l.y); }
+}
+// what can hit the pilot P (run once per pilot)
+function collidePlayer() {
   for (const b of ebul) {
     if (b.dead) continue;
     const dx = b.x - P.x, dy = b.y - P.y;
@@ -284,33 +291,33 @@ function collisions() {
     const dx = k.x - P.x, dy = k.y - P.y, d = Math.hypot(dx, dy);
     if (d < k.r * .85 + 14) {
       if (k.giant) {
-        hurt(32);
+        hurt(BAL.contact.giantRock);
         P.gx -= dx / d * 520; P.gy -= dy / d * 520;
       } else if (k.iron) {
         const dd = d || 1, nx = dx / dd, ny = dy / dd, R = k.r * .85 + 14;
-        P.x = k.x - nx * R; P.y = k.y - ny * R; P.gx -= nx * 380; P.gy -= ny * 380; hurt(10 + k.r * .25); sfx.clang(P.x);
-      } else { hurt(8 + k.r * .45); killRock(k); }
+        P.x = k.x - nx * R; P.y = k.y - ny * R; P.gx -= nx * 380; P.gy -= ny * 380; hurt(BAL.contact.ironRock + k.r * BAL.contact.ironRockPerRadius); sfx.clang(P.x);
+      } else { hurt(BAL.contact.rock + k.r * BAL.contact.rockPerRadius); killRock(k); }
     }
   }
   for (const e of ships) {
     if (e.dead || e.cap || e.type === 'boss') continue;
-    if (e.surf ? hitShip(e, P.x, P.y, 10) : Math.hypot(e.x - P.x, e.y - P.y) < e.r * .8 + 14) { hurt(25); damage(e, 12, e.x, e.y, true); }
+    if (e.surf ? hitShip(e, P.x, P.y, 10) : Math.hypot(e.x - P.x, e.y - P.y) < e.r * .8 + 14) { hurt(BAL.contact.ship); damage(e, 12, e.x, e.y, true); }
   }
   if (IW) propHitsPlayer();
   const b = S.boss;
-  if (b && hitShip(b, P.x, P.y)) { hurt(35); if (b.kind === 'colossus' || b.sideBoss || b.gate || b.kind === 'core' || b.kind === 'god') P.gx -= 500; else P.gy += 500; }
-  for (const e of ships) if (e.escort && !e.dead && !e.dying && hitShip(e, P.x, P.y)) { hurt(30); P.gx -= 420; }
+  if (b && hitShip(b, P.x, P.y)) { hurt(BAL.contact.boss); if (b.kind === 'colossus' || b.sideBoss || b.gate || b.kind === 'core' || b.kind === 'god') P.gx -= 500; else P.gy += 500; }
+  for (const e of ships) if (e.escort && !e.dead && !e.dying && hitShip(e, P.x, P.y)) { hurt(BAL.contact.escort); P.gx -= 420; }
 }
 
 function applyPower(u) {
   const d = PU[u.type];
   sfx.power();
   if ((u.type === 'W' || u.type === 'M') && !ultAvail() && !TUT.done.meter) tutPush('meter');
-  if (u.type === 'W' && !ultAvail()) { P.wCount = (P.wCount || 0) + 1; if (P.wCount >= 10) { P.wCount = 0; S.events.push({ t: .35, fn: () => { if (S.mode === 'play' && P.alive) startSuper(); } }); } }
+  if (u.type === 'W' && !ultAvail()) { P.wCount = (P.wCount || 0) + 1; if (P.wCount >= 10) { P.wCount = 0; const me = P; S.events.push({ t: .35, fn: () => withPlayer(me, () => { if (S.mode === 'play' && P.alive) startSuper(); }) }); } }
   if (u.type === 'W') { if (P.lvl < 10) { P.lvl++; if (P.lvl === 10) award('ACH_WEAPON_MAX'); floatText(P.x, P.y - 40, I18('武器 MK.', 'WEAPON MK.') + ROMAN[P.lvl - 1] + (P.lvl === 8 ? (P.weapon === 'beam' ? I18(' · 辐射解锁', ' · ARC UNLOCKED') : I18(' · 爆裂解锁', ' · BURST UNLOCKED')) : ''), P.weapon === 'beam' ? BEAMC : ION, true); if (P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; } } else { S.score += 500; floatText(P.x, P.y - 40, I18('火力已满 +500', 'Max firepower +500'), ION, true); } return; }
   if (u.type === 'S') P.shield = 100;
-  if (u.type === 'M') { P.mis = Math.min(P.misMax, P.mis + 4); if (!ultAvail()) { P.mCount = (P.mCount || 0) + 1; if (P.mCount >= 10) { P.mCount = 0; S.events.push({ t: .35, fn: () => { if (S.mode === 'play' && P.alive) gainNova(); } }); } } }
-  if (u.type === 'H') P.hull = Math.min(100, P.hull + 30);
+  if (u.type === 'M') { P.mis = Math.min(P.misMax, P.mis + BAL.pickups.missiles); if (!ultAvail()) { P.mCount = (P.mCount || 0) + 1; if (P.mCount >= 10) { P.mCount = 0; const me = P; S.events.push({ t: .35, fn: () => withPlayer(me, () => { if (S.mode === 'play' && P.alive) gainNova(); }) }); } } }
+  if (u.type === 'H') P.hull = Math.min(100, P.hull + BAL.pickups.hullRepair);
   floatText(P.x, P.y - 40, d.label, d.c, true);
 }
 
@@ -320,6 +327,7 @@ function gameOver() {
   explode(P.x, P.y, 60, FIRE);
   sfx.boom(165, P.x, 'huge'); shake(24);
   S.deathBy = 'hull';
+  if (anyAlive()) { S.toast = { txt: I18('队友被击落 · 继续战斗', 'Wingmate down · fight on'), t: 2.4 }; return; }
   finishRun(1.8);
 }
 function finishRun(delay) {

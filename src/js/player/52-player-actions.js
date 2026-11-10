@@ -39,7 +39,7 @@ function hurt(d, src) {
   if (P.shield > 0) { const a = Math.min(P.shield, d); P.shield -= a; d -= a; P.shieldHit = .35; }
   const hullHit = d > 0;
   if (d > 0) { P.hull -= d; P.hitT = .3; S.dmgFlash = Math.min(1, S.dmgFlash + (src === 'hole' ? .05 : .55)); }
-  P.shieldDelay = 3;
+  P.shieldDelay = BAL.player.shieldDelay;
   if (src !== 'hole') { P.inv = .35; shake(8); hullHit ? sfx.hurt() : sfx.shield(); sparks(P.x, P.y, 14, ['255,255,255', ION]); }
   if (P.hull <= 0) gameOver();
 }

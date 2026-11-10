@@ -71,17 +71,21 @@ function ultFire(dt, trig) {
   if ((P.ultSnd || 0) <= S.t) { sfx.laser(P.x); P.ultSnd = S.t + .09; }
 }
 function ultNova() {
-  if ((S.ultCd || 0) > 0 || !P.alive) return false;
-  S.ultCd = ULT_NOVA_CD;
+  if ((P.ultCd || 0) > 0 || !P.alive) return false;
+  P.ultCd = ULT_NOVA_CD;
   S.ultNova = { x: P.x, y: P.y, r: 24, max: Math.hypot(W, H) * 1.05, hit: new Set() };
   S.wflash = Math.max(S.wflash || 0, .35); shake(12); sfx.boom(140, P.x, 'huge'); sfx.shieldBreak();
   waves.push({ x: P.x, y: P.y, r: 30, max: 240, life: .45, maxl: .45, c: '255,255,255' });
   floatText(P.x, P.y - 52, I18('湮星脉冲', 'NOVA PULSE'), ULTC, true);
   return true;
 }
-function updateUlt(dt) {
-  if (S.ultCd > 0) S.ultCd -= dt;
+// per pilot: nova cooldown and the super weapon's timer
+function updateUltPilot(dt) {
+  if (P.ultCd > 0) P.ultCd -= dt;
   if (P.superT > 0) { P.superT -= dt; if (P.superT <= 0) endSuper(); }
+}
+// shared: the expanding nova wave and the homing darts
+function updateUlt(dt) {
   const n = S.ultNova;
   if (n) {
     n.r += 1700 * dt;

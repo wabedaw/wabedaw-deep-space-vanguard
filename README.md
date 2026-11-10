@@ -18,6 +18,7 @@ npm run test:determinism  # 构建 + 同一种子在不同窗口、不同刷新�
 npm run test:save    # 构建 + 存档迁移、坏档、新版本存档
 npm run test:i18n    # 构建 + 四种语言各开一局，检查翻译与字体
 npm run test:steam   # 排行榜桥单元测试 + 用模拟 Steam 测排行榜界面
+npm run test:coop    # 构建 + 双人：手柄分配、拾取、瞄准、阵亡、确定性
 npm run test:all     # 以上除全流程机器人外全部
 npm run i18n         # 生成翻译目录 src/lang/catalog.csv，报告缺译
 npm run steam:install && npm run steam:selftest   # Steam 桌面版（见 platform/steam/README.md）
@@ -40,8 +41,9 @@ npm run steam:install && npm run steam:selftest   # Steam 桌面版（见 platfo
 | `src/shell/` | 页面头部、界面 HTML、结尾 |
 | `src/style.css` | 全部样式 |
 | `src/js/platform/` | 平台层：Steam / Claude / 网站各自的存储、成就、退出、全屏 |
-| `src/js/core/` | 语言、存档、成就、游戏状态、主循环、更新、渲染、键鼠与手柄输入 |
+| `src/js/core/` | 语言、存档、成就、游戏状态、玩家（`players.js`：多名飞行员）、主循环、更新、渲染、键鼠与手柄输入 |
 | `src/lang/` | 繁体中文、日文语言表（以英文原文为键）和给校对用的目录 `catalog.csv` |
+| `src/data/` | 调平衡的数据表：`balance.json`（数值）、`bosses.json`（Boss 血量和分数）。改数值不用改代码，构建时会检查 |
 | `src/js/audio/` | 音效与程序生成音乐 |
 | `src/js/world/` | 背景、星空、扇区、关卡切换、黑洞、自适应飞行速度 |
 | `src/js/player/` | 玩家武器、操作、V-7 VEGA 绘制、超级武器 |
@@ -75,6 +77,8 @@ npm run steam:install && npm run steam:selftest   # Steam 桌面版（见 platfo
 | 暂停 · 静音 · 音乐 | P · M · N | 暂停按钮 |
 
 手柄：左摇杆 / 十字键移动，A 飞弹，X 或 LB 换武器，Y 或 RB 湮星脉冲，RT 射击（自动射击关闭时），View 开关自动射击，Start 暂停。
+
+双人（测试中）：网址加 `?players=2`，或在开发者面板勾选"双人"。1P 用键盘，2P 用手柄；接两个手柄时各用一个。2P 是古铜色涂装。
 
 每收集 10 个 W 自动发动超级武器 VEGA LANCE（织女光矛）10 秒。
 

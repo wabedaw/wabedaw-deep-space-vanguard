@@ -12,6 +12,36 @@ function segBar(x, y, w, f, col, label, val) {
     if (seg > 0) { ctx.fillStyle = `rgba(${col},${.35 + seg * .65})`; ctx.fillRect(x + i * (sw + gap), y, sw * seg, 6); }
   }
 }
+// player 2 (and later more): a compact panel on the right, in the pilot's colour
+function drawPilotHud(p, R, B) {
+  withPlayer(p, () => {
+    const bw = Math.min(170, W * .3), x = R - bw, col = PLAYER_TINT[p.id] || FLARE;
+    ctx.save(); ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.font = `700 13px ${FD}`; ctx.fillStyle = `rgb(${col})`; setLS('2px');
+    ctx.fillText((p.id + 1) + 'P' + (P.alive ? '' : ' · ' + I18('已击落', 'DOWN')), x, B - 112); setLS('0px');
+    ctx.font = `600 10.5px ${FD}`; ctx.fillStyle = 'rgba(190,204,222,.9)';
+    ctx.fillText(weaponName() + (P.weapon === 'ult' ? '' : ' MK.' + ROMAN[P.lvl - 1]), x, B - 94);
+    const hullCol = P.hull > 55 ? '219,229,240' : P.hull > 25 ? FLARE : WARN;
+    segBar(x, B - 62, bw, P.shield / 100, ION, I18('护盾', 'SHIELD'), Math.round(P.shield) + '%');
+    segBar(x, B - 30, bw, Math.max(0, P.hull) / 100, hullCol, I18('舰体', 'HULL'), Math.max(0, Math.round(P.hull)) + '%');
+    ctx.font = `600 10.5px ${FD}`; setLS('1.5px'); ctx.fillStyle = 'rgba(132,148,173,.95)'; ctx.fillText(I18('飞弹', 'MSL'), x, B + 2); setLS('0px');
+    for (let i = 0; i < P.misMax; i++) {
+      const mx = x + 34 + i * 10, my = B - 2;
+      ctx.fillStyle = i < P.mis ? `rgb(${FLARE})` : 'rgba(132,148,173,.22)';
+      ctx.beginPath(); ctx.moveTo(mx, my - 5); ctx.lineTo(mx + 3.5, my); ctx.lineTo(mx, my + 5); ctx.lineTo(mx - 3.5, my); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  });
+}
+// the "2P" mark under player 2's ship
+function drawPilotTag(p) {
+  if (!p.alive || S.mode !== 'play') return;
+  const col = PLAYER_TINT[p.id] || FLARE;
+  ctx.save(); ctx.font = `700 11px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = `rgba(${col},.95)`;
+  ctx.fillText((p.id + 1) + 'P', S.side ? p.x - 44 : p.x, S.side ? p.y : p.y + 46);
+  ctx.strokeStyle = `rgba(${col},.45)`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, 32, 0, TAU); ctx.stroke();
+  ctx.restore();
+}
 function drawHUD() {
   const L = inset.l + 16, T = inset.t + 16, R = W - inset.r - 16, B = H - inset.b - 16;
   ctx.textBaseline = 'alphabetic';
@@ -27,7 +57,7 @@ function drawHUD() {
     if (mult() > 1) {
       ctx.font = `700 14px ${FD}`; ctx.fillStyle = `rgb(${FLARE})`;
       ctx.fillText(I18('连击 ×', 'COMBO ×') + mult(), L + sw + 12, T + (W < 420 ? 34 : 40));
-      ctx.fillStyle = `rgba(${FLARE},.8)`; ctx.fillRect(L + sw + 12, T + (W < 420 ? 39 : 45), 48 * clamp(S.comboT / 2.4, 0, 1), 2);
+      ctx.fillStyle = `rgba(${FLARE},.8)`; ctx.fillRect(L + sw + 12, T + (W < 420 ? 39 : 45), 48 * clamp(S.comboT / BAL.combo.window, 0, 1), 2);
     }
     ctx.font = `500 12px ${FD}`; ctx.fillStyle = 'rgba(190,204,222,.9)';
     ctx.fillText(sectorTag() + ' · ' + sectorName(), L, T + (W < 420 ? 56 : 64));
@@ -57,13 +87,14 @@ function drawHUD() {
       ctx.fillStyle = i < P.mis ? `rgb(${FLARE})` : 'rgba(132,148,173,.22)';
       ctx.beginPath(); ctx.moveTo(x, y - 5); ctx.lineTo(x + 3.5, y); ctx.lineTo(x, y + 5); ctx.lineTo(x - 3.5, y); ctx.closePath(); ctx.fill();
     }
+    if (PLAYERS.length > 1) for (const p of PLAYERS) if (p.id) drawPilotHud(p, R, B);
     const wcol = P.weapon === 'ult' ? ULTC : P.weapon === 'beam' ? BEAMC : ION, wl = weaponName() + (P.weapon === 'ult' ? '' : ' MK.' + ROMAN[P.lvl - 1]) + weaponPerk();
     ctx.font = `600 10.5px ${FD}`; ctx.fillStyle = `rgba(${wcol},.95)`; ctx.textAlign = 'left'; setLS('1.5px');
     ctx.fillText(wl, L, B - 92); const tw = ctx.measureText(wl).width; setLS('0px');
     for (let i = 0; i < 10; i++) { ctx.fillStyle = i < P.lvl ? `rgba(${wcol},${i >= 7 ? 1 : .75})` : 'rgba(132,148,173,.22)'; ctx.fillRect(L + tw + 10 + i * 7, B - 100, 5, i >= 7 ? 9 : 7); }
     drawChargeHud(L, B - 120);
     if (P.weapon === 'ult' && P.superT > 0) { const f = clamp(P.superT / SUPER_T, 0, 1); ctx.fillStyle = 'rgba(132,148,173,.22)'; ctx.fillRect(L + tw + 10, B - 88, 68, 2); ctx.fillStyle = `rgba(${ULTC},.95)`; ctx.fillRect(L + tw + 10, B - 88, 68 * f, 2); }
-    else if (P.weapon === 'ult') { const f = 1 - clamp((S.ultCd || 0) / ULT_NOVA_CD, 0, 1); ctx.fillStyle = 'rgba(132,148,173,.22)'; ctx.fillRect(L + tw + 10, B - 88, 68, 2); ctx.fillStyle = f >= 1 ? 'rgba(255,255,255,.95)' : `rgba(${ULTC},.9)`; ctx.fillRect(L + tw + 10, B - 88, 68 * f, 2); ctx.font = `600 9.5px ${FD}`; ctx.fillStyle = f >= 1 ? `rgba(${ULTC},.95)` : 'rgba(132,148,173,.8)'; ctx.fillText(f >= 1 ? I18('脉冲就绪', 'NOVA READY') : I18('脉冲充能', 'NOVA CHARGING'), L + tw + 84, B - 85); }
+    else if (P.weapon === 'ult') { const f = 1 - clamp((P.ultCd || 0) / ULT_NOVA_CD, 0, 1); ctx.fillStyle = 'rgba(132,148,173,.22)'; ctx.fillRect(L + tw + 10, B - 88, 68, 2); ctx.fillStyle = f >= 1 ? 'rgba(255,255,255,.95)' : `rgba(${ULTC},.9)`; ctx.fillRect(L + tw + 10, B - 88, 68 * f, 2); ctx.font = `600 9.5px ${FD}`; ctx.fillStyle = f >= 1 ? `rgba(${ULTC},.95)` : 'rgba(132,148,173,.8)'; ctx.fillText(f >= 1 ? I18('脉冲就绪', 'NOVA READY') : I18('脉冲充能', 'NOVA CHARGING'), L + tw + 84, B - 85); }
     if (P.weapon === 'beam') { const f = P.focus || 0; ctx.fillStyle = 'rgba(132,148,173,.22)'; ctx.fillRect(L + tw + 10, B - 88, 68, 2); ctx.fillStyle = f >= 1 ? 'rgba(255,255,255,.95)' : `rgba(${BEAMC},.9)`; ctx.fillRect(L + tw + 10, B - 88, 68 * f, 2); if (f >= 1) drawGlow(L + tw + 78, B - 87, 7, BEAMC, .8); }
 
     // boss bar

@@ -1,20 +1,37 @@
 /* ---------- V-7 VEGA interceptor: layered hull, wingtip railgun pods, reactor core, energy conduits tinted by the active weapon ---------- */
+// Liveries. Player 1 flies the standard silver V-7; player 2 the same airframe in bronze with a gold canopy, orange
+// exhaust, amber wing stripes and longer swept tail fins, so the two ships read apart by colour and by outline.
+// The energy conduits keep the active weapon's colour for both (that colour is gameplay information).
+const LIVERY = [
+  { tail: [[122, 134, 152], [38, 46, 60]], wing: [[170, 182, 200], [50, 59, 76]], canard: [[158, 170, 188], [58, 68, 86]],
+    fus: ['#445067', '#f4f8fc', '#384356'], canopy: ['#d8fbff', '#2a84ad', '#061b29'],
+    flame: ['80,170,255', '140,210,255', '40,90,255', '248,253,255', '130,210,255', '60,120,255', '225,245,255'], nozzle: '170,225,255',
+    sFin: ['#adb9cb', '#384254'], sEngine: ['#7f8b9e', '#4a5568', '#1d232e'], sFus: ['#e0e7f1', '#f7fafd', '#7b879a', '#384253'], sWing: ['#b6c2d3', '#414c5e'], sFar: '#27303c',
+    stripe: null, longFins: false },
+  { tail: [[176, 120, 70], [58, 34, 18]], wing: [[214, 160, 102], [72, 46, 26]], canard: [[200, 146, 92], [70, 46, 28]],
+    fus: ['#6a4c30', '#fff3de', '#4c3420'], canopy: ['#fff4cf', '#c98a2c', '#2a1606'],
+    flame: ['255,150,60', '255,190,120', '255,90,30', '255,250,240', '255,180,90', '255,100,40', '255,236,200'], nozzle: '255,210,150',
+    sFin: ['#d6a571', '#4a3220'], sEngine: ['#a07f5c', '#6a4e34', '#2a1d12'], sFus: ['#e6c79c', '#fbecd4', '#98744d', '#4a3220'], sWing: ['#dcb184', '#5b4128'], sFar: '#3c2c1e',
+    stripe: '255,179,71', longFins: true },
+];
+const livery = () => LIVERY[P.id] || LIVERY[0];
 function shipAccent() { return P.weapon === 'ult' ? ULTC : P.weapon === 'beam' ? BEAMC : ION; }
 function drawThrust(x, y, len, w, rot, boost) {
+  const fc = livery().flame;
   ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot);
-  drawGlow(0, 3, w * 3.4 + boost * 6, '80,170,255', .7);
+  drawGlow(0, 3, w * 3.4 + boost * 6, fc[0], .7);
   let g = ctx.createLinearGradient(0, 0, 0, len * 1.2);
-  g.addColorStop(0, 'rgba(140,210,255,.6)'); g.addColorStop(1, 'rgba(40,90,255,0)');
+  g.addColorStop(0, `rgba(${fc[1]},.6)`); g.addColorStop(1, `rgba(${fc[2]},0)`);
   ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(-w * 1.3, 0); ctx.quadraticCurveTo(0, len * 1.3, w * 1.3, 0); ctx.fill();
   g = ctx.createLinearGradient(0, 0, 0, len * .75);
-  g.addColorStop(0, 'rgba(248,253,255,1)'); g.addColorStop(.35, 'rgba(130,210,255,.9)'); g.addColorStop(1, 'rgba(60,120,255,0)');
+  g.addColorStop(0, `rgba(${fc[3]},1)`); g.addColorStop(.35, `rgba(${fc[4]},.9)`); g.addColorStop(1, `rgba(${fc[5]},0)`);
   ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(-w * .72, 0); ctx.quadraticCurveTo(0, len * .9, w * .72, 0); ctx.fill();
   const ph = (S.t * 7) % 1;
-  for (let i = 0; i < 3; i++) drawGlow(0, (i + .4 + ph * .25) * len * .21, w * (1.15 - i * .24), '225,245,255', .6 - i * .16);
+  for (let i = 0; i < 3; i++) drawGlow(0, (i + .4 + ph * .25) * len * .21, w * (1.15 - i * .24), fc[6], .6 - i * .16);
   ctx.restore();
 }
 function drawVegaTop(sx, b, boost) {
-  const acc = shipAccent(), pw = .5 + .5 * clamp(P.lvl / 10, 0, 1), pul = .72 + .28 * Math.sin(S.t * 6), lw = P.lw || 1, ink = 'rgba(6,10,18,.8)';
+  const LV = livery(), acc = shipAccent(), pw = .5 + .5 * clamp(P.lvl / 10, 0, 1), pul = .72 + .28 * Math.sin(S.t * 6), lw = P.lw || 1, ink = 'rgba(6,10,18,.8)';
   ctx.globalCompositeOperation = 'lighter';
   const fl = 16 + boost * 20 + Math.sin(S.t * 70) * 2.5;
   for (const s of [-1, 1]) drawThrust(s * 6.5 * sx, 25.5, fl, 3.1, 0, boost);
@@ -24,15 +41,17 @@ function drawVegaTop(sx, b, boost) {
   const metal = (s, x0, y0, x1, y1, a, c) => { const lit = 1 - s * b * .35, g = ctx.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, `rgb(${a[0] * lit | 0},${a[1] * lit | 0},${a[2] * lit | 0})`); g.addColorStop(1, `rgb(${c[0] * lit | 0},${c[1] * lit | 0},${c[2] * lit | 0})`); return g; };
   // tail stabilizers
   for (const s of [-1, 1]) {
-    ctx.beginPath(); ctx.moveTo(s * 6, 12); ctx.lineTo(s * 15.5, 24); ctx.lineTo(s * 14, 28.5); ctx.lineTo(s * 7, 23); ctx.closePath();
-    ctx.fillStyle = metal(s, s * 6, 12, s * 15, 28, [122, 134, 152], [38, 46, 60]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
+    if (LV.longFins) { ctx.beginPath(); ctx.moveTo(s * 6, 10); ctx.lineTo(s * 19.5, 27); ctx.lineTo(s * 18, 33.5); ctx.lineTo(s * 7, 24); ctx.closePath(); }
+    else { ctx.beginPath(); ctx.moveTo(s * 6, 12); ctx.lineTo(s * 15.5, 24); ctx.lineTo(s * 14, 28.5); ctx.lineTo(s * 7, 23); ctx.closePath(); }
+    ctx.fillStyle = metal(s, s * 6, 12, s * 15, 28, LV.tail[0], LV.tail[1]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   }
   // main wings
   for (const s of [-1, 1]) {
     ctx.beginPath(); ctx.moveTo(s * 7, -9); ctx.lineTo(s * 29, 9); ctx.lineTo(s * 33, 13.5); ctx.lineTo(s * 32.5, 19); ctx.lineTo(s * 21, 18.5); ctx.lineTo(s * 17, 22); ctx.lineTo(s * 8, 20); ctx.closePath();
-    ctx.fillStyle = metal(s, s * 7, -9, s * 30, 20, [170, 182, 200], [50, 59, 76]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
+    ctx.fillStyle = metal(s, s * 7, -9, s * 30, 20, LV.wing[0], LV.wing[1]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
     ctx.beginPath(); ctx.moveTo(s * 10, 9.5); ctx.lineTo(s * 28.5, 14); ctx.lineTo(s * 32.5, 19); ctx.lineTo(s * 21, 18.5); ctx.lineTo(s * 17, 22); ctx.lineTo(s * 8, 20); ctx.closePath();
     ctx.fillStyle = 'rgba(12,18,30,.32)'; ctx.fill();
+    if (LV.stripe) { ctx.fillStyle = `rgba(${LV.stripe},.9)`; ctx.beginPath(); ctx.moveTo(s * 12, .8); ctx.lineTo(s * 26.8, 12.2); ctx.lineTo(s * 25.8, 14); ctx.lineTo(s * 11, 2.8); ctx.closePath(); ctx.fill(); }
     ctx.beginPath(); ctx.moveTo(s * 11, -1.5); ctx.lineTo(s * 25.5, 10); ctx.moveTo(s * 13, 6.5); ctx.lineTo(s * 16, 21); ctx.moveTo(s * 20.5, 8.5); ctx.lineTo(s * 22, 18.3);
     ctx.strokeStyle = 'rgba(255,255,255,.14)'; ctx.stroke();
     ctx.fillStyle = 'rgba(10,14,22,.55)'; for (let i = 0; i < 4; i++) ctx.fillRect(s * (12.5 + i * 3.6) - .4, 3.4 + i * 3, .8, .8);
@@ -51,7 +70,7 @@ function drawVegaTop(sx, b, boost) {
   // canards + nose cannons
   for (const s of [-1, 1]) {
     ctx.beginPath(); ctx.moveTo(s * 4.4, -21.5); ctx.lineTo(s * 12.8, -15.5); ctx.lineTo(s * 12.2, -12.3); ctx.lineTo(s * 5, -13.8); ctx.closePath();
-    ctx.fillStyle = metal(s, s * 4, -21, s * 12, -12, [158, 170, 188], [58, 68, 86]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
+    ctx.fillStyle = metal(s, s * 4, -21, s * 12, -12, LV.canard[0], LV.canard[1]); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
     ctx.fillStyle = '#1b2029'; ctx.fillRect(s * 7 - .8, -27.5, 1.6, 12.5); ctx.fillStyle = '#6b778a'; ctx.fillRect(s * 7 - 1.25, -28, 2.5, 1.3);
   }
   // engine nacelles
@@ -64,7 +83,7 @@ function drawVegaTop(sx, b, boost) {
   }
   // fuselage
   ctx.beginPath(); ctx.moveTo(0, -37.5); ctx.bezierCurveTo(3, -31, 6, -20, 7, -8); ctx.lineTo(8, 6); ctx.lineTo(6.5, 18); ctx.lineTo(4, 24); ctx.lineTo(-4, 24); ctx.lineTo(-6.5, 18); ctx.lineTo(-8, 6); ctx.lineTo(-7, -8); ctx.bezierCurveTo(-6, -20, -3, -31, 0, -37.5); ctx.closePath();
-  const fg = ctx.createLinearGradient(-8, 0, 8, 0); fg.addColorStop(0, '#445067'); fg.addColorStop(clamp(.42 - b * .2, .15, .85), '#f4f8fc'); fg.addColorStop(1, '#384356');
+  const fg = ctx.createLinearGradient(-8, 0, 8, 0); fg.addColorStop(0, LV.fus[0]); fg.addColorStop(clamp(.42 - b * .2, .15, .85), LV.fus[1]); fg.addColorStop(1, LV.fus[2]);
   ctx.fillStyle = fg; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   ctx.fillStyle = '#1a2029'; ctx.beginPath(); ctx.moveTo(0, -37.5); ctx.lineTo(1.7, -32); ctx.lineTo(-1.7, -32); ctx.closePath(); ctx.fill();
   ctx.fillStyle = 'rgba(28,36,50,.28)'; ctx.beginPath(); ctx.moveTo(-6.6, -4); ctx.lineTo(-2.4, -4); ctx.lineTo(-2.4, 22); ctx.lineTo(-4, 24); ctx.lineTo(-6.5, 18); ctx.lineTo(-8, 6); ctx.closePath(); ctx.fill();
@@ -75,7 +94,7 @@ function drawVegaTop(sx, b, boost) {
   ctx.beginPath(); ctx.arc(0, 2.2, 3.4, 0, TAU); ctx.fillStyle = '#12171f'; ctx.fill(); ctx.strokeStyle = 'rgba(160,175,195,.55)'; ctx.stroke();
   // canopy
   ctx.beginPath(); ctx.moveTo(0, -27); ctx.lineTo(3.3, -20); ctx.lineTo(3.6, -10); ctx.lineTo(0, -5.5); ctx.lineTo(-3.6, -10); ctx.lineTo(-3.3, -20); ctx.closePath();
-  const cg = ctx.createLinearGradient(0, -27, 0, -5); cg.addColorStop(0, '#d8fbff'); cg.addColorStop(.45, '#2a84ad'); cg.addColorStop(1, '#061b29');
+  const cg = ctx.createLinearGradient(0, -27, 0, -5); cg.addColorStop(0, LV.canopy[0]); cg.addColorStop(.45, LV.canopy[1]); cg.addColorStop(1, LV.canopy[2]);
   ctx.fillStyle = cg; ctx.fill(); ctx.strokeStyle = '#18202b'; ctx.lineWidth = lw * 1.4; ctx.stroke(); ctx.lineWidth = lw;
   ctx.strokeStyle = 'rgba(18,28,42,.75)'; ctx.beginPath(); ctx.moveTo(-3.45, -15); ctx.lineTo(3.45, -15); ctx.moveTo(0, -27); ctx.lineTo(0, -15); ctx.stroke();
   ctx.fillStyle = 'rgba(255,255,255,.78)'; ctx.beginPath(); ctx.moveTo(-1.1, -24.5); ctx.lineTo(-.3, -24.8); ctx.lineTo(-2.3, -17.2); ctx.lineTo(-2.9, -17.6); ctx.closePath(); ctx.fill();
@@ -87,7 +106,7 @@ function drawVegaTop(sx, b, boost) {
     ctx.strokeStyle = `rgba(${acc},${.35 * pw})`; ctx.beginPath(); ctx.moveTo(s * 2.6, 0); ctx.lineTo(s * 6.5, 6); ctx.lineTo(s * 6.5, 20); ctx.stroke();
     drawGlow(s * 27.5, 3.1, 4.2, acc, .85 * pw * pul); drawGlow(s * 27.5, 3.1, 1.4, WHITE, .9);
     drawGlow(s * 6.5, 3.4, 3.4, acc, .55 * pw);
-    drawGlow(s * 6.5, 25.2, 3.8, '170,225,255', .95);
+    drawGlow(s * 6.5, 25.2, 3.8, LV.nozzle, .95);
     for (let i = 0; i < 3; i++) drawGlow(s * (10.5 + i * 2.6), 11 + i * 2.6, 1.7, acc, (.35 + .45 * (((S.t * 3 + i * .33) % 1) > .5)) * pw);
     const t = (S.t * 1.6 + (s > 0 ? .5 : 0)) % 1; drawGlow(s * (8.2 + 21.1 * t), -7.6 + 17.5 * t, 3, acc, .8 * pw);
   }
@@ -102,7 +121,7 @@ function drawVegaTop(sx, b, boost) {
 function drawSideShip(boost) {
   ctx.rotate(clamp((P.vy || 0) / 900, -.16, .16));
   ctx.lineJoin = 'round'; ctx.lineWidth = 1;
-  const acc = shipAccent(), pw = .5 + .5 * clamp(P.lvl / 10, 0, 1), pul = .72 + .28 * Math.sin(S.t * 6), ink = 'rgba(6,10,18,.8)';
+  const LV = livery(), acc = shipAccent(), pw = .5 + .5 * clamp(P.lvl / 10, 0, 1), pul = .72 + .28 * Math.sin(S.t * 6), ink = 'rgba(6,10,18,.8)';
   ctx.globalCompositeOperation = 'lighter';
   const fl = 18 + boost * 22 + Math.sin(S.t * 70) * 3;
   drawThrust(-29.5, -2.6, fl, 3.1, Math.PI / 2, boost); drawThrust(-29, 3.2, fl * .9, 2.7, Math.PI / 2, boost);
@@ -111,21 +130,24 @@ function drawSideShip(boost) {
   let g;
   // far wing
   ctx.beginPath(); ctx.moveTo(6, -3); ctx.lineTo(-10, -11.5); ctx.lineTo(-19, -11.8); ctx.lineTo(-12.5, -3.5); ctx.closePath();
-  ctx.fillStyle = '#27303c'; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
-  // tail fin
-  ctx.beginPath(); ctx.moveTo(-10, -5); ctx.lineTo(-21, -17.5); ctx.lineTo(-28.2, -18); ctx.lineTo(-25.8, -4.6); ctx.closePath();
-  g = ctx.createLinearGradient(0, -18, 0, -4); g.addColorStop(0, '#adb9cb'); g.addColorStop(1, '#384254');
+  ctx.fillStyle = LV.sFar; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
+  // tail fin (player 2: taller and swept further back)
+  ctx.beginPath();
+  if (LV.longFins) { ctx.moveTo(-10, -5); ctx.lineTo(-23, -21.5); ctx.lineTo(-31.5, -22); ctx.lineTo(-26.5, -4.6); }
+  else { ctx.moveTo(-10, -5); ctx.lineTo(-21, -17.5); ctx.lineTo(-28.2, -18); ctx.lineTo(-25.8, -4.6); }
+  ctx.closePath();
+  g = ctx.createLinearGradient(0, -18, 0, -4); g.addColorStop(0, LV.sFin[0]); g.addColorStop(1, LV.sFin[1]);
   ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   ctx.fillStyle = '#1b212a'; ctx.beginPath(); ctx.moveTo(-19.6, -15.4); ctx.lineTo(-27.6, -15.6); ctx.lineTo(-27.3, -13.8); ctx.lineTo(-18.2, -13.7); ctx.closePath(); ctx.fill();
   ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.beginPath(); ctx.moveTo(-12.5, -6.5); ctx.lineTo(-21.5, -16.6); ctx.stroke();
   // engine block
-  g = ctx.createLinearGradient(0, -6, 0, 8); g.addColorStop(0, '#7f8b9e'); g.addColorStop(.5, '#4a5568'); g.addColorStop(1, '#1d232e');
+  g = ctx.createLinearGradient(0, -6, 0, 8); g.addColorStop(0, LV.sEngine[0]); g.addColorStop(.5, LV.sEngine[1]); g.addColorStop(1, LV.sEngine[2]);
   ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(-6, -5.6); ctx.lineTo(-24, -6.1); ctx.lineTo(-28.6, -3.2); ctx.lineTo(-28.6, 6.2); ctx.lineTo(-24, 7.6); ctx.lineTo(-6, 7.9); ctx.closePath(); ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   ctx.strokeStyle = 'rgba(10,14,22,.6)'; ctx.beginPath(); for (const x of [-12, -15.5, -19, -22.5]) { ctx.moveTo(x, -5.8); ctx.lineTo(x, 7.6); } ctx.stroke();
   ctx.fillStyle = '#0e1219'; ctx.fillRect(-30.6, -5.7, 3, 6.1); ctx.fillRect(-30.2, .6, 2.9, 5.2);
   // fuselage
   ctx.beginPath(); ctx.moveTo(38, 1); ctx.bezierCurveTo(30, -2.8, 21, -5.4, 10, -5.8); ctx.lineTo(-9, -5.8); ctx.lineTo(-13, -4.2); ctx.lineTo(-13, 6.6); ctx.lineTo(-3, 7.8); ctx.lineTo(15, 6.8); ctx.bezierCurveTo(25, 5.8, 32, 3.6, 38, 1); ctx.closePath();
-  g = ctx.createLinearGradient(0, -6, 0, 8); g.addColorStop(0, '#e0e7f1'); g.addColorStop(.33, '#f7fafd'); g.addColorStop(.7, '#7b879a'); g.addColorStop(1, '#384253');
+  g = ctx.createLinearGradient(0, -6, 0, 8); g.addColorStop(0, LV.sFus[0]); g.addColorStop(.33, LV.sFus[1]); g.addColorStop(.7, LV.sFus[2]); g.addColorStop(1, LV.sFus[3]);
   ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   ctx.fillStyle = '#1a2029'; ctx.beginPath(); ctx.moveTo(38, 1); ctx.bezierCurveTo(36, -.3, 34, -1.1, 32.4, -1.4); ctx.lineTo(32.4, 2.9); ctx.bezierCurveTo(34.4, 2.4, 36.2, 1.8, 38, 1); ctx.closePath(); ctx.fill();
   ctx.fillStyle = 'rgba(28,36,50,.32)'; ctx.beginPath(); ctx.moveTo(1, -5.8); ctx.lineTo(-12.6, -5.8); ctx.lineTo(-12.6, -2); ctx.lineTo(1, -2.7); ctx.closePath(); ctx.fill();
@@ -133,7 +155,7 @@ function drawSideShip(boost) {
   ctx.fillStyle = '#141922'; for (let i = 0; i < 4; i++) ctx.fillRect(-3.5 - i * 2.2, -1.2, 1.1, 3.4);
   ctx.fillStyle = 'rgba(255,179,71,.85)'; ctx.fillRect(27, -2.7, 2.6, 1); ctx.fillRect(23.5, -3.4, 2.6, 1);
   // canopy
-  const cg = ctx.createLinearGradient(0, -12.5, 0, -4); cg.addColorStop(0, '#d8fbff'); cg.addColorStop(.5, '#2a84ad'); cg.addColorStop(1, '#061b29');
+  const cg = ctx.createLinearGradient(0, -12.5, 0, -4); cg.addColorStop(0, LV.canopy[0]); cg.addColorStop(.5, LV.canopy[1]); cg.addColorStop(1, LV.canopy[2]);
   ctx.fillStyle = cg; ctx.beginPath(); ctx.moveTo(25, -4.6); ctx.lineTo(17, -10.6); ctx.lineTo(8, -12.2); ctx.lineTo(1.5, -6); ctx.closePath(); ctx.fill();
   ctx.strokeStyle = '#18202b'; ctx.lineWidth = 1.4; ctx.stroke(); ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(18,28,42,.75)'; ctx.beginPath(); ctx.moveTo(14, -11.2); ctx.lineTo(12.5, -5.2); ctx.stroke();
@@ -143,9 +165,10 @@ function drawSideShip(boost) {
   ctx.fillStyle = '#232a35'; ctx.fillRect(12, 4.4, 20.5, 1.9); ctx.fillStyle = '#6b778a'; ctx.fillRect(31.5, 3.9, 2.2, 2.8); ctx.fillRect(25, 4.1, 1.2, 2.4);
   // near wing + wing pod
   ctx.beginPath(); ctx.moveTo(8, 3.2); ctx.lineTo(-12, 15.5); ctx.lineTo(-21.5, 16); ctx.lineTo(-14, 4.2); ctx.closePath();
-  g = ctx.createLinearGradient(8, 3, -20, 15); g.addColorStop(0, '#b6c2d3'); g.addColorStop(1, '#414c5e');
+  g = ctx.createLinearGradient(8, 3, -20, 15); g.addColorStop(0, LV.sWing[0]); g.addColorStop(1, LV.sWing[1]);
   ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = ink; ctx.stroke();
   ctx.strokeStyle = 'rgba(255,255,255,.16)'; ctx.beginPath(); ctx.moveTo(2, 6.4); ctx.lineTo(-13, 13.6); ctx.stroke();
+  if (LV.stripe) { ctx.fillStyle = `rgba(${LV.stripe},.9)`; ctx.beginPath(); ctx.moveTo(4.5, 5.6); ctx.lineTo(-12.8, 16); ctx.lineTo(-15, 16); ctx.lineTo(2, 5.6); ctx.closePath(); ctx.fill(); }
   ctx.fillStyle = '#272e39'; ctx.fillRect(-20, 15.6, 13, 2.5); ctx.fillStyle = '#626e81'; ctx.fillRect(-7.2, 15.9, 3.4, 1.9);
   const bay = clamp(P.bayT || 0, 0, .4) / .4;
   ctx.fillStyle = '#1a1f28'; ctx.fillRect(-7, 6.8, 14, 2.2 + bay * 2.4);
@@ -159,7 +182,7 @@ function drawSideShip(boost) {
   for (let k = 0; k < 3; k++) { const x = 28 - ((S.t * 46 + k * 14) % 40); drawGlow(x, 1.8 + (28 - x) * .019, 2.6, acc, .85 * pw); }
   drawGlow(-1, -3.6, 6.5, acc, .5 * pul * pw); drawGlow(-1, -3.6, 2, WHITE, .85);
   drawGlow(26, 5.2, 2.4, acc, .8 * pw); drawGlow(-13, 16.8, 2.6, acc, .7 * pw * pul);
-  drawGlow(-29.5, -2.6, 3.4, '170,225,255', .95); drawGlow(-29, 3.2, 3, '170,225,255', .9);
+  drawGlow(-29.5, -2.6, 3.4, LV.nozzle, .95); drawGlow(-29, 3.2, 3, LV.nozzle, .9);
   if (S.t % 1.1 < .1) { drawGlow(-27, -17.6, 7, '255,60,60', 1); drawGlow(-20.5, 16.4, 7, '60,255,120', 1); }
   if ((S.t + .55) % 1.1 < .07) drawGlow(-28.5, 6.5, 6, WHITE, .9);
   ctx.lineCap = 'butt'; ctx.lineWidth = 1; ctx.globalCompositeOperation = 'source-over';

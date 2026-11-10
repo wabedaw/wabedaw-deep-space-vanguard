@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } fr
 import { dirname, join } from 'node:path';
 import vm from 'node:vm';
 import { catalog, TABLE_LANGS } from './i18n.mjs';
+import { loadData } from './data.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -28,13 +29,18 @@ for (const l of TABLE_LANGS) {
 if (cat.conflicts.length) fail('the same English text has two different Chinese texts, so one translation can\'t serve both: ' + cat.conflicts[0]);
 const langTables = '/* ---------- language tables (generated from src/lang/*.json by tools/build.mjs) ---------- */\n' +
   'const LANG_TABLES = ' + JSON.stringify(tables).replace(/</g, '\\u003c') + ';\n';
-const js = langTables + manifest.parts.map(p => read('src/' + p.file)).join('');
+// game data tables (src/data/*.json, checked by tools/data.mjs)
+const gameData = loadData(ROOT);
+if (gameData.errors.length) fail('data tables:\n  ' + gameData.errors.join('\n  '));
+const dataTables = '/* ---------- game data (generated from src/data/*.json by tools/build.mjs) ---------- */\n' +
+  'const DATA = ' + JSON.stringify(gameData.data).replace(/</g, '\\u003c') + ';\nconst BAL = DATA.balance;\n';
+const js = langTables + dataTables + manifest.parts.map(p => read('src/' + p.file)).join('');
 // Every part shares one scope, so two files declaring the same name is a SyntaxError that stops the whole game.
 // Compile the script here (without running it) to catch that, and any other syntax error, at build time.
 try { new vm.Script(js, { filename: 'game.js' }); } catch (e) {
   const m = (e.stack || '').match(/game\.js:(\d+)/), n = m ? +m[1] : 0;
   let at = '', acc = 0;
-  acc = langTables.split('\n').length - 1;
+  acc = langTables.split('\n').length - 1 + dataTables.split('\n').length - 1;
   for (const p of manifest.parts) { const len = read('src/' + p.file).split('\n').length - 1; if (n && n <= acc + len) { at = ` at src/${p.file}:${n - acc}`; break; } acc += len; }
   fail(e.message + at);
 }
@@ -112,7 +118,7 @@ writeFileSync(join(OUT, 'manifest.webmanifest'), JSON.stringify({
 // (tools/subset_fonts.py). New text with new characters needs a re-subset.
 const cjkChars = t => [...new Set(t)].filter(c => c.codePointAt(0) > 0x2e7f);
 const tableText = l => Object.values(tables[l]).join('');
-const codeText = game.replace(langTables, '');   // the tables are checked per language below
+const codeText = game.replace(langTables, '').replace(dataTables, '');   // the tables are checked per language below
 const needs = { sc: cjkChars(codeText), tc: cjkChars(codeText + tableText('zh-Hant')), jp: cjkChars(tableText('ja') + 'English简体中文繁體中文日本語') };
 for (const [k, chars] of Object.entries(needs)) {
   const f = join(ROOT, `assets/web/fonts/.subset-chars-${k}.txt`);

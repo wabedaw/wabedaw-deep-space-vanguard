@@ -50,11 +50,11 @@ function updateLances(dt) {
     if (!l.firing || ft < .05) continue;
     const half = l.w * .5;
     if (l.v) {
-      if (S.mode === 'play' && P.alive && !P.cap && !S.trans && P.y > l.x0 - 6 && Math.abs(P.x - l.y) < half + 8) lanceKill(l);
+      for (const pl of PLAYERS) if (S.mode === 'play' && pl.alive && !pl.cap && !S.trans && pl.y > l.x0 - 6 && Math.abs(pl.x - l.y) < half + 8) withPlayer(pl, () => lanceKill(l));
       if (parts.length < 1400 && rnd() < .5) parts.push({ k: 'spark', x: l.y + rand(-half, half), y: rand(l.x0, H), vx: rand(-90, 90), vy: rand(200, 500), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 });
       continue;
     }
-    if (S.mode === 'play' && P.alive && !P.cap && !S.trans && P.x < l.x0 + 6 && Math.abs(P.y - l.y) < half + 8) lanceKill(l);
+    for (const pl of PLAYERS) if (S.mode === 'play' && pl.alive && !pl.cap && !S.trans && pl.x < l.x0 + 6 && Math.abs(pl.y - l.y) < half + 8) withPlayer(pl, () => lanceKill(l));
     for (const e of ships) if (e.surf && e.air && !e.dead && e.x < l.x0 && e.x > -40 && Math.abs(e.y - l.y) < half + e.hh) damage(e, 999, e.x, e.y, true);
     if (parts.length < 1400 && rnd() < .5) { const x = rand(0, l.x0); parts.push({ k: 'spark', x, y: l.y + rand(-half, half), vx: -rand(200, 500), vy: rand(-90, 90), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 }); }
   }

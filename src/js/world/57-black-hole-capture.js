@@ -1,5 +1,5 @@
 /* ---------- black hole capture ---------- */
-const HOLE_PULL = 340;
+const HOLE_PULL = BAL.world.holePull;
 function spiralStep(o, c, dt) {
   c.t += dt;
   const p = clamp(c.t / c.dur, 0, 1), h = c.h;
@@ -28,6 +28,7 @@ function consumed(h) {
   waves.push({ x: h.x, y: h.y, r: h.r, max: h.r * 14, life: .9, maxl: .9, c: '255,200,140' });
   waves.push({ x: h.x, y: h.y, r: h.r * 2, max: h.r * 9, life: .7, maxl: .7, c: '140,210,255' });
   sfx.consumed(); shake(18);
+  if (anyAlive()) { S.toast = { txt: I18('队友被击落 · 继续战斗', 'Wingmate down · fight on'), t: 2.4 }; return; }
   finishRun(2.2);
 }
 

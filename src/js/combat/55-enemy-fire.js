@@ -1,5 +1,5 @@
 /* ---------- enemy fire ---------- */
-const EDMG = { orb: 12, needle: 10, shell: 24, homing: 16, shrap: 8, wave: 12, rocket: 14, bomb: 22 };
+const EDMG = BAL.enemyFire;
 const ECOL = { orb: PLASMA, needle: '255,120,235', shell: FLARE, homing: '170,255,120', shrap: FLARE, wave: '190,130,255', rocket: '255,200,120', bomb: '255,90,80' };
 const ERAD = { orb: 5, needle: 3, shell: 7, homing: 6, shrap: 3.5, wave: 5, rocket: 4, bomb: 6 };
 function eFire(k, x, y, ang, sp, o = {}) {
@@ -23,6 +23,7 @@ function shellBurst(b) {
 function updateEnemyBullets(dt) {
   const irons = S.side ? null : rocks.filter(k => k.iron && !k.dead && k.y > -k.r);
   for (const b of ebul) {
+    aimAt(b);
     if (irons && irons.length && !b.dead) { let hit = false; for (const k of irons) { const dx = b.x - k.x, dy = b.y - k.y; if (dx * dx + dy * dy < (k.r * .88) ** 2) { hit = true; break; } } if (hit) { b.dead = true; sparks(b.x, b.y, 3, ['255,255,255', b.c || '255,200,160'], -Math.PI / 2, 2.4); if (b.k === 'shell' || b.k === 'rocket' || b.k === 'bomb' || b.mis) explode(b.x, b.y, 12, FIRE); continue; } }
     b.t += dt;
     if (b.k === 'homing' && b.t < b.seek && P.alive && !P.cap) {
@@ -57,5 +58,6 @@ function updateEnemyBullets(dt) {
     }
     if (b.life <= 0 || b.y > H + 30 || b.y < -90 || b.x < -40 || b.x > W + 40 || insideHole(b, .9)) b.dead = true;
   }
+  usePlayer(PLAYERS[0]);
 }
 

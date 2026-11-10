@@ -1,10 +1,13 @@
 /* ---------- input ---------- */
-const K = { ax: 0, ay: 0 };
+// KB: keyboard, mouse and touch state = player 1's controls. K is the controls of the pilot P (players.js).
+const KB = { ax: 0, ay: 0 };
+let K = KB;
+PLAYERS[0].K = KB;
 const KEYMAP = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down', Space: 'fire' };
 addEventListener('keydown', e => {
   const k = KEYMAP[e.code];
-  if (k) { K[k] = true; if (S.mode === 'play') e.preventDefault(); }
-  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyX' || e.code === 'KeyK') { if (!e.repeat) S.misReq = true; K.missile = true; }
+  if (k) { KB[k] = true; if (S.mode === 'play') e.preventDefault(); }
+  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyX' || e.code === 'KeyK') { if (!e.repeat) KB.misReq = true; KB.missile = true; }
   if (e.repeat) return;
   if (e.code === 'KeyP' || (e.code === 'Escape' && S.mode === 'play')) { togglePause(); e.preventDefault(); }
   else if (e.code === 'Escape' && S.mode === 'pause') quitToMenu();
@@ -20,17 +23,17 @@ addEventListener('keydown', e => {
   else if (e.code === 'Enter' && S.mode === 'over') { e.preventDefault(); S.startStage = S.diedStage || 1; startGame(); }
 });
 addEventListener('keyup', e => {
-  const k = KEYMAP[e.code]; if (k) K[k] = false;
-  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyX' || e.code === 'KeyK') K.missile = false;
+  const k = KEYMAP[e.code]; if (k) KB[k] = false;
+  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyX' || e.code === 'KeyK') KB.missile = false;
 });
-addEventListener('blur', () => { for (const k in K) K[k] = false; });
+addEventListener('blur', () => { for (const k in KB) KB[k] = false; KB.ax = KB.ay = 0; });
 
 let drag = null;
 cv.addEventListener('contextmenu', e => e.preventDefault());
 cv.addEventListener('pointerdown', e => {
   audioInit();
   if (S.mode !== 'play' || !P.alive) return;
-  if (e.button === 2) { S.misReq = true; return; }
+  if (e.button === 2) { KB.misReq = true; return; }
   drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
   try { cv.setPointerCapture(e.pointerId); } catch (_) {}
 });
