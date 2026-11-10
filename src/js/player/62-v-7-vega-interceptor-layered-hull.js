@@ -557,18 +557,18 @@ function drawRock(k) {
 let lensA = null, lensB = null;
 function drawHole(h) {
   const { x, y, r } = h;
-  const L = r * 4.6, sz = Math.ceil(L * 2 * DPR);
+  const L = r * 4.6, PX = DPR * VIEW.scale, sz = Math.ceil(L * 2 * PX);
   if (!lensA || lensA.width < sz) { lensA = document.createElement('canvas'); lensB = document.createElement('canvas'); lensA.width = lensA.height = lensB.width = lensB.height = sz; }
   const a = lensA.getContext('2d'), b = lensB.getContext('2d');
   a.setTransform(1, 0, 0, 1, 0, 0); a.clearRect(0, 0, lensA.width, lensA.height);
-  try { a.drawImage(cv, (x - L) * DPR, (y - L) * DPR, L * 2 * DPR, L * 2 * DPR, 0, 0, L * 2 * DPR, L * 2 * DPR); } catch (e) {}
+  try { a.drawImage(cv, (VIEW.ox + (x - L) * VIEW.scale) * DPR, (VIEW.oy + (y - L) * VIEW.scale) * DPR, L * 2 * PX, L * 2 * PX, 0, 0, L * 2 * PX, L * 2 * PX); } catch (e) {}
   b.setTransform(1, 0, 0, 1, 0, 0); b.clearRect(0, 0, lensB.width, lensB.height);
-  b.save(); b.translate(L * DPR, L * DPR); b.rotate(Math.sin(h.t * .3) * .25 + h.t * .05); b.scale(1.5, 1.5); b.drawImage(lensA, -L * DPR, -L * DPR); b.restore();
+  b.save(); b.translate(L * PX, L * PX); b.rotate(Math.sin(h.t * .3) * .25 + h.t * .05); b.scale(1.5, 1.5); b.drawImage(lensA, -L * PX, -L * PX); b.restore();
   b.globalCompositeOperation = 'destination-in';
-  const m = b.createRadialGradient(L * DPR, L * DPR, r * DPR, L * DPR, L * DPR, L * DPR);
+  const m = b.createRadialGradient(L * PX, L * PX, r * PX, L * PX, L * PX, L * PX);
   m.addColorStop(0, 'rgba(0,0,0,1)'); m.addColorStop(.45, 'rgba(0,0,0,.85)'); m.addColorStop(1, 'rgba(0,0,0,0)');
   b.fillStyle = m; b.fillRect(0, 0, sz, sz); b.globalCompositeOperation = 'source-over';
-  ctx.drawImage(lensB, 0, 0, L * 2 * DPR, L * 2 * DPR, x - L, y - L, L * 2, L * 2);
+  ctx.drawImage(lensB, 0, 0, L * 2 * PX, L * 2 * PX, x - L, y - L, L * 2, L * 2);
 
   // darkening well
   const dw = ctx.createRadialGradient(x, y, r * .9, x, y, r * 3.4);

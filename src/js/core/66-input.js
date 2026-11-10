@@ -37,7 +37,7 @@ cv.addEventListener('pointerdown', e => {
 cv.addEventListener('pointermove', e => {
   if (!drag || drag.id !== e.pointerId) return;
   const k = e.pointerType === 'mouse' ? 1 : 1.35;
-  P.dx += (e.clientX - drag.x) * k; P.dy += (e.clientY - drag.y) * k;
+  P.dx += (e.clientX - drag.x) * k / VIEW.scale; P.dy += (e.clientY - drag.y) * k / VIEW.scale;
   drag.x = e.clientX; drag.y = e.clientY;
 });
 const endDrag = e => { if (drag && drag.id === e.pointerId) drag = null; };

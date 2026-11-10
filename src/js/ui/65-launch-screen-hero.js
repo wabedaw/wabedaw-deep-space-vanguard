@@ -4,7 +4,8 @@ let heroBand = null;
 function measureHero() {
   const hd = document.querySelector('.hero-head'), ft = document.querySelector('.hero-foot');
   if (!hd || !ft || menuEl.hidden) return;
-  const top = hd.offsetTop + hd.offsetHeight, bot = ft.offsetTop;
+  const y0 = menuEl.getBoundingClientRect().top - menuEl.scrollTop;  // offsets are relative to the menu layer, which sits inside the letterbox
+  const top = toLogical(0, y0 + hd.offsetTop + hd.offsetHeight).y, bot = toLogical(0, y0 + ft.offsetTop).y;
   heroBand = bot - top > 60 ? { top, bot } : null;
 }
 function heroPose() {

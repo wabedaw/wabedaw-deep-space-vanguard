@@ -44,4 +44,12 @@ const SECTOR_LEN = 45;
 
 let W = 0, H = 0, DPR = 1;
 const inset = { t: 0, r: 0, b: 0, l: 0 };
+/* The play field. On landscape screens at least 960x540 (desktops, laptops, Steam Deck, tablets held sideways) the game
+   runs in a fixed 1280x720 field scaled to fit, so every player sees the same battlefield and a seeded run plays out the
+   same on any monitor; extra screen space becomes a dark frame. Phones and small or portrait windows keep the adaptive
+   field (W and H follow the window) so the game still fills the screen there. */
+const LOGICAL_W = 1280, LOGICAL_H = 720;
+const VIEW = { fixed: false, scale: 1, ox: 0, oy: 0, sw: 0, sh: 0 };
+const useFixedView = (sw, sh) => sw >= sh && sw >= 960 && sh >= 540;
+const toLogical = (x, y) => ({ x: (x - VIEW.ox) / VIEW.scale, y: (y - VIEW.oy) / VIEW.scale });
 

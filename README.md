@@ -14,7 +14,8 @@ playable with keyboard/mouse or touch. v0.1 is the public test build; 1.0 is in 
 npm run build        # = node tools/build.mjs
 npm test             # 构建 + 网站包冒烟测试（需要 Python Playwright）
 npm run test:campaign  # 构建 + 机器人跑完 101 个扇区（开无敌，只验证流程）
-npm run test:determinism  # 构建 + 同一种子跑两次必须完全一致
+npm run test:determinism  # 构建 + 同一种子在不同窗口尺寸、设置下必须完全一致
+npm run test:framerate    # 构建 + 同一种子在 60/144/37 帧每秒下必须完全一致
 ```
 
 | 产物 | 用途 |
@@ -26,7 +27,7 @@ npm run test:determinism  # 构建 + 同一种子跑两次必须完全一致
 
 ## 源码结构 / Source layout
 
-脚本按系统拆成 71 个文件，`src/manifest.json` 记录加载顺序；构建时按顺序拼成一个普通 `<script>`，所有文件共享同一个顶层作用域，和原来的单文件完全一样。新增文件时必须加进 manifest，并注意顺序。
+脚本按系统拆成 72 个文件，`src/manifest.json` 记录加载顺序；构建时按顺序拼成一个普通 `<script>`，所有文件共享同一个顶层作用域，和原来的单文件完全一样。新增文件时必须加进 manifest，并注意顺序。
 
 | 路径 | 内容 |
 |---|---|
@@ -43,9 +44,11 @@ npm run test:determinism  # 构建 + 同一种子跑两次必须完全一致
 | `src/js/ui/` | HUD、首页、新手指引、开发者模式、排行榜、界面 |
 | `assets/web/` | 网站版字体、图标、分享图、标题与描述（`meta.json`） |
 | `tools/` | 构建脚本、中文字体子集工具 |
-| `tests/` | 冒烟测试、全流程机器人 |
+| `tests/` | 冒烟测试、全流程机器人、确定性与帧率测试 |
 | `promo/` | 封面与宣传图 |
 | `docs/` | 部署说明、v0.1 评估 |
+
+电脑和平板横屏上，游戏在固定的 1280×720 逻辑战场里运行（`LOGICAL_W`/`LOGICAL_H`），按比例缩放到窗口；手机竖屏仍自适应。模拟固定每秒 60 步（`STEP`），所有影响游戏结果的随机数都走可设种子的 `rnd()`/`rand()`/`pick()`，纯视觉效果用 `frand()`/`fpick()`。新增代码时守住这条线，否则回放和每周挑战会失效。
 
 新增中文文字后，`npm run build` 会提示字体子集缺字，运行 `python3 tools/subset_fonts.py` 即可。
 

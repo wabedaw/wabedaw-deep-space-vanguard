@@ -5,11 +5,13 @@
 Drives the game frame by frame (fixed 1/60 s steps, the page's own loop stopped) with the invincible
 campaign bot, and logs every sector change, every boss start/end, and a checksum of the simulation state
 (score, enemies, enemy bullets, RNG state, player position) every 10 game seconds. Then compares:
-  A  seed 12345
-  B  seed 12345 again                                   -> must equal A
-  C  seed 12345, Chinese, muted, reduced motion, phone   -> must equal A (settings never change the game)
-  D  seed 777                                           -> must differ from A
-All runs use the same 1280x800 view: the play field still scales with the window (see CHANGELOG).
+  A  seed 12345, 1280x800 window
+  B  seed 12345, 1920x1080 window                                  -> must equal A
+  C  seed 12345, 1440x900, Chinese, muted, reduced motion, touch    -> must equal A (settings never change the game)
+  E  seed 12345, 2560x1080 ultrawide                               -> must equal A
+  D  seed 777                                                      -> must differ from A
+Landscape windows of at least 960x540 all play on the same fixed 1280x720 field, scaled to fit, so window size
+does not change the game. Phones and portrait windows keep the adaptive field and are not covered here.
 """
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
@@ -61,8 +63,8 @@ window.run = (secs) => {
 };
 """
 
-async def one(b, seed, variant=False):
-    ctx = await b.new_context(viewport={'width': 1280, 'height': 800}, locale='zh-CN' if variant else 'en-US',
+async def one(b, seed, variant=False, view=(1280, 800)):
+    ctx = await b.new_context(viewport={'width': view[0], 'height': view[1]}, locale='zh-CN' if variant else 'en-US',
                               reduced_motion='reduce' if variant else 'no-preference', has_touch=variant)
     await ctx.add_init_script(STOP_LOOP)
     if variant:
@@ -85,15 +87,17 @@ async def one(b, seed, variant=False):
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
-        A, B, C, D = await asyncio.gather(one(b, 12345), one(b, 12345), one(b, 12345, True), one(b, 777))
+        A, B, C, E, D = await asyncio.gather(one(b, 12345), one(b, 12345, view=(1920, 1080)), one(b, 12345, True, (1440, 900)),
+                                             one(b, 12345, view=(2560, 1080)), one(b, 777))
         await b.close()
     ok = True
     def check(name, cond, info=''):
         nonlocal ok; ok &= bool(cond); print(('PASS ' if cond else 'FAIL ') + name + (('  ' + str(info)) if info else ''), flush=True)
     check('run A reached a later sector with no errors', A['sector'] > 1 and not A['errors'], (A['sector'], A['errors'][:2]))
     check('seed is applied', A['seed'] == 12345 and D['seed'] == 777, (A['seed'], D['seed']))
-    check('same seed replays the same run (A == B)', A['log'] == B['log'], first_diff(A['log'], B['log']))
-    check('language, sound, reduced motion and touch do not change the run (A == C)', A['log'] == C['log'], first_diff(A['log'], C['log']))
+    check('same seed replays the same run on a 1920x1080 window (A == B)', A['log'] == B['log'], first_diff(A['log'], B['log']))
+    check('window size, language, sound, reduced motion and touch do not change the run (A == C)', A['log'] == C['log'], first_diff(A['log'], C['log']))
+    check('a 2560x1080 ultrawide window plays the same run (A == E)', A['log'] == E['log'], first_diff(A['log'], E['log']))
     check('a different seed gives a different run (A != D)', A['log'] != D['log'])
     print(f"A: sector {A['sector']}, {len(A['log'])} log entries over {SECS:.0f} game seconds")
     sys.exit(0 if ok else 1)

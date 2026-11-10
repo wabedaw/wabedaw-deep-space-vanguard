@@ -1,7 +1,23 @@
 /* ---------- render ---------- */
 function render() { RNG.fx = true; try { renderFrame(); } finally { RNG.fx = false; } }
-function renderFrame() {
+function drawViewFrame() {
+  // the dark frame around the fixed field, with corner brackets in the HUD style
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = '#020309'; ctx.fillRect(0, 0, VIEW.sw, VIEW.sh);
+  if (VIEW.ox < 2 && VIEW.oy < 2) return;
+  const x0 = VIEW.ox - .5, y0 = VIEW.oy - .5, x1 = VIEW.ox + W * VIEW.scale + .5, y1 = VIEW.oy + H * VIEW.scale + .5, c = 18;
+  ctx.strokeStyle = 'rgba(94,242,255,.16)'; ctx.lineWidth = 1; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+  ctx.strokeStyle = 'rgba(94,242,255,.5)'; ctx.lineWidth = 1.5; ctx.beginPath();
+  for (const [x, y, dx, dy] of [[x0, y0, 1, 1], [x1, y0, -1, 1], [x0, y1, 1, -1], [x1, y1, -1, -1]]) { ctx.moveTo(x + dx * c, y); ctx.lineTo(x, y); ctx.lineTo(x, y + dy * c); }
+  ctx.stroke();
+}
+function renderFrame() {
+  if (VIEW.fixed) drawViewFrame();
+  ctx.setTransform(DPR * VIEW.scale, 0, 0, DPR * VIEW.scale, DPR * VIEW.ox, DPR * VIEW.oy);
+  if (VIEW.fixed) { ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip(); }
+  try { renderField(); } finally { if (VIEW.fixed) ctx.restore(); }
+}
+function renderField() {
   const sx = S.shake ? rand(-S.shake, S.shake) : 0, sy = S.shake ? rand(-S.shake, S.shake) : 0;
   ctx.save(); ctx.translate(sx, sy);
   ctx.fillStyle = '#03050b'; ctx.fillRect(-20, -20, W + 40, H + 40);

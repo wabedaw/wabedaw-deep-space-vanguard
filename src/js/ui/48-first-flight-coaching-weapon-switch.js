@@ -52,7 +52,7 @@ function tutWrap(txt, maxW) {
   if (cur.trim()) lines.push(cur.trim()); return lines;
 }
 function tutTarget(kind, L, B) {
-  const btn = id => { const el = document.getElementById(id); if (!el || el.hidden) return null; const r = el.getBoundingClientRect(); return r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2, r: r.width / 2 + 8 } : null; };
+  const btn = id => { const el = document.getElementById(id); if (!el || el.hidden) return null; const r = el.getBoundingClientRect(); if (!r.width) return null; const c = toLogical(r.left + r.width / 2, r.top + r.height / 2); return { x: c.x, y: c.y, r: (r.width / 2 + 8) / VIEW.scale }; };
   if (kind === 'weapon') return (COARSE && btn('weaponBtn')) || { x: L + 70, y: B - 96, r: 30 };
   if (kind === 'missile') return (COARSE && btn('missileBtn')) || { x: L + 74, y: B - 2, r: 30 };
   if (kind === 'nova') return (COARSE && btn('novaBtn')) || { x: L + 190, y: B - 124, r: 30 };
