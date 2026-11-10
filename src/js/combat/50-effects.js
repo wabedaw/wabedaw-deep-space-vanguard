@@ -32,7 +32,7 @@ function sparks(x, y, n, pal, dir = -Math.PI / 2, spread = Math.PI) {
 function floatText(x, y, txt, c = WHITE, big = false) { texts.push({ x, y, txt, c, life: big ? 1.4 : .9, max: big ? 1.4 : .9, big }); }
 function addScore(base, x, y) {
   S.combo++; S.comboT = BAL.combo.window;
-  const v = base * mult();
+  const v = TIER.reward !== 1 ? Math.round(base * mult() * TIER.reward) : base * mult();   // difficulty reward
   S.score += v;
   floatText(x, y, '+' + v, mult() > 1 ? FLARE : '220,235,255');
 }

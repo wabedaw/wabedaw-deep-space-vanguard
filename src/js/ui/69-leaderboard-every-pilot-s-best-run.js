@@ -1,7 +1,8 @@
 /* ---------- leaderboard: every pilot's best run in the artifact's shared db (scores/<their id>); this device's records when offline ---------- */
-// On Steam (PLATFORM.boards) the same screen shows the global Steam board LB_BOARD instead: names come from Steam,
+// On Steam (PLATFORM.boards) the same screen shows the global Steam board lbBoard() instead: names come from Steam,
 // details carry [format 1, stage, sector, kills, cleared 0/1, run seed]. The board is reset before release.
-const LB_BOARD = 'CAMPAIGN_NORMAL_SOLO';
+// one board per difficulty and pilot count: CAMPAIGN_NORMAL_SOLO, CAMPAIGN_HARD_DUO, ... (the brief shows the chosen difficulty's)
+const lbBoard = () => 'CAMPAIGN_' + (S.mode === 'menu' ? (diffOpen(SAVE.get('diff')) ? SAVE.get('diff') : 'normal') : S.diff || 'normal').toUpperCase() + (PLAYERS.length > 1 && S.mode !== 'menu' ? '_DUO' : '_SOLO');
 const LB = { db: null, user: null, uid: null, rows: [], mine: null, state: 'idle', canWrite: null, timer: 0, pending: null, writing: false, last: null, local: [] };
 LB.local = SAVE.get('runs').filter(r => r && Number.isFinite(r.s)).slice(0, 10);
 let lbCall = String(SAVE.get('call')).slice(0, 16);
@@ -38,7 +39,7 @@ function lbSteamRow(e) {
 function lbSteamLoad() {
   if (LB.state !== 'live') LB.state = 'loading';
   LB.timer = setTimeout(() => { if (LB.state === 'loading') { LB.state = 'slow'; lbRender(); } }, 10000);
-  Promise.all([PLATFORM.boards.entries(LB_BOARD, { request: 'global', start: 1, end: 50 }), PLATFORM.boards.entries(LB_BOARD, { request: 'around', start: 0, end: 0 })])
+  Promise.all([PLATFORM.boards.entries(lbBoard(), { request: 'global', start: 1, end: 50 }), PLATFORM.boards.entries(lbBoard(), { request: 'around', start: 0, end: 0 })])
     .then(([top, mine]) => {
       clearTimeout(LB.timer); LB.state = 'live';
       LB.rows = top.map(lbSteamRow).filter(r => r.best > 0);
@@ -49,7 +50,7 @@ function lbSteamLoad() {
 }
 function lbSteamPost() {
   LB.last.status = 'sending'; lbOverNote();
-  PLATFORM.boards.upload(LB_BOARD, S.score, { sort: 'desc', display: 'numeric', keepBest: true, details: [1, stageOf(S.sector), S.sector, S.kills, S.sector > 100 ? 1 : 0, S.seed | 0] })
+  PLATFORM.boards.upload(lbBoard(), S.score, { sort: 'desc', display: 'numeric', keepBest: true, details: [1, stageOf(S.sector), S.sector, S.kills, S.sector > 100 ? 1 : 0, S.seed | 0] })
     .then(r => {
       if (!r) { LB.last.status = 'fail'; lbOverNote(); return; }
       LB.last.status = r.changed ? 'sent' : 'kept';
@@ -67,7 +68,7 @@ function lbRank() {
 }
 function lbRecordRun() {
   if (S.dev || S.score <= 0) return;
-  const run = { s: S.score, st: stageOf(S.sector), at: Date.now() };
+  const run = { s: S.score, st: stageOf(S.sector), at: Date.now(), d: S.diff || 'normal' };
   LB.local.push(run); LB.local.sort((a, b) => b.s - a.s); LB.local = LB.local.slice(0, 10);
   SAVE.set('runs', LB.local);
   LB.last = { score: S.score, status: 'local' };
@@ -131,7 +132,7 @@ function lbRender() {
   };
   if (useLocal) {
     if (!LB.local.length) { const p = document.createElement('li'); p.className = 'lb-empty'; p.textContent = I18('还没有成绩 · 去打一局吧', 'No runs yet · go fly one'); list.appendChild(p); }
-    LB.local.forEach((r, i) => row(i + 1, I18('本机记录', 'This device'), r.s, stageTag(clamp(r.st || 1, 1, 99)) + ' · ' + new Date(r.at).toLocaleDateString(LANG), false));
+    LB.local.forEach((r, i) => row(i + 1, I18('本机记录', 'This device'), r.s, stageTag(clamp(r.st || 1, 1, 99)) + (r.d && r.d !== 'normal' && DIFF_NAME[r.d] ? ' · ' + DIFF_NAME[r.d] : '') + ' · ' + new Date(r.at).toLocaleDateString(LANG), false));
   } else {
     if (!LB.rows.length) { const p = document.createElement('li'); p.className = 'lb-empty'; p.textContent = LB.state === 'live' ? I18('排行榜还是空的 · 打完一局就能上榜', 'No pilots on the board yet · finish a run to post the first score') : I18('正在读取…', 'Loading…'); list.appendChild(p); }
     LB.rows.slice(0, 50).forEach((r, i) => row(r.rank || i + 1, r.call || '', r.best, lbStageText(r) + (r.at ? ' · ' + new Date(r.at).toLocaleDateString(LANG) : ''), r.id === LB.uid, r.call ? null : r.id));

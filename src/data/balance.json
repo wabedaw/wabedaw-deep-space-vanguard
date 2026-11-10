@@ -27,7 +27,42 @@
   },
   "difficulty": {
     "perSector": 0.16,
-    "perCycle": 0.8
+    "perCycle": 0.8,
+    "tiers": {
+      "normal": {
+        "enemyHp": 1,
+        "bossHp": 1,
+        "bulletSpeed": 1,
+        "reward": 1,
+        "checkpoints": 1,
+        "locked": 0
+      },
+      "hard": {
+        "enemyHp": 1.5,
+        "bossHp": 1.5,
+        "bulletSpeed": 1.2,
+        "reward": 1.5,
+        "checkpoints": 1,
+        "locked": 0
+      },
+      "insane": {
+        "enemyHp": 1.8,
+        "bossHp": 2,
+        "bulletSpeed": 1.3,
+        "reward": 2,
+        "checkpoints": 1,
+        "locked": 1
+      },
+      "nightmare": {
+        "enemyHp": 2.2,
+        "bossHp": 2.5,
+        "bulletSpeed": 1.4,
+        "reward": 3,
+        "checkpoints": 0,
+        "locked": 1
+      }
+    },
+    "note": "perSector / perCycle: the existing curve inside a run. tiers: the four difficulties (1.0 plan). enemyHp / bossHp make enemies that much tougher, bulletSpeed scales every enemy shot, reward scales score, checkpoints 1 = a retry point before every boss, locked 1 = not selectable yet (unlocked by medals in M3). Starting values: tune with playtests."
   },
   "combo": {
     "window": 2.4,

@@ -24,7 +24,7 @@ function gainNova() {
   if ((P.novaCh || 0) >= NOVA_MAX) { S.score += 1000; floatText(P.x, P.y - 60, I18('脉冲储备已满 +1000', 'Nova reserve full +1000'), ULTC, true); return; }
   P.novaCh = (P.novaCh || 0) + 1; updateNovaBtn();
   floatText(P.x, P.y - 60, I18('湮星脉冲充能 ×', 'NOVA CHARGED ×') + P.novaCh, ULTC, true);
-  if (!TUT.done.superM) tutPush('superM', true); else S.toast = { txt: COARSE ? I18('集齐 10 个 M · 点「脉冲」按钮释放全屏爆炸', '10 M collected · tap NOVA for a screen-wide blast') : I18('集齐 10 个 M · 按 E 释放全屏爆炸', '10 M collected · press E for a screen-wide blast'), t: 2.6 };
+  if (!TUT.done.superM) tutPush('superM', true); else S.toast = { txt: byDevice({ touch: I18('集齐 10 个 M · 点「脉冲」按钮释放全屏爆炸', '10 M collected · tap NOVA for a screen-wide blast'), kb: I18f('集齐 10 个 M · 按 {0} 释放全屏爆炸', '10 M collected · press {0} for a screen-wide blast', keyLabel('nova')), pad: I18('集齐 10 个 M · 按 Y 释放全屏爆炸', '10 M collected · press Y for a screen-wide blast') }), t: 2.6 };
 }
 function useNova() {
   if (S.mode !== 'play' || !P.alive || S.trans) return;

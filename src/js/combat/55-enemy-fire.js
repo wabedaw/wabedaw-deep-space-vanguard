@@ -3,6 +3,7 @@ const EDMG = BAL.enemyFire;
 const ECOL = { orb: PLASMA, needle: '255,120,235', shell: FLARE, homing: '170,255,120', shrap: FLARE, wave: '190,130,255', rocket: '255,200,120', bomb: '255,90,80' };
 const ERAD = { orb: 5, needle: 3, shell: 7, homing: 6, shrap: 3.5, wave: 5, rocket: 4, bomb: 6 };
 function eFire(k, x, y, ang, sp, o = {}) {
+  if (TIER.bulletSpeed !== 1) sp *= TIER.bulletSpeed;   // difficulty
   const b = { k, x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, c: o.c || ECOL[k], r: o.r || ERAD[k], life: o.life || 9, t: 0 };
   b.dmg = o.dmg || (k === 'orb' && b.r > 8 ? 22 : EDMG[k]);
   if (k === 'shell') { b.fuse = o.fuse ?? 1.6; b.n = o.n || 10; }

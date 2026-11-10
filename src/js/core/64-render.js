@@ -2,7 +2,7 @@
 function render() { RNG.fx = true; try { renderFrame(); } finally { RNG.fx = false; } }
 function renderFrame() {
   ctx.setTransform(DPR, 0, 0, DPR, VIEW.vx, VIEW.vy);
-  const sx = S.shake ? rand(-S.shake, S.shake) : 0, sy = S.shake ? rand(-S.shake, S.shake) : 0;
+  const shk = SET.shake ? S.shake : 0, sx = shk ? rand(-shk, shk) : 0, sy = shk ? rand(-shk, shk) : 0;
   ctx.save(); ctx.translate(sx, sy);
   ctx.fillStyle = '#03050b'; ctx.fillRect(-20, -20, W + 40, H + 40);
   if (IW) drawBaseWorld();
@@ -21,7 +21,7 @@ function renderFrame() {
   drawParticles();
   drawProjectiles();
   drawBeams();
-  eachPlayer(drawPlayerBeam);
+  ctx.globalAlpha = SET.shots / 100; eachPlayer(drawPlayerBeam); ctx.globalAlpha = 1;
   drawUlt();
   eachPlayer(p => { drawPlayer(); if (p.id) drawPilotTag(p); });
   drawLances();
@@ -38,12 +38,12 @@ function renderFrame() {
   let holeK = 0;
   if (S.mode === 'play' && P.alive) holeK = P.cap ? .6 + .4 * clamp(P.cap.t / P.cap.dur, 0, 1) : S.holeNear * .55;
   if (S.dmgFlash > 0 || holeK > 0) {
-    const a = Math.max(S.dmgFlash * .55, holeK * .5);
+    const a = Math.max(S.dmgFlash * .55, holeK * .5) * (SET.calm ? .35 : 1);
     const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .3, W / 2, H / 2, Math.hypot(W, H) * .6);
     g.addColorStop(0, 'rgba(255,40,30,0)'); g.addColorStop(1, `rgba(${holeK > S.dmgFlash ? '255,120,40' : '255,40,30'},${a})`);
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
-  if (S.wflash > 0) { ctx.fillStyle = `rgba(225,250,255,${S.wflash * .7})`; ctx.fillRect(0, 0, W, H); }
+  if (S.wflash > 0) { ctx.fillStyle = `rgba(225,250,255,${S.wflash * (SET.calm ? .2 : .7)})`; ctx.fillRect(0, 0, W, H); }
   drawHUD();
   drawLetterbox();
 }

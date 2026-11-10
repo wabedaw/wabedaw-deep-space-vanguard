@@ -8,6 +8,7 @@ function startGame() {
   const seed = S.nextSeed != null ? S.nextSeed >>> 0 : SEED_URL != null ? SEED_URL : (Math.random() * 4294967296) >>> 0;
   RNG.seed(seed);
   setPlayerCount(S.playersNext || (DEV.run && DEV.run.duo ? 2 : 0) || PLAYERS_URL || 1); S.playersNext = 0;
+  setRunDifficulty(S.diffNext); S.diffNext = null;
   resetGame();
   S.seed = seed; S.nextSeed = null;
   S.dev = DEV.run; LB.last = null; tutReset();
@@ -31,13 +32,15 @@ function showOver(isBest) {
   $('oRocks').textContent = S.rocks;
   $('oDist').textContent = S.dist.toFixed(2) + ' AU';
   $('newBest').hidden = !isBest;
+  const cp = !S.dev && S.cp, cpBtn = $('cpBtn'); cpBtn.hidden = !cp;
+  if (cp) cpBtn.innerHTML = I18f('从检查点继续 · 扇区 {0}', 'Retry from checkpoint · sector {0}', String(cp.sector).padStart(2, '0')) + '<span>BOSS</span>';
   lbOverNote();
   const byHole = S.deathBy === 'hole', byLance = S.deathBy === 'lance';
   $('overEyebrow').textContent = byHole ? I18('任务报告 · 信号消失于事件视界', 'Mission report · signal lost past the horizon') : byLance ? I18('任务报告 · 舰体被光矛贯穿', 'Mission report · hull pierced by a lance') : I18('任务报告 · 信号中断', 'Mission report · signal lost');
   $('overTitle').innerHTML = byHole ? I18('坠入黑洞<small>CONSUMED BY SINGULARITY</small>', 'Lost to the singularity<small>PAST THE POINT OF NO RETURN</small>') : byLance ? I18('光矛贯穿<small>LANCE IMPACT</small>', 'Lanced<small>LETHAL BEAM IMPACT</small>') : I18('舰体损毁<small>VESSEL LOST</small>', 'Vessel lost<small>HULL INTEGRITY 0%</small>');
   $('bestMenu').textContent = String(best).padStart(7, '0');
   overEl.hidden = false;
-  $('againBtn').focus({ preventScroll: true });
+  (cp ? cpBtn : $('againBtn')).focus({ preventScroll: true });
 }
 function togglePause() {
   if (S.mode === 'play' && P.alive) { S.mode = 'pause'; pauseEl.hidden = false; $('resumeBtn').focus({ preventScroll: true }); if (AC) AC.suspend(); }
@@ -79,7 +82,7 @@ function launchFromMenu(st) {
 }
 const helpBtn = $('helpBtn'), helpSheet = $('helpSheet');
 // desktop (Steam) build only: a way out of the full-screen game without Alt+F4
-if (PLATFORM.canQuit) { $('quitBtn').hidden = false; $('quitBtn').addEventListener('click', e => { e.stopPropagation(); SAVE.flush(); PLATFORM.quit(); }); }
+if (PLATFORM.canQuit) { $('appQuitBtn').hidden = false; $('appQuitBtn').addEventListener('click', e => { e.stopPropagation(); SAVE.flush(); PLATFORM.quit(); }); }
 { const sel = $('langSel');
   for (const l of LANGS) { const o = document.createElement('option'); o.value = l; o.lang = l; o.textContent = LANG_NAMES[l]; sel.appendChild(o); }
   sel.value = LANG;
@@ -88,6 +91,21 @@ if (PLATFORM.canQuit) { $('quitBtn').hidden = false; $('quitBtn').addEventListen
 helpBtn.addEventListener('click', e => { e.stopPropagation(); const open = helpSheet.hidden; helpSheet.hidden = !open; helpBtn.setAttribute('aria-expanded', String(open)); });
 menuEl.addEventListener('click', e => { if (!helpSheet.hidden && !helpSheet.contains(e.target)) { helpSheet.hidden = true; helpBtn.setAttribute('aria-expanded', 'false'); } });
 $('againBtn').addEventListener('click', () => { S.startStage = S.diedStage || 1; startGame(); });
+$('cpBtn').addEventListener('click', () => startFromCheckpoint());
+// difficulty picker on the brief (locked ones are shown dimmed; medals unlock them in M3)
+function renderDiffPick() {
+  const box = $('diffPick'), cur = diffOpen(SAVE.get('diff')) ? SAVE.get('diff') : 'normal';
+  box.textContent = '';
+  for (const d of DIFFS) {
+    const b = document.createElement('button'), open = diffOpen(d);
+    b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(d === cur)); b.dataset.diff = d;
+    b.className = d === cur ? 'on' : ''; b.disabled = !open; b.textContent = DIFF_NAME[d];
+    if (!open) b.title = I18('集齐上一难度的全部勋章后解锁', 'Unlocks with every medal on the difficulty below');
+    b.addEventListener('click', e => { e.stopPropagation(); SAVE.set('diff', d); renderDiffPick(); $('diffPick').querySelector('.on').focus({ preventScroll: true }); });
+    box.appendChild(b);
+  }
+}
+renderDiffPick();
 $('resumeBtn').addEventListener('click', togglePause);
 $('quitBtn').addEventListener('click', quitToMenu);
 pauseBtn.addEventListener('click', togglePause);

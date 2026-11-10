@@ -6,22 +6,29 @@
 // A save written by a newer build is loaded but never overwritten, so switching to an older build (a Steam beta
 // branch, an old web page) can't destroy progress. A save that can't be parsed is kept as 'ashwing-save.bad'.
 const SAVE = (() => {
-  const NAME = 'ashwing-save', VERSION = 1;
+  const NAME = 'ashwing-save', VERSION = 2;
+  // settings change how the game looks and sounds, never what happens in it
+  const defaultKeys = () => ({ up: ['KeyW', 'ArrowUp'], down: ['KeyS', 'ArrowDown'], left: ['KeyA', 'ArrowLeft'], right: ['KeyD', 'ArrowRight'],
+    fire: ['Space', ''], missile: ['ShiftLeft', 'KeyX'], weapon: ['KeyQ', ''], nova: ['KeyE', ''], pause: ['KeyP', ''], auto: ['KeyF', ''] });
+  const defaultSettings = () => ({ master: 100, music: 100, sfx: 100, shots: 80, hud: 1, hitbox: true, outline: true, shake: true, calm: false, keys: defaultKeys() });
   const fresh = () => ({
     v: VERSION,
     // settings
     lang: '', sound: 0,
     // progress
-    best: 0, stage: 1, last: 0, cleared: false, tut: {},
+    best: 0, stage: 1, last: 0, cleared: false, tut: {}, diff: 'normal',
     // local leaderboard (the website's ranking; Steam and Claude have shared boards) and the pilot's call sign
     runs: [], call: '',
     // achievements unlocked on this device (mirrors Steam; lets the web build show them) and lifetime stats
     ach: {}, stats: {},
     // developer mode (password-gated test panel)
     dev: false, devOpts: null,
+    // player settings (v2)
+    settings: defaultSettings(),
   });
   const MIGRATE = {
-    // 1: (d) => { ...upgrade d from version 1 to 2... },
+    // version 2 adds the settings screen's values
+    1: d => { d.settings = defaultSettings(); d.v = 2; },
   };
   const LEGACY = ['dsv-best', 'dsv-best-en', 'dsv-stage', 'dsv-last', 'dsv-cleared', 'dsv-lang', 'dsv-sound', 'dsv-tut', 'dsv-runs', 'dsv-call', 'dsv-dev', 'dsv-dev-opts'];
   function fromLegacy() {
@@ -51,6 +58,8 @@ const SAVE = (() => {
   const def = fresh();
   for (const k in def) if (d[k] === undefined || (def[k] !== null && typeof d[k] !== typeof def[k]) || (Array.isArray(def[k]) && !Array.isArray(d[k]))) d[k] = def[k];
   if (!readOnly) d.v = VERSION;
+  d.settings = Object.assign(defaultSettings(), d.settings);   // settings added by later versions get their defaults
+  d.settings.keys = Object.assign(defaultKeys(), d.settings.keys);
 
   let timer = null;
   const flush = () => { clearTimeout(timer); timer = null; if (!readOnly) PLATFORM.write(NAME, JSON.stringify(d)); };
@@ -69,5 +78,7 @@ const SAVE = (() => {
     unlock(id) { if (d.ach[id]) return false; d.ach[id] = Date.now(); PLATFORM.achieve(id); touch(); return true; },
     flush,
     get readOnly() { return readOnly; },
+    defaultKeys,
   };
 })();
+const SET = SAVE.data.settings;   // the live settings object (settings.js edits it)

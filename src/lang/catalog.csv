@@ -32,9 +32,14 @@ Frozen Stargate,冰封星门,冰封星門,凍結スターゲート,js/core/00-la
 Glacius Cryo World,冰晶堡垒星,冰晶堡壘星,氷晶要塞星,js/core/00-language-english-by-default-chinese.js:59
 Planetary defense satellites detected,侦测到行星防御卫星,偵測到行星防禦衛星,惑星防衛衛星を探知,js/world/03-background.js:200
 SECTOR 01,扇区 01,扇區 01,セクター 01,js/core/04-game-state.js:24
-Sound · music and effects on,声音 · 音乐与音效全开,聲音 · 音樂與音效全開,サウンド · BGM・効果音 ON,js/audio/05-audio.js:71
-Effects only · music off,仅音效 · 音乐关闭,僅音效 · 音樂關閉,効果音のみ · BGM OFF,js/audio/05-audio.js:71
-Muted,已静音,已靜音,ミュート,js/audio/05-audio.js:71
+Normal,普通,普通,ノーマル,js/core/difficulty.js:7
+Hard,困难,困難,ハード,js/core/difficulty.js:7
+Insane,疯狂,瘋狂,インセイン,js/core/difficulty.js:7
+Nightmare,噩梦,惡夢,ナイトメア,js/core/difficulty.js:7
+CHECKPOINT,检查点,檢查點,チェックポイント,js/core/difficulty.js:38
+Sound · music and effects on,声音 · 音乐与音效全开,聲音 · 音樂與音效全開,サウンド · BGM・効果音 ON,js/audio/05-audio.js:73
+Effects only · music off,仅音效 · 音乐关闭,僅音效 · 音樂關閉,効果音のみ · BGM OFF,js/audio/05-audio.js:73
+Muted,已静音,已靜音,ミュート,js/audio/05-audio.js:73
 SIREN-CLASS MOTHERSHIP,塞壬级母舰 · SIREN,塞壬級母艦 · SIREN,セイレーン級母艦 · SIREN,js/bosses/08-bosses.js:3
 HYDRA-CLASS DREADNOUGHT,九头蛇级无畏舰 · HYDRA,九頭蛇級無畏艦 · HYDRA,ヒュドラ級戦艦 · HYDRA,js/bosses/08-bosses.js:4
 LEVIATHAN-CLASS HIVE MOTHER,利维坦级巢母 · LEVIATHAN,利維坦級巢母 · LEVIATHAN,リヴァイアサン級巣母艦 · LEVIATHAN,js/bosses/08-bosses.js:5
@@ -75,7 +80,7 @@ Alien Outpost,外星前哨基地,外星前哨基地,異星前哨基地,js/bosses
 Storm Canyon,风暴峡谷,風暴峽谷,暴風峡谷,js/bosses/09-planet-fortress.js:261
 Fleet Harbor,舰队港湾,艦隊港灣,艦隊泊地,js/bosses/09-planet-fortress.js:261
 Colossus Citadel,巨像要塞,巨像要塞,巨像要塞,js/bosses/09-planet-fortress.js:261
-SECTOR ,扇区 ,扇區 ,セクター ,js/bosses/09-planet-fortress.js:263 js/ui/67-ui.js:20
+SECTOR ,扇区 ,扇區 ,セクター ,js/bosses/09-planet-fortress.js:263 js/ui/67-ui.js:21
 Destroy turrets and launchers to drop the core shield,先摧毁炮塔与发射架，瓦解核心护盾,先摧毀砲塔與發射架，瓦解核心護盾,砲台と発射台を破壊してコアのシールドを解除,js/bosses/15-stage-boss-colossus-ground-fortress.js:24
 Glacier lance lock · dodge the red warning lanes,冰川要塞光矛锁定 · 避开红色预警线,冰川要塞光矛鎖定 · 避開紅色預警線,氷河要塞ランス照準 · 赤い警告ラインを回避,js/enemies/16-lethal-lances-horizontal-lane-lasers.js:126
 Forge lance lock · dodge the red warning lanes,熔炉要塞光矛锁定 · 避开红色预警线,熔爐要塞光矛鎖定 · 避開紅色預警線,溶鉱炉要塞ランス照準 · 赤い警告ラインを回避,js/enemies/16-lethal-lances-horizontal-lane-lasers.js:126
@@ -207,17 +212,20 @@ VEGA LANCE OFFLINE · WEAPON MK.X,织女光矛冷却 · 武器 MK.X,織女光矛
 Nova reserve full +1000,脉冲储备已满 +1000,脈衝儲備已滿 +1000,ノヴァ最大ストック +1000,js/player/47-earned-super-weapon-every-10-w.js:24
 NOVA CHARGED ×,湮星脉冲充能 ×,湮星脈衝充能 ×,ノヴァ・パルス充填 ×,js/player/47-earned-super-weapon-every-10-w.js:26
 10 M collected · tap NOVA for a screen-wide blast,集齐 10 个 M · 点「脉冲」按钮释放全屏爆炸,集齊 10 個 M · 點「脈衝」按鈕釋放全螢幕爆炸,M 10個達成 · 「ノヴァ」ボタンで全画面爆発,js/player/47-earned-super-weapon-every-10-w.js:27
-10 M collected · press E for a screen-wide blast,集齐 10 个 M · 按 E 释放全屏爆炸,集齊 10 個 M · 按 E 釋放全螢幕爆炸,M 10個達成 · Eキーで全画面爆発,js/player/47-earned-super-weapon-every-10-w.js:27
+10 M collected · press {0} for a screen-wide blast,集齐 10 个 M · 按 {0} 释放全屏爆炸,集齊 10 個 M · 按 {0} 釋放全螢幕爆炸,M 10個達成 · {0}キーで全画面爆発,js/player/47-earned-super-weapon-every-10-w.js:27
+10 M collected · press Y for a screen-wide blast,集齐 10 个 M · 按 Y 释放全屏爆炸,集齊 10 個 M · 按 Y 釋放全螢幕爆炸,M 10個獲得 · Y で全画面爆発,js/player/47-earned-super-weapon-every-10-w.js:27
 Nova not charged · every 10 M pickups charge one,湮星脉冲未充能 · 每收集 10 个 M 充能一次,湮星脈衝未充能 · 每收集 10 個 M 充能一次,ノヴァ・パルス未充填 · M 10個ごとに1回充填,js/player/47-earned-super-weapon-every-10-w.js:32
 NOVA,脉冲,脈衝,ノヴァ,js/player/47-earned-super-weapon-every-10-w.js:38 js/player/51-player-weapons-spread-laser-beam.js:25
 NOVA ×,脉冲 ×,脈衝 ×,ノヴァ ×,js/player/47-earned-super-weapon-every-10-w.js:49
 SWITCH WEAPONS,切换武器,切換武器,武器切替,js/ui/48-first-flight-coaching-weapon-switch.js:6
 Tap the weapon button to swap between SPREAD and BEAM,点右下角的武器按钮，在「散射」和「光束」之间切换,點右下角的武器按鈕，在「散射」和「光束」之間切換,右下の武器ボタンで「スプレッド」と「ビーム」を切り替え,js/ui/48-first-flight-coaching-weapon-switch.js:7
-Press Q (or 1 / 2) to swap between SPREAD and BEAM,按 Q（或数字键 1 / 2）在散射和光束之间切换,按 Q（或數字鍵 1 / 2）在散射和光束之間切換,Qキー（または 1 / 2）でスプレッドとビームを切り替え,js/ui/48-first-flight-coaching-weapon-switch.js:7
+Press {0} (or 1 / 2) to swap between SPREAD and BEAM,按 {0}（或数字键 1 / 2）在散射和光束之间切换,按 {0}（或數字鍵 1 / 2）在散射和光束之間切換,{0}キー（または 1 / 2）でスプレッドとビームを切り替え,js/ui/48-first-flight-coaching-weapon-switch.js:7
+Press X (or LB) to swap between SPREAD and BEAM,按 X（或 LB）在散射和光束之间切换,按 X（或 LB）在散射和光束之間切換,X（または LB）でスプレッドとビームを切替,js/ui/48-first-flight-coaching-weapon-switch.js:7
 Spread covers the screen · Beam focuses on tough targets,散射覆盖面广 · 光束集中火力打硬目标,散射覆蓋面廣 · 光束集中火力打硬目標,スプレッドは広範囲 · ビームは硬い敵に集中,js/ui/48-first-flight-coaching-weapon-switch.js:8
 FIRE HOMING MISSILES,发射追踪飞弹,發射追蹤飛彈,ホーミングミサイル発射,js/ui/48-first-flight-coaching-weapon-switch.js:9
 Tap MISSILE — missiles hunt down enemies by themselves,点「飞弹」按钮，飞弹会自动追踪敌人,點「飛彈」按鈕，飛彈會自動追蹤敵人,「ミサイル」ボタンで発射 · 敵を自動で追尾,js/ui/48-first-flight-coaching-weapon-switch.js:10
-Press Shift / X or right-click to fire homing missiles,按 Shift / X 或鼠标右键发射追踪飞弹,按 Shift / X 或滑鼠右鍵發射追蹤飛彈,Shift / Xキーか右クリックでホーミングミサイル発射,js/ui/48-first-flight-coaching-weapon-switch.js:10
+Press {0} or right-click to fire homing missiles,按 {0} 或鼠标右键发射追踪飞弹,按 {0} 或滑鼠右鍵發射追蹤飛彈,{0}キーか右クリックでホーミングミサイル発射,js/ui/48-first-flight-coaching-weapon-switch.js:10
+Press A to fire homing missiles,按 A 发射追踪飞弹,按 A 發射追蹤飛彈,A でホーミングミサイル発射,js/ui/48-first-flight-coaching-weapon-switch.js:10
 Missiles refill over time · each M adds 4,飞弹会随时间自动补充 · 每个 M 补充 4 枚,飛彈會隨時間自動補充 · 每個 M 補充 4 枚,ミサイルは時間で自動補充 · M 1個で4発補充,js/ui/48-first-flight-coaching-weapon-switch.js:11
 WARNING · BLACK HOLE,警告 · 黑洞,警告 · 黑洞,警告 · ブラックホール,js/ui/48-first-flight-coaching-weapon-switch.js:12
 Stay outside the orange dashed ring — cross the horizon and you’re lost,远离黑洞外围的橙色虚线圈，被吸进事件视界就会坠毁,遠離黑洞外圍的橘色虛線圈，被吸進事件視界就會墜毀,オレンジの点線の外側を飛ぶこと · 事象の地平線に吸い込まれると墜落します,js/ui/48-first-flight-coaching-weapon-switch.js:13
@@ -230,7 +238,8 @@ VEGA LANCE ONLINE!,织女光矛已启动！,織女光矛已啟動！,ベガ・�
 Your weapon comes back at MK.X afterwards,结束后武器恢复为 MK.X 满级,結束後武器恢復為 MK.X 滿級,終了後、武器は MK.X（最大）に戻ります,js/ui/48-first-flight-coaching-weapon-switch.js:20
 NOVA PULSE READY!,全屏爆炸可以发动了！,全螢幕爆炸可以發動了！,ノヴァ・パルス発動可能！,js/ui/48-first-flight-coaching-weapon-switch.js:21
 Tap NOVA to unleash a screen-wide blast,点「脉冲」按钮，立即释放全屏爆炸,點「脈衝」按鈕，立即釋放全螢幕爆炸,「ノヴァ」ボタンで全画面爆発を発動,js/ui/48-first-flight-coaching-weapon-switch.js:22
-Press E to unleash a screen-wide blast,按 E 立即释放全屏爆炸,按 E 立即釋放全螢幕爆炸,Eキーで全画面爆発を発動,js/ui/48-first-flight-coaching-weapon-switch.js:22
+Press {0} to unleash a screen-wide blast,按 {0} 立即释放全屏爆炸,按 {0} 立即釋放全螢幕爆炸,{0}キーで全画面爆発を発動,js/ui/48-first-flight-coaching-weapon-switch.js:22
+Press Y (or RB) to unleash a screen-wide blast,按 Y（或 RB）立即释放全屏爆炸,按 Y（或 RB）立即釋放全螢幕爆炸,Y（または RB）で全画面爆発,js/ui/48-first-flight-coaching-weapon-switch.js:22
 Clears enemy fire and hits every enemy · stores up to 3,清空敌方子弹并重创所有敌人 · 最多储存 3 次,清空敵方子彈並重創所有敵人 · 最多儲存 3 次,敵弾を消去しすべての敵に大ダメージ · 最大3回までストック,js/ui/48-first-flight-coaching-weapon-switch.js:23
 FLIGHT GUIDE,飞行指引,飛行指引,飛行ガイド,js/ui/48-first-flight-coaching-weapon-switch.js:90
 ✓ DONE,✓ 完成,✓ 完成,✓ 完了,js/ui/48-first-flight-coaching-weapon-switch.js:92
@@ -238,8 +247,8 @@ BACK TO THE STARS · ,重返星海 · ,重返星海 · ,再び星の海へ · ,j
 CONSUMED,被吞噬,被吞噬,吸い込まれた,js/world/49-stage-transitions.js:119
 Weapon upgrade,武器升级,武器升級,武器強化,js/world/49-stage-transitions.js:205
 Shield recharged,护盾充能,護盾充能,シールド回復,js/world/49-stage-transitions.js:206
-Missiles +4,飞弹 +4,飛彈 +4,ミサイル +4,js/world/49-stage-transitions.js:207
-Hull repaired +30,舰体修复 +30,艦體修復 +30,機体修復 +30,js/world/49-stage-transitions.js:208
+Missiles +{0},飞弹 +{0},飛彈 +{0},ミサイル +{0},js/world/49-stage-transitions.js:207
+Hull repaired +{0},舰体修复 +{0},艦體修復 +{0},機体修復 +{0},js/world/49-stage-transitions.js:208
 VEGA LANCE · ,织女光矛 · ,織女光矛 · ,ベガ・ランス · ,js/player/51-player-weapons-spread-laser-beam.js:8
 STARBREAKER · ULTIMATE,歼星炮 · 终极武器,殲星砲 · 終極武器,スターブレイカー · 究極兵器,js/player/51-player-weapons-spread-laser-beam.js:8
 BEAM LASER,激光束,雷射光束,ビームレーザー,js/player/51-player-weapons-spread-laser-beam.js:8
@@ -251,13 +260,13 @@ Weapon · ,武器切换 · ,武器切換 · ,武器切替 · ,js/player/51-playe
  · missile key = nova pulse, · 飞弹键 = 湮星脉冲, · 飛彈鍵 = 湮星脈衝, · ミサイルキー = ノヴァ・パルス,js/player/51-player-weapons-spread-laser-beam.js:19
 LANCE,光矛,光矛,ランス,js/player/51-player-weapons-spread-laser-beam.js:24
 SPREAD,散射,散射,スプレッド,js/player/51-player-weapons-spread-laser-beam.js:24
-BEAM,光束,光束,ビーム,js/player/51-player-weapons-spread-laser-beam.js:24 shell/markup.html:117
+BEAM,光束,光束,ビーム,js/player/51-player-weapons-spread-laser-beam.js:24 shell/markup.html:146
 ULTRA,终极,終極,究極,js/player/51-player-weapons-spread-laser-beam.js:24
-MISSILE,飞弹,飛彈,ミサイル,js/player/51-player-weapons-spread-laser-beam.js:25 shell/markup.html:115
+MISSILE,飞弹,飛彈,ミサイル,js/player/51-player-weapons-spread-laser-beam.js:25 shell/markup.html:144
 INVINCIBLE · hole cleared,无敌 · 黑洞已清除,無敵 · 黑洞已清除,無敵 · ブラックホール消去,js/world/57-black-hole-capture.js:13
 Wingmate down · fight on,队友被击落 · 继续战斗,隊友被擊落 · 繼續戰鬥,僚機撃墜 · 戦闘続行,js/world/57-black-hole-capture.js:31 js/core/60-update.js:330
-MODULE DOWN,模块摧毁,模組摧毀,モジュール破壊,js/combat/59-boss-parts.js:20
-TURRET DOWN,炮塔摧毁,砲塔摧毀,砲台破壊,js/combat/59-boss-parts.js:20
+MODULE DOWN,模块摧毁,模組摧毀,モジュール破壊,js/combat/59-boss-parts.js:21
+TURRET DOWN,炮塔摧毁,砲塔摧毀,砲台破壊,js/combat/59-boss-parts.js:21
 Iron meteors are indestructible · use them as cover,玄铁陨石无法击碎 · 可以当作掩体,玄鐵隕石無法擊碎 · 可以當作掩體,玄鉄隕石は破壊不能 · 遮蔽物として使える,js/core/60-update.js:54
 Missiles empty · resupplying,飞弹耗尽 · 自动补给中,飛彈耗盡 · 自動補給中,ミサイル切れ · 自動補給中,js/core/60-update.js:180
 Gravitational anomaly detected,侦测到引力异常,偵測到引力異常,重力異常を探知,js/core/60-update.js:216
@@ -265,48 +274,51 @@ WEAPON MK.,武器 MK.,武器 MK.,武器 MK.,js/core/60-update.js:317
  · ARC UNLOCKED, · 辐射解锁, · 輻射解鎖, · アーク解放,js/core/60-update.js:317
  · BURST UNLOCKED, · 爆裂解锁, · 爆裂解鎖, · バースト解放,js/core/60-update.js:317
 Max firepower +500,火力已满 +500,火力已滿 +500,火力MAX +500,js/core/60-update.js:317
-SINGULARITY · ,引力奇点 · ,引力奇點 · ,重力特異点 · ,js/player/62-v-7-vega-interceptor-layered-hull.js:628
-NO-RETURN LINE · DO NOT CROSS,不可逃逸线 · 进入即被吞噬,不可逃逸線 · 進入即被吞噬,帰還不能線 · 越えれば呑み込まれる,js/player/62-v-7-vega-interceptor-layered-hull.js:630
+SINGULARITY · ,引力奇点 · ,引力奇點 · ,重力特異点 · ,js/player/62-v-7-vega-interceptor-layered-hull.js:667
+NO-RETURN LINE · DO NOT CROSS,不可逃逸线 · 进入即被吞噬,不可逃逸線 · 進入即被吞噬,帰還不能線 · 越えれば呑み込まれる,js/player/62-v-7-vega-interceptor-layered-hull.js:669
 DOWN,已击落,已擊落,撃墜,js/ui/63-hud.js:21
-SHIELD,护盾,護盾,シールド,js/ui/63-hud.js:25 js/ui/63-hud.js:80
-HULL,舰体,艦體,機体,js/ui/63-hud.js:26 js/ui/63-hud.js:81
-MSL,飞弹,飛彈,MSL,js/ui/63-hud.js:27 js/ui/63-hud.js:84
-SCORE,得分 SCORE,得分 SCORE,SCORE,js/ui/63-hud.js:51
-COMBO ×,连击 ×,連擊 ×,コンボ ×,js/ui/63-hud.js:59
-BEST ,最高 ,最高 ,最高 ,js/ui/63-hud.js:71
-RANGE ,航程 ,航程 ,距離 ,js/ui/63-hud.js:72
-AUTO FIRE,自动射击,自動射擊,オート射撃,js/ui/63-hud.js:74
-MANUAL FIRE,手动射击,手動射擊,手動射撃,js/ui/63-hud.js:74
-NOVA READY,脉冲就绪,脈衝就緒,ノヴァ準備完了,js/ui/63-hud.js:97
-NOVA CHARGING,脉冲充能,脈衝充能,ノヴァ充填中,js/ui/63-hud.js:97
-RING GUNS ,星环炮台 ,星環砲台 ,リング砲台 ,js/ui/63-hud.js:108
-PYLONS ,护盾塔 ,護盾塔 ,シールド塔 ,js/ui/63-hud.js:108
-LOCKS ,门锁 ,門鎖 ,ロック ,js/ui/63-hud.js:108
-WINGS ,光翼 ,光翼 ,光翼 ,js/ui/63-hud.js:108
-MODULES ,模块 ,模組 ,モジュール ,js/ui/63-hud.js:108
-SHIELD ,能量护盾 ,能量護盾 ,シールド ,js/ui/63-hud.js:108
-PHASE ,阶段 ,階段 ,フェーズ ,js/ui/63-hud.js:108
-NEAR THE NO-RETURN LINE,接近不可逃逸线,接近不可逃逸線,帰還不能線に接近,js/ui/63-hud.js:120
-GRAVITY PULL,引力牵引,引力牽引,引力圏内,js/ui/63-hud.js:120
-WARNING · MOTHERSHIP INBOUND,警告 · 大型敌舰接近,警告 · 大型敵艦接近,警告 · 大型敵艦接近,js/ui/63-hud.js:144
-PAST THE POINT OF NO RETURN,已越过不可逃逸线,已越過不可逃逸線,帰還不能線を越えた,js/ui/63-hud.js:151
-ENGINES OVERWHELMED · NO ESCAPE,引擎失效 · 无法逃脱,引擎失效 · 無法逃脫,エンジン出力限界 · 脱出不能,js/ui/63-hud.js:153
-Auto fire · ON,自动射击 · 开,自動射擊 · 開,オート射撃 · ON,js/core/66-input.js:19 js/core/gamepad.js:52
-Auto fire · OFF (hold Space to fire),自动射击 · 关（按住空格射击）,自動射擊 · 關（按住空白鍵射擊）,オート射撃 · OFF（スペース長押しで射撃）,js/core/66-input.js:19
-Auto fire · OFF (hold RT to fire),自动射击 · 关（按住 RT 射击）,自動射擊 · 關（按住 RT 射擊）,オート射撃 · OFF（RT長押しで射撃）,js/core/gamepad.js:52
-Mission report · signal lost past the horizon,任务报告 · 信号消失于事件视界,任務報告 · 訊號消失於事件視界,任務報告 · 事象の地平線の彼方で信号途絶,js/ui/67-ui.js:36
-Mission report · hull pierced by a lance,任务报告 · 舰体被光矛贯穿,任務報告 · 艦體被光矛貫穿,任務報告 · 機体がランスに貫かれた,js/ui/67-ui.js:36
-Mission report · signal lost,任务报告 · 信号中断,任務報告 · 訊號中斷,任務報告 · 信号途絶,js/ui/67-ui.js:36 shell/markup.html:41
-Lost to the singularity<small>PAST THE POINT OF NO RETURN</small>,坠入黑洞<small>CONSUMED BY SINGULARITY</small>,墜入黑洞<small>CONSUMED BY SINGULARITY</small>,特異点に消失<small>CONSUMED BY SINGULARITY</small>,js/ui/67-ui.js:37
-Lanced<small>LETHAL BEAM IMPACT</small>,光矛贯穿<small>LANCE IMPACT</small>,光矛貫穿<small>LANCE IMPACT</small>,ランス貫通<small>LANCE IMPACT</small>,js/ui/67-ui.js:37
-Vessel lost<small>HULL INTEGRITY 0%</small>,舰体损毁<small>VESSEL LOST</small>,艦體損毀<small>VESSEL LOST</small>,機体大破<small>VESSEL LOST</small>,js/ui/67-ui.js:37 shell/markup.html:42
-Space,太空,太空,宇宙,js/ui/67-ui.js:67 js/ui/68-developer-mode-password-gated-panel.js:9
-Alien surface,外星地表,外星地表,異星地表,js/ui/67-ui.js:67
-Enemy base,敌方基地,敵方基地,敵基地,js/ui/67-ui.js:67
-Omega Star,终焉之星,終焉之星,終焉の星,js/ui/67-ui.js:67
-Continue,继续,繼續,続きから,js/ui/67-ui.js:68
- · NG+, · 二周目, · 二周目, · 2周目,js/ui/67-ui.js:69 js/ui/69-leaderboard-every-pilot-s-best-run.js:106
-Continue: ,继续：,繼續：,続きから：,js/ui/67-ui.js:70
+SHIELD,护盾,護盾,シールド,js/ui/63-hud.js:25 js/ui/63-hud.js:90
+HULL,舰体,艦體,機体,js/ui/63-hud.js:26 js/ui/63-hud.js:91
+MSL,飞弹,飛彈,MSL,js/ui/63-hud.js:27 js/ui/63-hud.js:94
+SCORE,得分 SCORE,得分 SCORE,SCORE,js/ui/63-hud.js:60
+COMBO ×,连击 ×,連擊 ×,コンボ ×,js/ui/63-hud.js:68
+BEST ,最高 ,最高 ,最高 ,js/ui/63-hud.js:80
+RANGE ,航程 ,航程 ,距離 ,js/ui/63-hud.js:81
+AUTO FIRE,自动射击,自動射擊,オート射撃,js/ui/63-hud.js:83
+MANUAL FIRE,手动射击,手動射擊,手動射撃,js/ui/63-hud.js:83
+NOVA READY,脉冲就绪,脈衝就緒,ノヴァ準備完了,js/ui/63-hud.js:107
+NOVA CHARGING,脉冲充能,脈衝充能,ノヴァ充填中,js/ui/63-hud.js:107
+RING GUNS ,星环炮台 ,星環砲台 ,リング砲台 ,js/ui/63-hud.js:118
+PYLONS ,护盾塔 ,護盾塔 ,シールド塔 ,js/ui/63-hud.js:118
+LOCKS ,门锁 ,門鎖 ,ロック ,js/ui/63-hud.js:118
+WINGS ,光翼 ,光翼 ,光翼 ,js/ui/63-hud.js:118
+MODULES ,模块 ,模組 ,モジュール ,js/ui/63-hud.js:118
+SHIELD ,能量护盾 ,能量護盾 ,シールド ,js/ui/63-hud.js:118
+PHASE ,阶段 ,階段 ,フェーズ ,js/ui/63-hud.js:118
+NEAR THE NO-RETURN LINE,接近不可逃逸线,接近不可逃逸線,帰還不能線に接近,js/ui/63-hud.js:130
+GRAVITY PULL,引力牵引,引力牽引,引力圏内,js/ui/63-hud.js:130
+WARNING · MOTHERSHIP INBOUND,警告 · 大型敌舰接近,警告 · 大型敵艦接近,警告 · 大型敵艦接近,js/ui/63-hud.js:154
+PAST THE POINT OF NO RETURN,已越过不可逃逸线,已越過不可逃逸線,帰還不能線を越えた,js/ui/63-hud.js:161
+ENGINES OVERWHELMED · NO ESCAPE,引擎失效 · 无法逃脱,引擎失效 · 無法逃脫,エンジン出力限界 · 脱出不能,js/ui/63-hud.js:163
+Spacebar,空格,空白鍵,スペース,js/core/66-input.js:16
+Auto fire · ON,自动射击 · 开,自動射擊 · 開,オート射撃 · ON,js/core/66-input.js:42 js/core/gamepad.js:53
+Auto fire · OFF (hold {0} to fire),自动射击 · 关（按住 {0} 射击）,自動射擊 · 關（按住 {0} 射擊）,オート射撃 · OFF（{0}長押しで射撃）,js/core/66-input.js:42
+Auto fire · OFF (hold RT to fire),自动射击 · 关（按住 RT 射击）,自動射擊 · 關（按住 RT 射擊）,オート射撃 · OFF（RT長押しで射撃）,js/core/gamepad.js:53
+Retry from checkpoint · sector {0},从检查点继续 · 扇区 {0},從檢查點繼續 · 扇區 {0},チェックポイントから再開 · セクター {0},js/ui/67-ui.js:36
+Mission report · signal lost past the horizon,任务报告 · 信号消失于事件视界,任務報告 · 訊號消失於事件視界,任務報告 · 事象の地平線の彼方で信号途絶,js/ui/67-ui.js:39
+Mission report · hull pierced by a lance,任务报告 · 舰体被光矛贯穿,任務報告 · 艦體被光矛貫穿,任務報告 · 機体がランスに貫かれた,js/ui/67-ui.js:39
+Mission report · signal lost,任务报告 · 信号中断,任務報告 · 訊號中斷,任務報告 · 信号途絶,js/ui/67-ui.js:39 shell/markup.html:43
+Lost to the singularity<small>PAST THE POINT OF NO RETURN</small>,坠入黑洞<small>CONSUMED BY SINGULARITY</small>,墜入黑洞<small>CONSUMED BY SINGULARITY</small>,特異点に消失<small>CONSUMED BY SINGULARITY</small>,js/ui/67-ui.js:40
+Lanced<small>LETHAL BEAM IMPACT</small>,光矛贯穿<small>LANCE IMPACT</small>,光矛貫穿<small>LANCE IMPACT</small>,ランス貫通<small>LANCE IMPACT</small>,js/ui/67-ui.js:40
+Vessel lost<small>HULL INTEGRITY 0%</small>,舰体损毁<small>VESSEL LOST</small>,艦體損毀<small>VESSEL LOST</small>,機体大破<small>VESSEL LOST</small>,js/ui/67-ui.js:40 shell/markup.html:44
+Space,太空,太空,宇宙,js/ui/67-ui.js:70 js/ui/68-developer-mode-password-gated-panel.js:9
+Alien surface,外星地表,外星地表,異星地表,js/ui/67-ui.js:70
+Enemy base,敌方基地,敵方基地,敵基地,js/ui/67-ui.js:70
+Omega Star,终焉之星,終焉之星,終焉の星,js/ui/67-ui.js:70
+Continue,继续,繼續,続きから,js/ui/67-ui.js:71
+ · NG+, · 二周目, · 二周目, · 2周目,js/ui/67-ui.js:72 js/ui/69-leaderboard-every-pilot-s-best-run.js:107
+Continue: ,继续：,繼續：,続きから：,js/ui/67-ui.js:73
+Unlocks with every medal on the difficulty below,集齐上一难度的全部勋章后解锁,集齊上一難度的全部勳章後解鎖,ひとつ下の難易度で勲章をすべて集めると解放,js/ui/67-ui.js:103
 Password,密码,密碼,パスワード,js/ui/68-developer-mode-password-gated-panel.js:8
 Surface,地表,地表,地上,js/ui/68-developer-mode-password-gated-panel.js:9
 Base,基地,基地,基地,js/ui/68-developer-mode-password-gated-panel.js:9
@@ -317,49 +329,58 @@ Stage boss,关底BOSS,關底BOSS,ステージボス,js/ui/68-developer-mode-pass
 Mid-boss,中途BOSS,中途BOSS,中ボス,js/ui/68-developer-mode-password-gated-panel.js:24
 sector ,扇区 ,扇區 ,セクター ,js/ui/68-developer-mode-password-gated-panel.js:24
 Start at sector ,从扇区 ,從扇區 ,開始セクター ,js/ui/68-developer-mode-password-gated-panel.js:44
-DEV MODE · ,开发者模式 · ,開發者模式 · ,開発者モード · ,js/ui/68-developer-mode-password-gated-panel.js:89
-straight to the boss,直达BOSS,直達BOSS,ボス戦へ直行,js/ui/68-developer-mode-password-gated-panel.js:89
-from sector ,从扇区 ,從扇區 ,開始セクター ,js/ui/68-developer-mode-password-gated-panel.js:89
-DEV MODE,开发者模式,開發者模式,開発者モード,js/ui/68-developer-mode-password-gated-panel.js:96
- · INVINCIBLE, · 无敌, · 無敵, · 無敵,js/ui/68-developer-mode-password-gated-panel.js:96
- · MAX POWER, · 满火力, · 滿火力, · 火力MAX,js/ui/68-developer-mode-password-gated-panel.js:96
- · ULTIMATE, · 终极武器, · 終極武器, · 究極兵器,js/ui/68-developer-mode-password-gated-panel.js:96
-Unnamed pilot,无名飞行员,無名飛行員,名無しパイロット,js/ui/69-leaderboard-every-pilot-s-best-run.js:36 js/ui/69-leaderboard-every-pilot-s-best-run.js:141
-Saved,已保存,已儲存,保存しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:103
-Saved · shows with your next posted score,已保存 · 下次上榜时显示,已儲存 · 下次上榜時顯示,保存しました · 次回のスコア登録時に反映,js/ui/69-leaderboard-every-pilot-s-best-run.js:104
-Cleared,已通关,已通關,クリア済み,js/ui/69-leaderboard-every-pilot-s-best-run.js:106
-Steam global ranking · each pilot’s best run · developer-mode runs don’t count,Steam 全球排行 · 每位飞行员保留最高分 · 开发者模式成绩不计入,Steam 全球排行 · 每位飛行員保留最高分 · 開發者模式成績不計入,Steam 世界ランキング · 各パイロットのベストスコア · 開発者モードの記録は対象外,js/ui/69-leaderboard-every-pilot-s-best-run.js:108
-Can’t reach the Steam leaderboard right now · showing this device’s runs,暂时连不上 Steam 排行榜 · 下面是这台设备上的成绩,暫時連不上 Steam 排行榜 · 下面是這台裝置上的成績,Steam ランキングに接続できません · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:109
-The leaderboard needs this page opened in Claude while signed in · showing this device’s runs,排行榜需要在 Claude 中打开并登录才能使用 · 下面是这台设备上的成绩,排行榜需要在 Claude 中開啟並登入才能使用 · 以下是這台裝置上的成績,ランキングは Claude でこのページを開きログインすると利用できます · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:110
-Connecting to the leaderboard…,正在连接排行榜…,正在連線至排行榜…,ランキングに接続中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:111
-Can’t reach the leaderboard yet · it will refresh by itself,排行榜暂时连不上，稍后会自动刷新,排行榜暫時連不上，稍後會自動重新整理,ランキングに接続できません · 自動で再読み込みします,js/ui/69-leaderboard-every-pilot-s-best-run.js:112
-Leaderboard unavailable right now · showing this device’s runs,排行榜暂时不可用 · 下面是这台设备上的成绩,排行榜暫時無法使用 · 以下是這台裝置上的成績,ランキングは現在利用できません · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:113
-"Live ranking · your access is view-only, so your runs are not posted",实时排行 · 你当前只有查看权限，成绩不会上传,即時排行 · 你目前只有檢視權限，成績不會上傳,リアルタイムランキング · 閲覧のみの権限のため記録は送信されません,js/ui/69-leaderboard-every-pilot-s-best-run.js:114
-Live ranking · each pilot’s best run · developer-mode runs don’t count,实时排行 · 每位飞行员保留最高分 · 开发者模式成绩不计入,即時排行 · 每位飛行員保留最高分 · 開發者模式成績不計入,リアルタイムランキング · 各パイロットの最高記録 · 開発者モードの記録は対象外,js/ui/69-leaderboard-every-pilot-s-best-run.js:115
-YOU,你,你,あなた,js/ui/69-leaderboard-every-pilot-s-best-run.js:127
-No runs yet · go fly one,还没有成绩 · 去打一局吧,還沒有成績 · 去玩一局吧,まだ記録がありません · 出撃しましょう,js/ui/69-leaderboard-every-pilot-s-best-run.js:133
-This device,本机记录,本機紀錄,この端末,js/ui/69-leaderboard-every-pilot-s-best-run.js:134
-No pilots on the board yet · finish a run to post the first score,排行榜还是空的 · 打完一局就能上榜,排行榜還是空的 · 玩完一局就能上榜,ランキングはまだ空です · 1プレイ終えれば登録されます,js/ui/69-leaderboard-every-pilot-s-best-run.js:136
-Loading…,正在读取…,讀取中…,読み込み中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:136
- · now #{0}, · 当前第 {0} 名, · 目前第 {0} 名, · 現在{0}位,js/ui/69-leaderboard-every-pilot-s-best-run.js:150
- · ranked below #100, · 排名 100 名以后, · 排名 100 名以後, · 100位圏外,js/ui/69-leaderboard-every-pilot-s-best-run.js:150
-Leaderboard · posting your score…,排行榜 · 正在上传成绩…,排行榜 · 正在上傳成績…,ランキング · スコア送信中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:152
-Leaderboard · new personal best posted,排行榜 · 新的个人最高分已上传,排行榜 · 新的個人最高分已上傳,ランキング · 自己ベストを登録しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:153
-Leaderboard · your best stays ,排行榜 · 未超过你的最高分 ,排行榜 · 未超過你的最高分 ,ランキング · 自己ベスト未更新 ,js/ui/69-leaderboard-every-pilot-s-best-run.js:154
-"Leaderboard · view-only access, score not posted",排行榜 · 只有查看权限，成绩未上传,排行榜 · 只有檢視權限，成績未上傳,ランキング · 閲覧のみのためスコア未送信,js/ui/69-leaderboard-every-pilot-s-best-run.js:155
-"Leaderboard · couldn’t post, will try next run",排行榜 · 上传失败，下次会再试,排行榜 · 上傳失敗，下次會再試,ランキング · 送信失敗、次回再試行します,js/ui/69-leaderboard-every-pilot-s-best-run.js:156
-Leaderboard · saved to this device’s records,排行榜 · 已记入本机成绩,排行榜 · 已記入本機成績,ランキング · この端末に記録しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:157
-Reset · shows on your next flight,已重置 · 下次起飞时显示,已重設 · 下次起飛時顯示,リセット完了 · 次回出撃時に表示,js/ui/69-leaderboard-every-pilot-s-best-run.js:177
-Blank = your account name,留空则显示账号名,留空則顯示帳號名稱,空欄ならアカウント名を表示,js/ui/69-leaderboard-every-pilot-s-best-run.js:178
-Sound: all on (click to change),声音：全开（点击切换）,聲音：全開（點擊切換）,サウンド：すべてON（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:180
-Sound: effects only (click to change),声音：仅音效（点击切换）,聲音：僅音效（點擊切換）,サウンド：効果音のみ（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:180
-Sound: muted (click to change),声音：静音（点击切换）,聲音：靜音（點擊切換）,サウンド：ミュート（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:180
+DEV MODE · ,开发者模式 · ,開發者模式 · ,開発者モード · ,js/ui/68-developer-mode-password-gated-panel.js:95
+straight to the boss,直达BOSS,直達BOSS,ボス戦へ直行,js/ui/68-developer-mode-password-gated-panel.js:95
+from sector ,从扇区 ,從扇區 ,開始セクター ,js/ui/68-developer-mode-password-gated-panel.js:95
+DEV MODE,开发者模式,開發者模式,開発者モード,js/ui/68-developer-mode-password-gated-panel.js:102
+ · INVINCIBLE, · 无敌, · 無敵, · 無敵,js/ui/68-developer-mode-password-gated-panel.js:102
+ · MAX POWER, · 满火力, · 滿火力, · 火力MAX,js/ui/68-developer-mode-password-gated-panel.js:102
+ · ULTIMATE, · 终极武器, · 終極武器, · 究極兵器,js/ui/68-developer-mode-password-gated-panel.js:102
+Unnamed pilot,无名飞行员,無名飛行員,名無しパイロット,js/ui/69-leaderboard-every-pilot-s-best-run.js:37 js/ui/69-leaderboard-every-pilot-s-best-run.js:142
+Saved,已保存,已儲存,保存しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:104
+Saved · shows with your next posted score,已保存 · 下次上榜时显示,已儲存 · 下次上榜時顯示,保存しました · 次回のスコア登録時に反映,js/ui/69-leaderboard-every-pilot-s-best-run.js:105
+Cleared,已通关,已通關,クリア済み,js/ui/69-leaderboard-every-pilot-s-best-run.js:107
+Steam global ranking · each pilot’s best run · developer-mode runs don’t count,Steam 全球排行 · 每位飞行员保留最高分 · 开发者模式成绩不计入,Steam 全球排行 · 每位飛行員保留最高分 · 開發者模式成績不計入,Steam 世界ランキング · 各パイロットのベストスコア · 開発者モードの記録は対象外,js/ui/69-leaderboard-every-pilot-s-best-run.js:109
+Can’t reach the Steam leaderboard right now · showing this device’s runs,暂时连不上 Steam 排行榜 · 下面是这台设备上的成绩,暫時連不上 Steam 排行榜 · 下面是這台裝置上的成績,Steam ランキングに接続できません · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:110
+The leaderboard needs this page opened in Claude while signed in · showing this device’s runs,排行榜需要在 Claude 中打开并登录才能使用 · 下面是这台设备上的成绩,排行榜需要在 Claude 中開啟並登入才能使用 · 以下是這台裝置上的成績,ランキングは Claude でこのページを開きログインすると利用できます · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:111
+Connecting to the leaderboard…,正在连接排行榜…,正在連線至排行榜…,ランキングに接続中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:112
+Can’t reach the leaderboard yet · it will refresh by itself,排行榜暂时连不上，稍后会自动刷新,排行榜暫時連不上，稍後會自動重新整理,ランキングに接続できません · 自動で再読み込みします,js/ui/69-leaderboard-every-pilot-s-best-run.js:113
+Leaderboard unavailable right now · showing this device’s runs,排行榜暂时不可用 · 下面是这台设备上的成绩,排行榜暫時無法使用 · 以下是這台裝置上的成績,ランキングは現在利用できません · この端末の記録を表示中,js/ui/69-leaderboard-every-pilot-s-best-run.js:114
+"Live ranking · your access is view-only, so your runs are not posted",实时排行 · 你当前只有查看权限，成绩不会上传,即時排行 · 你目前只有檢視權限，成績不會上傳,リアルタイムランキング · 閲覧のみの権限のため記録は送信されません,js/ui/69-leaderboard-every-pilot-s-best-run.js:115
+Live ranking · each pilot’s best run · developer-mode runs don’t count,实时排行 · 每位飞行员保留最高分 · 开发者模式成绩不计入,即時排行 · 每位飛行員保留最高分 · 開發者模式成績不計入,リアルタイムランキング · 各パイロットの最高記録 · 開発者モードの記録は対象外,js/ui/69-leaderboard-every-pilot-s-best-run.js:116
+YOU,你,你,あなた,js/ui/69-leaderboard-every-pilot-s-best-run.js:128
+No runs yet · go fly one,还没有成绩 · 去打一局吧,還沒有成績 · 去玩一局吧,まだ記録がありません · 出撃しましょう,js/ui/69-leaderboard-every-pilot-s-best-run.js:134
+This device,本机记录,本機紀錄,この端末,js/ui/69-leaderboard-every-pilot-s-best-run.js:135
+No pilots on the board yet · finish a run to post the first score,排行榜还是空的 · 打完一局就能上榜,排行榜還是空的 · 玩完一局就能上榜,ランキングはまだ空です · 1プレイ終えれば登録されます,js/ui/69-leaderboard-every-pilot-s-best-run.js:137
+Loading…,正在读取…,讀取中…,読み込み中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:137
+ · now #{0}, · 当前第 {0} 名, · 目前第 {0} 名, · 現在{0}位,js/ui/69-leaderboard-every-pilot-s-best-run.js:151
+ · ranked below #100, · 排名 100 名以后, · 排名 100 名以後, · 100位圏外,js/ui/69-leaderboard-every-pilot-s-best-run.js:151
+Leaderboard · posting your score…,排行榜 · 正在上传成绩…,排行榜 · 正在上傳成績…,ランキング · スコア送信中…,js/ui/69-leaderboard-every-pilot-s-best-run.js:153
+Leaderboard · new personal best posted,排行榜 · 新的个人最高分已上传,排行榜 · 新的個人最高分已上傳,ランキング · 自己ベストを登録しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:154
+Leaderboard · your best stays ,排行榜 · 未超过你的最高分 ,排行榜 · 未超過你的最高分 ,ランキング · 自己ベスト未更新 ,js/ui/69-leaderboard-every-pilot-s-best-run.js:155
+"Leaderboard · view-only access, score not posted",排行榜 · 只有查看权限，成绩未上传,排行榜 · 只有檢視權限，成績未上傳,ランキング · 閲覧のみのためスコア未送信,js/ui/69-leaderboard-every-pilot-s-best-run.js:156
+"Leaderboard · couldn’t post, will try next run",排行榜 · 上传失败，下次会再试,排行榜 · 上傳失敗，下次會再試,ランキング · 送信失敗、次回再試行します,js/ui/69-leaderboard-every-pilot-s-best-run.js:157
+Leaderboard · saved to this device’s records,排行榜 · 已记入本机成绩,排行榜 · 已記入本機成績,ランキング · この端末に記録しました,js/ui/69-leaderboard-every-pilot-s-best-run.js:158
+Reset · shows on your next flight,已重置 · 下次起飞时显示,已重設 · 下次起飛時顯示,リセット完了 · 次回出撃時に表示,js/ui/69-leaderboard-every-pilot-s-best-run.js:178
+Blank = your account name,留空则显示账号名,留空則顯示帳號名稱,空欄ならアカウント名を表示,js/ui/69-leaderboard-every-pilot-s-best-run.js:179
+Sound: all on (click to change),声音：全开（点击切换）,聲音：全開（點擊切換）,サウンド：すべてON（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:181
+Sound: effects only (click to change),声音：仅音效（点击切换）,聲音：僅音效（點擊切換）,サウンド：効果音のみ（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:181
+Sound: muted (click to change),声音：静音（点击切换）,聲音：靜音（點擊切換）,サウンド：ミュート（クリックで切替）,js/ui/69-leaderboard-every-pilot-s-best-run.js:181
+Up,上移,上移,上,js/ui/settings.js:39
+Down,下移,下移,下,js/ui/settings.js:39
+Left,左移,左移,左,js/ui/settings.js:39
+Right,右移,右移,右,js/ui/settings.js:39
+Fire,射击,射擊,ショット,js/ui/settings.js:39
+Missiles,追踪飞弹,追蹤飛彈,ミサイル,js/ui/settings.js:40
+Switch weapon,切换武器,切換武器,武器切替,js/ui/settings.js:40 shell/markup.html:146
+Nova pulse,湮星脉冲,湮星脈衝,ノヴァ・パルス,js/ui/settings.js:40 shell/markup.html:145
+Pause,暂停,暫停,ポーズ,js/ui/settings.js:40 shell/markup.html:143
+Auto fire on/off,自动射击开关,自動射擊開關,オート射撃 ON/OFF,js/ui/settings.js:40
+Press a key…,按新键…,按新鍵…,キーを押す…,js/ui/settings.js:49
 ASHWING,烬翼,燼翼,ASHWING,shell/markup.html:8
 SLAY THE FIRST LIGHT,弑光 · SLAY THE FIRST LIGHT,弒光 · SLAY THE FIRST LIGHT,スレイ・ザ・ファーストライト,shell/markup.html:8
-Arrows,方向键,方向鍵,方向キー,shell/markup.html:13
 Drag,拖动,拖曳,ドラッグ,shell/markup.html:13
 Move,移动,移動,移動,shell/markup.html:13
-Spacebar,空格,空白鍵,スペース,shell/markup.html:14
 Fire · toggle auto,射击 · 切换自动,射擊 · 切換自動,射撃 · オート切替,shell/markup.html:14
 Right-click,右键,右鍵,右クリック,shell/markup.html:15
 Homing missiles,追踪飞弹,追蹤飛彈,ホーミングミサイル,shell/markup.html:15
@@ -370,44 +391,58 @@ Gamepad,手柄,手把,ゲームパッド,shell/markup.html:19
 Left stick move · A missiles · X weapon · Y nova · RT fire · Start pause,左摇杆移动 · A 飞弹 · X 换武器 · Y 湮星脉冲 · RT 射击 · Start 暂停,左搖桿移動 · A 飛彈 · X 換武器 · Y 湮星脈衝 · RT 射擊 · Start 暫停,左スティック 移動 · A ミサイル · X 武器切替 · Y ノヴァ・パルス · RT 射撃 · Start ポーズ,shell/markup.html:19
 Replay flight guide,重看新手指引,重看新手指引,飛行ガイドを再表示,shell/markup.html:21
 Launch,启航,啟航,出撃,shell/markup.html:25
-Best,最高纪录,最高紀錄,ハイスコア,shell/markup.html:29 shell/markup.html:46
-Leaderboard,排行榜,排行榜,ランキング,shell/markup.html:30
-Controls,操作说明,操作說明,操作方法,shell/markup.html:31
-Dev,开发者,開發者,開発者,shell/markup.html:33
-Quit,退出游戏,離開遊戲,ゲーム終了,shell/markup.html:34
-NEW RECORD,新纪录,新紀錄,新記録,shell/markup.html:43
-Score,得分,得分,スコア,shell/markup.html:45
-Sector reached,抵达扇区,抵達扇區,到達セクター,shell/markup.html:47
-Ships destroyed,击毁敌舰,擊毀敵艦,敵艦撃破数,shell/markup.html:48
-Asteroids shattered,击碎陨石,擊碎隕石,隕石破壊数,shell/markup.html:49
-Distance,航程,航程,航行距離,shell/markup.html:50
-Fly again<span>ENTER</span>,再次出击<span>ENTER</span>,再次出擊<span>ENTER</span>,再出撃<span>ENTER</span>,shell/markup.html:53
-View leaderboard,查看排行榜,查看排行榜,ランキングを見る,shell/markup.html:54
-Systems on standby,系统待机,系統待機,システム待機中,shell/markup.html:60
-Paused<small>ALL SYSTEMS HOLDING</small>,已暂停<small>STANDBY</small>,已暫停<small>STANDBY</small>,ポーズ中<small>STANDBY</small>,shell/markup.html:61
-Resume mission<span>P</span>,继续任务<span>P</span>,繼續任務<span>P</span>,任務再開<span>P</span>,shell/markup.html:62
-Back to brief<span>ESC</span>,返回简报<span>ESC</span>,返回簡報<span>ESC</span>,ブリーフィングへ<span>ESC</span>,shell/markup.html:63
-Developer panel<span>DEV</span>,开发者面板<span>DEV</span>,開發者面板<span>DEV</span>,開発者パネル<span>DEV</span>,shell/markup.html:64
-All pilots · best runs,全体飞行员 · 最高分,全體飛行員 · 最高分,全パイロット · 最高記録,shell/markup.html:70
-Leaderboard<small>TOP PILOTS</small>,排行榜<small>LEADERBOARD</small>,排行榜<small>LEADERBOARD</small>,ランキング<small>LEADERBOARD</small>,shell/markup.html:71
-My callsign,我的呼号,我的呼號,コールサイン,shell/markup.html:75
-Save,保存,儲存,保存,shell/markup.html:77
-Close<span>ESC</span>,关闭<span>ESC</span>,關閉<span>ESC</span>,閉じる<span>ESC</span>,shell/markup.html:79 shell/markup.html:107
-Testing only · runs are not recorded,测试专用 · 不计入纪录,測試專用 · 不計入紀錄,テスト専用 · 記録されません,shell/markup.html:85
-Dev console<small>DEVELOPER MODE</small>,开发者模式<small>DEVELOPER MODE</small>,開發者模式<small>DEVELOPER MODE</small>,開発者モード<small>DEVELOPER MODE</small>,shell/markup.html:86
-Enter the developer password,请输入开发者密码,請輸入開發者密碼,開発者パスワードを入力,shell/markup.html:88
-Unlock,解锁,解鎖,解除,shell/markup.html:89
-"Wrong password, try again",密码错误，请重试,密碼錯誤，請重試,パスワードが違います。再入力してください,shell/markup.html:90
-Choose a stage,选择关卡,選擇關卡,ステージ選択,shell/markup.html:93
-Start at a sector · ◆ has a boss,从扇区开头出发 · ◆ 有BOSS,從扇區開頭出發 · ◆ 有BOSS,セクターから開始 · ◆ はボスあり,shell/markup.html:95
-Straight to a boss fight,直接进入BOSS战,直接進入BOSS戰,ボス戦へ直行,shell/markup.html:97
-Invincible,无敌（不会坠毁）,無敵（不會墜毀）,無敵（撃墜されない）,shell/markup.html:100
-Max weapons + unlimited missiles,满级火力 + 无限飞弹,滿級火力 + 無限飛彈,火力MAX + ミサイル無限,shell/markup.html:101
-Ultimate weapon · VEGA LANCE,终极武器 · 织女光矛,終極武器 · 織女光矛,究極兵器 · ベガ・ランス,shell/markup.html:102
-Two pilots (test),双人（测试）,雙人（測試）,2人プレイ（テスト）,shell/markup.html:103
-Lock developer mode,锁定开发者模式,鎖定開發者模式,開発者モードをロック,shell/markup.html:108
+Best,最高纪录,最高紀錄,ハイスコア,shell/markup.html:30 shell/markup.html:48
+Leaderboard,排行榜,排行榜,ランキング,shell/markup.html:31
+Settings,设置,設定,設定,shell/markup.html:32 shell/markup.html:67
+Controls,操作说明,操作說明,操作方法,shell/markup.html:33
+Dev,开发者,開發者,開発者,shell/markup.html:35
+Quit,退出游戏,離開遊戲,ゲーム終了,shell/markup.html:36
+NEW RECORD,新纪录,新紀錄,新記録,shell/markup.html:45
+Score,得分,得分,スコア,shell/markup.html:47
+Sector reached,抵达扇区,抵達扇區,到達セクター,shell/markup.html:49
+Ships destroyed,击毁敌舰,擊毀敵艦,敵艦撃破数,shell/markup.html:50
+Asteroids shattered,击碎陨石,擊碎隕石,隕石破壊数,shell/markup.html:51
+Distance,航程,航程,航行距離,shell/markup.html:52
+Fly again<span>ENTER</span>,再次出击<span>ENTER</span>,再次出擊<span>ENTER</span>,再出撃<span>ENTER</span>,shell/markup.html:56
+View leaderboard,查看排行榜,查看排行榜,ランキングを見る,shell/markup.html:57
+Systems on standby,系统待机,系統待機,システム待機中,shell/markup.html:63
+Paused<small>ALL SYSTEMS HOLDING</small>,已暂停<small>STANDBY</small>,已暫停<small>STANDBY</small>,ポーズ中<small>STANDBY</small>,shell/markup.html:64
+Resume mission<span>P</span>,继续任务<span>P</span>,繼續任務<span>P</span>,任務再開<span>P</span>,shell/markup.html:65
+Back to brief<span>ESC</span>,返回简报<span>ESC</span>,返回簡報<span>ESC</span>,ブリーフィングへ<span>ESC</span>,shell/markup.html:66
+Developer panel<span>DEV</span>,开发者面板<span>DEV</span>,開發者面板<span>DEV</span>,開発者パネル<span>DEV</span>,shell/markup.html:68
+Pilot settings · sight and sound only,飞行设置 · 只影响画面和声音,飛行設定 · 只影響畫面和聲音,パイロット設定 · 映像と音のみ,shell/markup.html:74
+Settings<small>CONFIGURATION</small>,设置<small>SETTINGS</small>,設定<small>SETTINGS</small>,設定<small>SETTINGS</small>,shell/markup.html:75
+Master volume,总音量,總音量,マスター音量,shell/markup.html:77
+Music,音乐,音樂,BGM,shell/markup.html:78
+Effects,音效,音效,効果音,shell/markup.html:79
+Brightness of your shots,己方子弹亮度,己方子彈亮度,自機弾の明るさ,shell/markup.html:80
+HUD size,HUD 大小,HUD 大小,HUD サイズ,shell/markup.html:81
+Show your hitbox,显示中弹判定点,顯示中彈判定點,当たり判定を表示,shell/markup.html:82
+Outline enemy shots,敌弹描边（更醒目）,敵彈描邊（更醒目）,敵弾の縁取り（見やすく）,shell/markup.html:83
+Screen shake,画面震动,畫面震動,画面の揺れ,shell/markup.html:84
+Reduce flashes,减少闪光,減少閃光,フラッシュを抑える,shell/markup.html:85
+Full screen,全屏,全螢幕,フルスクリーン,shell/markup.html:86
+"Keyboard · click a key, then press the new one (Backspace clears a second key)",键盘按键 · 点一个键，再按新的键（Backspace 清除第二个键）,鍵盤按鍵 · 點一個鍵，再按新的鍵（Backspace 清除第二個鍵）,キーボード · 枠をクリックして新しいキーを押す（Backspace で2つ目を消去）,shell/markup.html:89
+Reset keys,恢复默认按键,恢復預設按鍵,キー設定を初期化,shell/markup.html:91
+Done<span>ESC</span>,完成<span>ESC</span>,完成<span>ESC</span>,完了<span>ESC</span>,shell/markup.html:93
+All pilots · best runs,全体飞行员 · 最高分,全體飛行員 · 最高分,全パイロット · 最高記録,shell/markup.html:99
+Leaderboard<small>TOP PILOTS</small>,排行榜<small>LEADERBOARD</small>,排行榜<small>LEADERBOARD</small>,ランキング<small>LEADERBOARD</small>,shell/markup.html:100
+My callsign,我的呼号,我的呼號,コールサイン,shell/markup.html:104
+Save,保存,儲存,保存,shell/markup.html:106
+Close<span>ESC</span>,关闭<span>ESC</span>,關閉<span>ESC</span>,閉じる<span>ESC</span>,shell/markup.html:108 shell/markup.html:136
+Testing only · runs are not recorded,测试专用 · 不计入纪录,測試專用 · 不計入紀錄,テスト専用 · 記録されません,shell/markup.html:114
+Dev console<small>DEVELOPER MODE</small>,开发者模式<small>DEVELOPER MODE</small>,開發者模式<small>DEVELOPER MODE</small>,開発者モード<small>DEVELOPER MODE</small>,shell/markup.html:115
+Enter the developer password,请输入开发者密码,請輸入開發者密碼,開発者パスワードを入力,shell/markup.html:117
+Unlock,解锁,解鎖,解除,shell/markup.html:118
+"Wrong password, try again",密码错误，请重试,密碼錯誤，請重試,パスワードが違います。再入力してください,shell/markup.html:119
+Choose a stage,选择关卡,選擇關卡,ステージ選択,shell/markup.html:122
+Start at a sector · ◆ has a boss,从扇区开头出发 · ◆ 有BOSS,從扇區開頭出發 · ◆ 有BOSS,セクターから開始 · ◆ はボスあり,shell/markup.html:124
+Straight to a boss fight,直接进入BOSS战,直接進入BOSS戰,ボス戦へ直行,shell/markup.html:126
+Invincible,无敌（不会坠毁）,無敵（不會墜毀）,無敵（撃墜されない）,shell/markup.html:129
+Max weapons + unlimited missiles,满级火力 + 无限飞弹,滿級火力 + 無限飛彈,火力MAX + ミサイル無限,shell/markup.html:130
+Ultimate weapon · VEGA LANCE,终极武器 · 织女光矛,終極武器 · 織女光矛,究極兵器 · ベガ・ランス,shell/markup.html:131
+Two pilots (test),双人（测试）,雙人（測試）,2人プレイ（テスト）,shell/markup.html:132
+Lock developer mode,锁定开发者模式,鎖定開發者模式,開発者モードをロック,shell/markup.html:137
 ASHWING game view,烬翼：弑光 游戏画面,燼翼：弒光 遊戲畫面,アッシュウィング ゲーム画面,shell/markup.html:3
-Sound,声音,聲音,サウンド,shell/markup.html:113
-Pause,暂停,暫停,ポーズ,shell/markup.html:114
-Nova pulse,湮星脉冲,湮星脈衝,ノヴァ・パルス,shell/markup.html:116
-Switch weapon,切换武器,切換武器,武器切替,shell/markup.html:117
+Difficulty,难度,難度,難易度,shell/markup.html:28
+Sound,声音,聲音,サウンド,shell/markup.html:142

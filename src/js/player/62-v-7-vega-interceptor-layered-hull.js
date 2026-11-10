@@ -217,6 +217,12 @@ function drawPlayer() {
     }
     ctx.restore();
   }
+  if (SET.hitbox && S.mode === 'play') {
+    ctx.save(); ctx.globalCompositeOperation = 'source-over';
+    ctx.beginPath(); ctx.arc(P.x, P.y, 10, 0, TAU); ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); ctx.arc(P.x, P.y, 3.2, 0, TAU); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = 'rgba(255,50,90,.95)'; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.restore();
+  }
 }
 
 function drawShip(e) {
@@ -474,6 +480,16 @@ function drawEnemyBullets() {
       drawGlow(b.x, b.y, b.r * 3.2, b.c, .85); drawGlow(b.x, b.y, b.r * .9, WHITE, 1);
     }
   }
+  // one high-contrast ring around every enemy shot, whatever its colour and the background (settings)
+  if (SET.outline && ebul.length) {
+    ctx.save(); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.beginPath();
+    for (const b of ebul) { const r = (b.r || 4) + 3; ctx.moveTo(b.x + r, b.y); ctx.arc(b.x, b.y, r, 0, TAU); }
+    ctx.stroke();
+    ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.beginPath();
+    for (const b of ebul) { const r = (b.r || 4) + 3; ctx.moveTo(b.x + r, b.y); ctx.arc(b.x, b.y, r, 0, TAU); }
+    ctx.stroke(); ctx.restore();
+  }
 }
 function drawBeams() {
   if (!beams.length) return;
@@ -672,7 +688,8 @@ function drawPowers() {
 
 function drawProjectiles() {
   ctx.globalCompositeOperation = 'lighter';
-  // player lasers
+  // player lasers (dimmed by the settings so enemy fire stays readable)
+  ctx.globalAlpha = SET.shots / 100;
   ctx.lineCap = 'round';
   ctx.strokeStyle = 'rgba(94,242,255,.28)'; ctx.lineWidth = 7; ctx.beginPath();
   for (const l of lasers) { const s = Math.hypot(l.vx, l.vy); ctx.moveTo(l.x - l.vx / s * 22, l.y - l.vy / s * 22); ctx.lineTo(l.x, l.y); }
@@ -681,6 +698,7 @@ function drawProjectiles() {
   for (const l of lasers) { const s = Math.hypot(l.vx, l.vy); ctx.moveTo(l.x - l.vx / s * 18 * l.w, l.y - l.vy / s * 18 * l.w); ctx.lineTo(l.x, l.y); }
   ctx.stroke();
   for (const l of lasers) { drawGlow(l.x, l.y, 8, ION, .55); if (l.boom) drawGlow(l.x, l.y, 6, FLARE, .7); }
+  ctx.globalAlpha = 1;
   // enemy bullets
   drawEnemyBullets();
   // missiles

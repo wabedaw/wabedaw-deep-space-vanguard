@@ -38,6 +38,10 @@
       "section": "achievements & lifetime stats (read-only observer of the simulation)"
     },
     {
+      "file": "js/core/difficulty.js",
+      "section": "difficulty tiers and boss checkpoints (M2)"
+    },
+    {
       "file": "js/audio/05-audio.js",
       "section": "audio"
     },
@@ -304,6 +308,10 @@
     {
       "file": "js/ui/69-leaderboard-every-pilot-s-best-run.js",
       "section": "leaderboard: every pilot's best run in the artifact's shared db (scores/<their id>); this device's records when offline"
+    },
+    {
+      "file": "js/ui/settings.js",
+      "section": "settings screen: sound levels, readability and comfort (sight and sound only)"
     },
     {
       "file": "js/core/70a-fixed-step.js",

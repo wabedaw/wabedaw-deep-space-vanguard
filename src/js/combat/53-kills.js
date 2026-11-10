@@ -67,6 +67,7 @@ function damage(target, dmg, x, y, isShip) {
   if (target.iron) { target.hitT = .06; sparks(x, y, 2, ['255,255,255', IRON_VEIN[target.iron], '200,210,225'], Math.PI / 2, 2.6); sfx.clang(x); return; }
   if (target.shield) { target.shieldHit = .25; sparks(x, y, 3, ['150,240,255', '255,255,255'], Math.PI / 2, 2.4); return; }
   if (target.kind === 'god' && target.bb) { dmg *= 2; target.bb.acc += dmg; }
+  if (isShip && TIER.enemyHp !== 1) dmg /= target.type === 'boss' ? TIER.bossHp : TIER.enemyHp;   // difficulty
   target.hp -= dmg; target.hitT = .08;
   sparks(x, y, 3, isShip ? ['255,255,255', PLASMA] : DUST, Math.PI / 2, 2.2);
   sfx.hit(x, isShip);

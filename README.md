@@ -19,6 +19,9 @@ npm run test:save    # 构建 + 存档迁移、坏档、新版本存档
 npm run test:i18n    # 构建 + 四种语言各开一局，检查翻译与字体
 npm run test:steam   # 排行榜桥单元测试 + 用模拟 Steam 测排行榜界面
 npm run test:coop    # 构建 + 双人：手柄分配、拾取、瞄准、阵亡、确定性
+npm run test:pad     # 构建 + 手柄操作菜单、设置、按设备显示提示
+npm run test:diff    # 构建 + 四档难度、检查点、分难度排行榜
+npm run test:settings  # 构建 + 设置保存、按键重设
 npm run test:all     # 以上除全流程机器人外全部
 npm run i18n         # 生成翻译目录 src/lang/catalog.csv，报告缺译
 npm run steam:install && npm run steam:selftest   # Steam 桌面版（见 platform/steam/README.md）
@@ -76,7 +79,9 @@ npm run steam:install && npm run steam:selftest   # Steam 桌面版（见 platfo
 | 全屏爆炸 Nova（每 10 个 M 充能一次） | E | 爆炸按钮 |
 | 暂停 · 静音 · 音乐 | P · M · N | 暂停按钮 |
 
-手柄：左摇杆 / 十字键移动，A 飞弹，X 或 LB 换武器，Y 或 RB 湮星脉冲，RT 射击（自动射击关闭时），View 开关自动射击，Start 暂停。
+手柄：左摇杆 / 十字键移动，A 飞弹，X 或 LB 换武器，Y 或 RB 湮星脉冲，RT 射击（自动射击关闭时），View 开关自动射击，Start 暂停。菜单里十字键移动、A 确认、B 返回。
+
+设置（首页和暂停页）：音量、己方子弹亮度、HUD 大小、中弹判定点、敌弹描边、画面震动、减少闪光、全屏、键盘按键重设。难度在首页选择。上表是默认按键。
 
 双人（测试中）：网址加 `?players=2`，或在开发者面板勾选"双人"。1P 用键盘，2P 用手柄；接两个手柄时各用一个。2P 是古铜色涂装。
 

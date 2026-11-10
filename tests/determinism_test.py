@@ -7,7 +7,8 @@ campaign bot, and logs every sector change, every boss start/end, and a checksum
 (score, enemies, enemy bullets, RNG state, player position) every 10 game seconds. Then compares:
   A  seed 12345
   B  seed 12345 again                                   -> must equal A
-  C  seed 12345, Chinese, muted, reduced motion, phone   -> must equal A (settings never change the game)
+  C  seed 12345, Chinese, muted, reduced motion, phone,  -> must equal A (settings never change the game)
+     and every display setting at its extreme
   D  seed 777                                           -> must differ from A
   E  seed 12345 in a 1920x1080 window                   -> must equal A (fixed logical play field)
   F  seed 12345 in a 1366x768 window at 2x pixel density -> must equal A
@@ -23,7 +24,7 @@ GAME = os.path.join(ROOT, 'dist', 'claude', 'ashwing.html')
 SECS = float(sys.argv[1]) if len(sys.argv) > 1 else 420
 html = open(GAME, encoding='utf-8').read().replace(
     "const hot = window.claude && window.claude.hot;",
-    "window.__dbg={S,P,K,RNG,update,render,startGame,frame,ships,holes,ebul,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;", 1)
+    "window.__dbg={S,P,K,RNG,SET,update,render,startGame,frame,ships,holes,ebul,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;", 1)
 assert '__dbg' in html
 
 STOP_LOOP = "window.requestAnimationFrame = () => 0;"   # the test drives every frame itself
@@ -76,6 +77,8 @@ async def one(b, seed, variant=False, view=(1280, 800), scale=1):
     await pg.set_content('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>' + html + '</body></html>')
     await pg.wait_for_timeout(300)
     await pg.evaluate("() => {" + BOT + "}")
+    if variant:   # extreme settings: they may change only how the game looks and sounds
+        await pg.evaluate("() => Object.assign(window.__dbg.SET, { hud: 1.5, shots: 30, hitbox: false, outline: false, shake: false, calm: true, master: 0 })")
     await pg.evaluate(f"() => {{ const D = window.__dbg; D.S.startStage = 1; D.S.nextSeed = {seed}; D.startGame(); }}")
     left, res = SECS, None
     while left > 0:

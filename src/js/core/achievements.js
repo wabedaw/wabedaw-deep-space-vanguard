@@ -26,4 +26,4 @@ function stageReached(st) {
   if (st > 6) award('ACH_CH2_CLEAR');
   if (st > 9) award('ACH_CH3_CLEAR');
 }
-function update(dt) { updateSim(dt); trackProgress(); }
+function update(dt) { updateSim(dt); trackProgress(); trackCheckpoint(); }

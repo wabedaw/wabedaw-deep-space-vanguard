@@ -63,16 +63,12 @@ function closeDev(launching) {
   if (S.mode === 'pause') { pauseEl.hidden = false; $('resumeBtn').focus({ preventScroll: true }); }
   else if (S.mode === 'menu') { menuEl.hidden = false; $('devBtn').focus({ preventScroll: true }); }
 }
-function devStart(st, lv, boss) {
-  DEV.run = { god: devGod.checked, max: devMax.checked, ult: devUlt.checked, duo: devDuo.checked };
-  SAVE.set('devOpts', Object.assign({}, DEV.run));
-  closeDev(true);
-  if (S.mode !== 'menu') quitToMenu();
-  menuEl.classList.remove('leaving');
-  S.startStage = st; startGame();
+// put a run that has just started at stage st at sector lv of that stage, or (boss) right before that sector's boss;
+// used by the developer panel and by checkpoints
+function placeRunAt(st, lv, boss) {
   const k = stageKind(st), b0 = (st - 1) * 10;
   if (k === 'final') {
-    if (lv >= 2) { S.sector = b0 + 2; S.sectorT = 0; S.aceTip = false; S.tAce = 6; enterBase(); P.x = -30; P.y = H * .5; P.gx = 320; P.gy = 0; }
+    if (lv >= 2) { S.sector = b0 + 2; S.sectorT = 0; S.aceTip = false; S.tAce = 6; enterBase(); P.x = -30; P.y = H * .5; P.gx = 320; P.gy = 0; formFollowers(); }
     if (boss) { if (lv >= 2) baseFlatFrom(S.wx - 40, true); S.sectorT = lv >= 2 ? 41.95 : 25.95; }
   } else {
     if (lv > 1) { S.sector = b0 + lv - 1; nextSector(); }
@@ -82,6 +78,16 @@ function devStart(st, lv, boss) {
       S.sectorT = secLen() - .05;
     }
   }
+}
+function devStart(st, lv, boss) {
+  DEV.run = { god: devGod.checked, max: devMax.checked, ult: devUlt.checked, duo: devDuo.checked };
+  SAVE.set('devOpts', Object.assign({}, DEV.run));
+  closeDev(true);
+  if (S.mode !== 'menu') quitToMenu();
+  menuEl.classList.remove('leaving');
+  S.startStage = st; startGame();
+  placeRunAt(st, lv, boss);
+  const k = stageKind(st);
   if (S.dev && S.dev.max) { P.lvl = 10; P.mis = P.misMax; }
   if (S.dev && S.dev.ult) { P.weapon = 'ult'; P.bm = null; P.arcs = []; } else if (P.weapon === 'ult') P.weapon = 'spread';
   updateWeaponBtn(); updateNovaBtn();

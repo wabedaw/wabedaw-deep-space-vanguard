@@ -11,6 +11,7 @@ function hitPart(e, x, y, pad = 3) { if (!e.parts || e.dying) return null; for (
 function damagePart(e, p, dmg, x, y) {
   if (e.dead) return;
   const fort = e.kind === 'fortress' || e.kind === 'colossus' || !!e.gate || e.kind === 'core' || e.kind === 'omega' || e.kind === 'god';
+  if (TIER.bossHp !== 1) dmg /= TIER.bossHp;   // difficulty
   p.hp -= dmg; p.hitT = .08; if (!fort) { e.hp -= dmg * .35; e.hitT = .04; }
   sparks(x, y, 3, ['255,255,255', FLARE], Math.PI / 2, 2.2); sfx.hit(x, true);
   if (p.hp <= 0 && !p.dead) {

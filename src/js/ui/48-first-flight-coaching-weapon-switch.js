@@ -4,10 +4,10 @@ TUT.done = SAVE.get('tut');
 const tutSave = () => SAVE.set('tut', TUT.done);
 const TIPS = {
   weapon: { col: ION, title: I18('切换武器', 'SWITCH WEAPONS'), dur: 9, target: 'weapon', done: () => P.weapon !== TUT.w0,
-    text: COARSE ? I18('点右下角的武器按钮，在「散射」和「光束」之间切换', 'Tap the weapon button to swap between SPREAD and BEAM') : I18('按 Q（或数字键 1 / 2）在散射和光束之间切换', 'Press Q (or 1 / 2) to swap between SPREAD and BEAM'),
+    text: () => byDevice({ touch: I18('点右下角的武器按钮，在「散射」和「光束」之间切换', 'Tap the weapon button to swap between SPREAD and BEAM'), kb: I18f('按 {0}（或数字键 1 / 2）在散射和光束之间切换', 'Press {0} (or 1 / 2) to swap between SPREAD and BEAM', keyLabel('weapon')), pad: I18('按 X（或 LB）在散射和光束之间切换', 'Press X (or LB) to swap between SPREAD and BEAM') }),
     sub: I18('散射覆盖面广 · 光束集中火力打硬目标', 'Spread covers the screen · Beam focuses on tough targets') },
   missile: { col: FLARE, title: I18('发射追踪飞弹', 'FIRE HOMING MISSILES'), dur: 9, target: 'missile', done: () => TUT.fired,
-    text: COARSE ? I18('点「飞弹」按钮，飞弹会自动追踪敌人', 'Tap MISSILE — missiles hunt down enemies by themselves') : I18('按 Shift / X 或鼠标右键发射追踪飞弹', 'Press Shift / X or right-click to fire homing missiles'),
+    text: () => byDevice({ touch: I18('点「飞弹」按钮，飞弹会自动追踪敌人', 'Tap MISSILE — missiles hunt down enemies by themselves'), kb: I18f('按 {0} 或鼠标右键发射追踪飞弹', 'Press {0} or right-click to fire homing missiles', keyLabel('missile')), pad: I18('按 A 发射追踪飞弹', 'Press A to fire homing missiles') }),
     sub: I18('飞弹会随时间自动补充 · 每个 M 补充 4 枚', 'Missiles refill over time · each M adds 4') },
   hole: { col: WARN, title: I18('警告 · 黑洞', 'WARNING · BLACK HOLE'), dur: 7, target: 'hole', done: () => !holes.some(h => h.y > -h.r && h.y < H + h.r),
     text: I18('远离黑洞外围的橙色虚线圈，被吸进事件视界就会坠毁', 'Stay outside the orange dashed ring — cross the horizon and you’re lost'),
@@ -19,7 +19,7 @@ const TIPS = {
     text: I18('集满 10 个 W：光柱和追踪光弹自动开火 10 秒', '10 W collected: star column and homing darts fire for 10 s'),
     sub: I18('结束后武器恢复为 MK.X 满级', 'Your weapon comes back at MK.X afterwards') },
   superM: { col: ULTC, title: I18('全屏爆炸可以发动了！', 'NOVA PULSE READY!'), dur: 10, target: 'nova', done: () => (P.novaCh || 0) === 0,
-    text: COARSE ? I18('点「脉冲」按钮，立即释放全屏爆炸', 'Tap NOVA to unleash a screen-wide blast') : I18('按 E 立即释放全屏爆炸', 'Press E to unleash a screen-wide blast'),
+    text: () => byDevice({ touch: I18('点「脉冲」按钮，立即释放全屏爆炸', 'Tap NOVA to unleash a screen-wide blast'), kb: I18f('按 {0} 立即释放全屏爆炸', 'Press {0} to unleash a screen-wide blast', keyLabel('nova')), pad: I18('按 Y（或 RB）立即释放全屏爆炸', 'Press Y (or RB) to unleash a screen-wide blast') }),
     sub: I18('清空敌方子弹并重创所有敌人 · 最多储存 3 次', 'Clears enemy fire and hits every enemy · stores up to 3') },
 };
 const tutOn = () => S.mode === 'play' && !S.dev && P.alive;
@@ -66,7 +66,7 @@ function drawTut(L, B) {
   if (a <= 0) return;
   const cw = Math.min(480, W - 32), x0 = (W - cw) / 2, pad = 16, narrow = W < 420;
   ctx.save(); ctx.globalAlpha = a; ctx.textBaseline = 'alphabetic';
-  ctx.font = `600 ${narrow ? 14 : 15.5}px ${FD}`; const lines = tutWrap(d.text, cw - pad * 2 - 4);
+  ctx.font = `600 ${narrow ? 14 : 15.5}px ${FD}`; const lines = tutWrap(typeof d.text === 'function' ? d.text() : d.text, cw - pad * 2 - 4);
   ctx.font = `500 ${narrow ? 11.5 : 12.5}px ${FD}`; const subs = tutWrap(d.sub, cw - pad * 2 - 4);
   const lh = narrow ? 20 : 22, ch = pad + 16 + 10 + lines.length * lh + 6 + subs.length * 17 + pad + 4;
   const tg = tutTarget(d.target, L, B);

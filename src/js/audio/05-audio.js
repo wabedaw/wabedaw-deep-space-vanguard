@@ -61,8 +61,10 @@ function applySound() {
   updateSoundBtn();
   if (!AC) return;
   const t = AC.currentTime;
-  master.gain.setTargetAtTime(soundMode === 2 ? 0 : .85, t, .08);
-  musBus.gain.setTargetAtTime(soundMode === 0 ? .5 : 0, t, .3);
+  // the quick toggle (soundMode) and the settings screen's levels (SET) multiply
+  master.gain.setTargetAtTime(soundMode === 2 ? 0 : .85 * SET.master / 100, t, .08);
+  musBus.gain.setTargetAtTime(soundMode === 0 ? .5 * SET.music / 100 : 0, t, .3);
+  sfxBus.gain.setTargetAtTime(SET.sfx / 100, t, .08);
 }
 function setSoundMode(m) {
   soundMode = m;

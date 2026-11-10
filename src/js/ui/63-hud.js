@@ -42,7 +42,16 @@ function drawPilotTag(p) {
   ctx.strokeStyle = `rgba(${col},.45)`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p.x, p.y, 32, 0, TAU); ctx.stroke();
   ctx.restore();
 }
+// HUD size (settings): draw the HUD scaled up from the top-left, as if the field were smaller
 function drawHUD() {
+  const k = SET.hud || 1;
+  if (k === 1) { drawHUDAt(); return; }
+  const W0 = W, H0 = H, i0 = Object.assign({}, inset);
+  ctx.save(); ctx.scale(k, k);
+  W = W0 / k; H = H0 / k; inset.t /= k; inset.r /= k; inset.b /= k; inset.l /= k;
+  try { drawHUDAt(); } finally { W = W0; H = H0; Object.assign(inset, i0); ctx.restore(); }
+}
+function drawHUDAt() {
   const L = inset.l + 16, T = inset.t + 16, R = W - inset.r - 16, B = H - inset.b - 16;
   ctx.textBaseline = 'alphabetic';
   if (S.mode === 'play' || S.mode === 'over') {
@@ -72,6 +81,7 @@ function drawHUD() {
     ctx.fillText(I18('航程 ', 'RANGE ') + S.dist.toFixed(2) + ' AU', RX, RY + 26);
     ctx.fillStyle = S.auto ? `rgba(${ION},.9)` : 'rgba(132,148,173,.8)';
     if (!narrow) ctx.fillText(S.auto ? I18('自动射击', 'AUTO FIRE') : I18('手动射击', 'MANUAL FIRE'), RX, RY + 42);
+    if (S.diff && S.diff !== 'normal') { ctx.fillStyle = `rgba(${S.diff === 'hard' ? FLARE : WARN},.95)`; ctx.fillText(DIFF_NAME[S.diff].toUpperCase(), RX, RY + (narrow ? 42 : 58)); }
     setLS('0px'); ctx.textAlign = 'left';
 
     // bottom-left gauges

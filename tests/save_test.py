@@ -5,7 +5,8 @@
   1. a v0.1 player's loose 'dsv-*' keys are migrated into one 'ashwing-save' and the game uses them
   2. progress made in the game is written back to 'ashwing-save'
   3. a save that can't be parsed is kept as 'ashwing-save.bad' and the game starts fresh
-  4. a save from a newer version is used but never overwritten
+  4. a version 1 save is upgraded to version 2 (settings added)
+  5. a save from a newer version is used but never overwritten
 """
 import asyncio, os, sys, json, threading, http.server, functools
 from playwright.async_api import async_playwright
@@ -50,7 +51,7 @@ async def main():
                   'dsv-tut': '{"weapon":1,"missile":1}', 'dsv-runs': '[{"s":123450,"st":4,"n":"ACE"}]', 'dsv-call': 'ACE'}
         ctx, pg, errs = await page_with(b, legacy)
         s = await pg.evaluate("() => JSON.parse(localStorage.getItem('ashwing-save'))")
-        check('v0.1 keys are migrated into one versioned save', s and s['v'] == 1 and s['best'] == 123450 and s['stage'] == 4 and s['last'] == 3
+        check('v0.1 keys are migrated into one versioned save', s and s['v'] == 2 and s['settings']['master'] == 100 and s['best'] == 123450 and s['stage'] == 4 and s['last'] == 3
               and s['lang'] == 'zh-Hans' and s['sound'] == 1 and s['tut'] == {'weapon': 1, 'missile': 1} and s['call'] == 'ACE' and len(s['runs']) == 1, s)
         ui = await pg.evaluate("() => ({ lang: document.documentElement.lang, best: document.body.innerText.includes('0123450') })")
         check('the game uses the migrated language and best score', ui['lang'] == 'zh-Hans' and ui['best'], ui)
@@ -64,6 +65,14 @@ async def main():
         r = await pg.evaluate("() => ({ bad: localStorage.getItem('ashwing-save.bad'), best: SAVE.get('best') })")
         check('a broken save is kept aside and the game starts fresh', r['bad'] == '{"v":1,"best":5' and r['best'] == 0, r)
         check('no page errors (broken save)', not errs, errs[:2])
+        await ctx.close()
+
+        v1 = json.dumps({'v': 1, 'best': 4321, 'lang': 'ja', 'sound': 1})
+        ctx, pg, errs = await page_with(b, {'ashwing-save': v1})
+        await pg.evaluate("() => { SAVE.set('best', SAVE.get('best')); SAVE.flush(); }")
+        s = await pg.evaluate("() => JSON.parse(localStorage.getItem('ashwing-save'))")
+        check('a version 1 save is upgraded to version 2 with default settings', s['v'] == 2 and s['best'] == 4321 and s['lang'] == 'ja' and s['settings']['shots'] == 80 and s['settings']['hitbox'] is True, s)
+        check('no page errors (v1 upgrade)', not errs, errs[:2])
         await ctx.close()
 
         newer = json.dumps({'v': 99, 'best': 777, 'lang': 'en', 'future': {'x': 1}})

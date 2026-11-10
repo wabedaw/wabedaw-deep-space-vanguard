@@ -10,12 +10,12 @@
   <div class="hero-foot">
     <div class="help-sheet" id="helpSheet" hidden>
       <dl class="keys">
-        <div><dt><kbd>W A S D</kbd><kbd data-zh="方向键">Arrows</kbd><kbd data-zh="拖动">Drag</kbd></dt><dd data-zh="移动">Move</dd></div>
-        <div><dt><kbd data-zh="空格">Spacebar</kbd><kbd>F</kbd></dt><dd data-zh="射击 · 切换自动">Fire · toggle auto</dd></div>
-        <div><dt><kbd>Shift</kbd><kbd>X</kbd><kbd data-zh="右键">Right-click</kbd></dt><dd data-zh="追踪飞弹">Homing missiles</dd></div>
-        <div><dt><kbd>Q</kbd><kbd>1</kbd><kbd>2</kbd></dt><dd data-zh="切换武器 · 散射 / 激光束">Switch weapon · Spread / Beam</dd></div>
-        <div><dt><kbd>E</kbd></dt><dd data-zh="湮星脉冲：每收集 10 个 M 充能一次 · 每收集 10 个 W 启动织女光矛 10 秒">Nova pulse: every 10 M charges one · every 10 W fires the VEGA LANCE for 10 s</dd></div>
-        <div><dt><kbd>P</kbd><kbd>M</kbd><kbd>N</kbd></dt><dd data-zh="暂停 · 静音 · 音乐">Pause · mute · music</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="up left down right">W A S D</kbd><kbd data-keys="up left down right" data-slot="1">↑ ← ↓ →</kbd><kbd data-zh="拖动">Drag</kbd></dt><dd data-zh="移动">Move</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="fire">Space</kbd><kbd data-keys="auto">F</kbd></dt><dd data-zh="射击 · 切换自动">Fire · toggle auto</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="missile">Shift</kbd><kbd data-keys="missile" data-slot="1">X</kbd><kbd data-zh="右键">Right-click</kbd></dt><dd data-zh="追踪飞弹">Homing missiles</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="weapon">Q</kbd><kbd>1</kbd><kbd>2</kbd></dt><dd data-zh="切换武器 · 散射 / 激光束">Switch weapon · Spread / Beam</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="nova">E</kbd></dt><dd data-zh="湮星脉冲：每收集 10 个 M 充能一次 · 每收集 10 个 W 启动织女光矛 10 秒">Nova pulse: every 10 M charges one · every 10 W fires the VEGA LANCE for 10 s</dd></div>
+        <div class="kb-only"><dt><kbd data-keys="pause">P</kbd><kbd>M</kbd><kbd>N</kbd></dt><dd data-zh="暂停 · 静音 · 音乐">Pause · mute · music</dd></div>
         <div><dt><kbd data-zh="手柄">Gamepad</kbd></dt><dd data-zh="左摇杆移动 · A 飞弹 · X 换武器 · Y 湮星脉冲 · RT 射击 · Start 暂停">Left stick move · A missiles · X weapon · Y nova · RT fire · Start pause</dd></div>
       </dl>
       <button class="help-btn tut-reset" id="tutResetBtn" type="button" data-zh="重看新手指引">Replay flight guide</button>
@@ -25,13 +25,15 @@
       <span class="launch-core"><span class="launch-label" data-zh="启航">Launch</span><span class="launch-chev" aria-hidden="true"><i></i><i></i><i></i></span></span>
     </button>
     <button class="cont-btn" id="stageBtn" type="button" hidden><span class="cont-core"><span class="cont-label" id="contLabel">Continue</span><span class="cont-stage" id="contStage"></span><span class="cont-chev" aria-hidden="true">›</span></span></button>
+    <div class="diff-pick" id="diffPick" role="radiogroup" aria-label="Difficulty" data-zh-aria="难度"></div>
     <div class="hero-meta">
       <span><span data-zh="最高纪录">Best</span> <b id="bestMenu">0</b></span>
       <button class="help-btn lb-btn" id="lbBtn" type="button" data-zh="排行榜">Leaderboard</button>
+      <button class="help-btn" id="setBtn" type="button" data-zh="设置">Settings</button>
       <button class="help-btn" id="helpBtn" type="button" aria-expanded="false" aria-controls="helpSheet" data-zh="操作说明">Controls</button>
       <select class="help-btn lang-sel" id="langSel" aria-label="Language · 语言 · 語言 · 言語"></select>
       <button class="help-btn dev-btn" id="devBtn" type="button" data-zh="开发者">Dev</button>
-      <button class="help-btn quit-btn" id="quitBtn" type="button" data-zh="退出游戏" hidden>Quit</button>
+      <button class="help-btn quit-btn" id="appQuitBtn" type="button" data-zh="退出游戏" hidden>Quit</button>
     </div>
   </div>
 </div>
@@ -50,6 +52,7 @@
       <div><dt data-zh="航程">Distance</dt><dd id="oDist">0 AU</dd></div>
     </dl>
     <p class="lbnote" id="lbNote" hidden></p>
+    <button class="btn" id="cpBtn" type="button" hidden></button>
     <button class="btn" id="againBtn" type="button" data-zh="再次出击&lt;span&gt;ENTER&lt;/span&gt;">Fly again<span>ENTER</span></button>
     <button class="btn ghost" id="overLbBtn" type="button" data-zh="查看排行榜">View leaderboard</button>
   </div></div>
@@ -61,7 +64,33 @@
     <h2 data-zh="已暂停&lt;small&gt;STANDBY&lt;/small&gt;">Paused<small>ALL SYSTEMS HOLDING</small></h2>
     <button class="btn" id="resumeBtn" type="button" data-zh="继续任务&lt;span&gt;P&lt;/span&gt;">Resume mission<span>P</span></button>
     <button class="btn ghost" id="quitBtn" type="button" data-zh="返回简报&lt;span&gt;ESC&lt;/span&gt;">Back to brief<span>ESC</span></button>
+    <button class="btn ghost" id="pauseSetBtn" type="button" data-zh="设置">Settings</button>
     <button class="btn ghost" id="pauseDevBtn" type="button" hidden data-zh="开发者面板&lt;span&gt;DEV&lt;/span&gt;">Developer panel<span>DEV</span></button>
+  </div></div>
+</div>
+
+<div class="overlay" id="setOv" hidden role="dialog" aria-modal="true" aria-labelledby="setH">
+  <div class="frame"><div class="panel">
+    <p class="eyebrow" data-zh="飞行设置 · 只影响画面和声音">Pilot settings · sight and sound only</p>
+    <h2 id="setH" data-zh="设置&lt;small&gt;SETTINGS&lt;/small&gt;">Settings<small>CONFIGURATION</small></h2>
+    <div class="set-list">
+      <label class="set-row"><span data-zh="总音量">Master volume</span><input type="range" id="setMaster" min="0" max="100" step="5"><output id="setMasterV"></output></label>
+      <label class="set-row"><span data-zh="音乐">Music</span><input type="range" id="setMusic" min="0" max="100" step="5"><output id="setMusicV"></output></label>
+      <label class="set-row"><span data-zh="音效">Effects</span><input type="range" id="setSfx" min="0" max="100" step="5"><output id="setSfxV"></output></label>
+      <label class="set-row"><span data-zh="己方子弹亮度">Brightness of your shots</span><input type="range" id="setShots" min="30" max="100" step="5"><output id="setShotsV"></output></label>
+      <label class="set-row"><span data-zh="HUD 大小">HUD size</span><select class="help-btn" id="setHud"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select><output></output></label>
+      <label class="set-row chk"><span data-zh="显示中弹判定点">Show your hitbox</span><input type="checkbox" id="setHitbox"></label>
+      <label class="set-row chk"><span data-zh="敌弹描边（更醒目）">Outline enemy shots</span><input type="checkbox" id="setOutline"></label>
+      <label class="set-row chk"><span data-zh="画面震动">Screen shake</span><input type="checkbox" id="setShake"></label>
+      <label class="set-row chk"><span data-zh="减少闪光">Reduce flashes</span><input type="checkbox" id="setCalm"></label>
+      <label class="set-row chk"><span data-zh="全屏">Full screen</span><input type="checkbox" id="setFs"></label>
+    </div>
+    <div class="set-keys kb-only">
+      <p class="set-h" data-zh="键盘按键 · 点一个键，再按新的键（Backspace 清除第二个键）">Keyboard · click a key, then press the new one (Backspace clears a second key)</p>
+      <div class="set-keygrid" id="setKeys"></div>
+      <button class="help-btn" id="setKeysReset" type="button" data-zh="恢复默认按键">Reset keys</button>
+    </div>
+    <button class="btn ghost" id="setClose" type="button" data-zh="完成&lt;span&gt;ESC&lt;/span&gt;">Done<span>ESC</span></button>
   </div></div>
 </div>
 

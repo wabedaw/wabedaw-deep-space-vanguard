@@ -22,7 +22,7 @@ function resetGame() {
   for (const a of [lasers, missiles, ebul, rocks, ships, holes, powers, parts, waves, texts]) a.length = 0;
   Object.assign(S, { t: 0, score: 0, sector: 1, sectorT: 0, dist: 0, shake: 0, dmgFlash: 0, combo: 0, comboT: 0, kills: 0, rocks: 0,
     banner: { big: I18('扇区 01', 'SECTOR 01'), sub: SECTOR_NAMES[0], t: 0, dur: 3.2 }, warn: 0, toast: null, boss: null, bossPending: false,
-    tRock: .6, tGiant: 18, tShip: 2.5, tHole: 32, events: [], lock: null, holeNear: 0, deathBy: '', warnName: '', tLance: 9, lanceTip: false, ironTip: false, flow: 1, mom: 0, flowTier: 0, ultNova: null });
+    tRock: .6, tGiant: 18, tShip: 2.5, tHole: 32, cp: null, events: [], lock: null, holeNear: 0, deathBy: '', warnName: '', tLance: 9, lanceTip: false, ironTip: false, flow: 1, mom: 0, flowTier: 0, ultNova: null });
   ultDarts.length = 0;
   if (S.side) leaveSurface();
   Object.assign(S, { side: false, trans: null, heat: 0, dark: 0, scroll: 0, scrollT: 0, tBomber: 12 });
