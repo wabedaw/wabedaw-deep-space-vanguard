@@ -43,7 +43,7 @@ leaderboard.getEntryCount(name): number | null
 
 ## 重新编译
 
-**Windows 和 Linux（CI）：** GitHub → Actions → "steamworks native" → Run workflow（`.github/workflows/steamworks-native.yml`，改了 Rust 源码推送时也会自动跑）。完成后：
+**Windows 和 Linux（CI）：** GitHub → Actions → "steamworks native" → Run workflow（`.github/workflows/steamworks-native.yml`，只在手动运行时编译，不会自动消耗 Actions 时长）。完成后：
 
 ```bash
 gh run download --repo wabedaw/wabedaw-deep-space-vanguard --name win64 --dir platform/steam/native/steamworks.js/dist/win64

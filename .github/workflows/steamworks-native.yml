@@ -1,16 +1,11 @@
 # Builds the patched steamworks.js (platform/steam/native/steamworks.js) for every platform the game ships on.
-# Run it from GitHub → Actions → "steamworks native" → Run workflow (it also runs when the native code changes),
-# then download the "steamworks-native-dist" artifact into platform/steam/native/steamworks.js/dist/ and commit it.
-# See platform/steam/native/PATCHES.md.
+# Run it by hand: GitHub → Actions → "steamworks native" → Run workflow (it never runs on its own, so it uses no
+# Actions minutes until someone starts it), then download the win64 / linux64 / osx artifacts into
+# platform/steam/native/steamworks.js/dist/ and commit them. See platform/steam/native/PATCHES.md.
 name: steamworks native
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'platform/steam/native/steamworks.js/src/**'
-      - 'platform/steam/native/steamworks.js/Cargo.*'
-      - '.github/workflows/steamworks-native.yml'
 
 defaults:
   run:
