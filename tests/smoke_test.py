@@ -1,4 +1,4 @@
-"""Smoke-test the website build in web/: serves it from a sub-path, checks Chinese/English, fonts,
+"""Smoke-test the website build in dist/web/ (run node tools/build.mjs first): serves it from a sub-path, checks Chinese/English, fonts,
 no external requests, a run can start, and no page errors.
 
     python3 tests/smoke_test.py
@@ -8,7 +8,7 @@ from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 site = tempfile.mkdtemp()
-shutil.copytree(os.path.join(ROOT, 'web'), os.path.join(site, 'games', 'deep-space-vanguard'))
+shutil.copytree(os.path.join(ROOT, 'dist', 'web'), os.path.join(site, 'games', 'deep-space-vanguard'))
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):

@@ -1,0 +1,289 @@
+{
+  "note": "Script parts in load order. tools/build.mjs concatenates them into one classic <script>; order matters.",
+  "parts": [
+    {
+      "file": "js/core/00-language-english-by-default-chinese.js",
+      "section": "language: English by default, Chinese on request"
+    },
+    {
+      "file": "js/core/01-storage.js",
+      "section": "storage"
+    },
+    {
+      "file": "js/core/02-glow-sprites.js",
+      "section": "glow sprites"
+    },
+    {
+      "file": "js/world/03-background.js",
+      "section": "background"
+    },
+    {
+      "file": "js/core/04-game-state.js",
+      "section": "game state"
+    },
+    {
+      "file": "js/audio/05-audio.js",
+      "section": "audio"
+    },
+    {
+      "file": "js/audio/06-procedural-soundtrack.js",
+      "section": "procedural soundtrack"
+    },
+    {
+      "file": "js/enemies/07-spawning.js",
+      "section": "spawning"
+    },
+    {
+      "file": "js/bosses/08-bosses.js",
+      "section": "bosses"
+    },
+    {
+      "file": "js/bosses/09-planet-fortress.js",
+      "section": "planet fortress (stage boss every 10 sectors)"
+    },
+    {
+      "file": "js/world/10-sky.js",
+      "section": "sky"
+    },
+    {
+      "file": "js/world/11-world-update.js",
+      "section": "world update"
+    },
+    {
+      "file": "js/world/12-world-drawing.js",
+      "section": "world drawing"
+    },
+    {
+      "file": "js/enemies/13-surface-enemies.js",
+      "section": "surface enemies"
+    },
+    {
+      "file": "js/enemies/14-surface-enemy-art.js",
+      "section": "surface enemy art (facing left)"
+    },
+    {
+      "file": "js/bosses/15-stage-boss-colossus-ground-fortress.js",
+      "section": "stage boss: Colossus ground fortress"
+    },
+    {
+      "file": "js/enemies/16-lethal-lances-horizontal-lane-lasers.js",
+      "section": "lethal lances: horizontal lane lasers fired across the surface"
+    },
+    {
+      "file": "js/bosses/17-surface-mini-bosses-and-colossus.js",
+      "section": "surface mini-bosses (levels 3 / 6 / 9) and Colossus escorts"
+    },
+    {
+      "file": "js/stages/18-stage-3-planet-base-interior.js",
+      "section": "stage 3: planet base interior (side-scrolling machinery corridor)"
+    },
+    {
+      "file": "js/bosses/19-gates.js",
+      "section": "gates (levels 3 / 6 / 9)"
+    },
+    {
+      "file": "js/bosses/20-final-boss-energy-core.js",
+      "section": "final boss: energy core"
+    },
+    {
+      "file": "js/stages/21-base-drawing.js",
+      "section": "base drawing"
+    },
+    {
+      "file": "js/enemies/22-base-unit-art.js",
+      "section": "base unit art (mounted on ceiling / floor)"
+    },
+    {
+      "file": "js/enemies/23-hive-enemy-art.js",
+      "section": "hive enemy art (top-down, facing down)"
+    },
+    {
+      "file": "js/bosses/24-hive-mid-bosses.js",
+      "section": "hive mid-bosses (levels 3 / 6 / 9 of stage 4)"
+    },
+    {
+      "file": "js/enemies/25-vertical-lethal-lances.js",
+      "section": "vertical lethal lances (columns fired down the screen in space stages)"
+    },
+    {
+      "file": "js/bosses/26-aegis-theme-b-fortress-world.js",
+      "section": "Aegis: theme-B fortress world (hive planet with a second spiked ring)"
+    },
+    {
+      "file": "js/stages/27-theme-b-surface-ember-world.js",
+      "section": "theme B surface: Ember World (volcanic planet)"
+    },
+    {
+      "file": "js/enemies/28-theme-b-surface-unit-logic.js",
+      "section": "theme B surface unit logic"
+    },
+    {
+      "file": "js/enemies/29-theme-b-unit-art.js",
+      "section": "theme B unit art (skin 2 = ember world, skin 3 = bio-lab)"
+    },
+    {
+      "file": "js/bosses/30-theme-b-surface-mini-bosses-and-the.js",
+      "section": "theme B surface mini-bosses (Phoenix / Anvil / Wyrm) and the Forge fortress"
+    },
+    {
+      "file": "js/stages/31-theme-b-base-interior-the-hive-lab.js",
+      "section": "theme B base interior: the Hive Lab (bio-organic facility)"
+    },
+    {
+      "file": "js/bosses/32-theme-b-boss-roster-patterns-and.js",
+      "section": "theme B: boss roster, patterns and shared glue"
+    },
+    {
+      "file": "js/world/33-stage-transition-cinematics.js",
+      "section": "stage-transition cinematics: atmosphere entry, fortress breach, base escape"
+    },
+    {
+      "file": "js/bosses/34-frost-mid-bosses-glacier-dreadnought.js",
+      "section": "frost mid-bosses: Glacier dreadnought / Aurora carrier / Zenith ring"
+    },
+    {
+      "file": "js/bosses/35-cryo-fortress-world-floating-ice.js",
+      "section": "cryo fortress world: floating ice shards on an inclined orbit"
+    },
+    {
+      "file": "js/stages/36-theme-c-surface-glacius.js",
+      "section": "theme C surface: Glacius (ice world)"
+    },
+    {
+      "file": "js/enemies/37-theme-c-unit-art-skin-4-skin-5.js",
+      "section": "theme C unit art: skin 4 (arctic surface) / skin 5 (cryo lab)"
+    },
+    {
+      "file": "js/bosses/38-theme-c-surface-mini-bosses-and-the.js",
+      "section": "theme C surface mini-bosses (Frostwing / Icebreaker / Cyclone) and the Glacier citadel"
+    },
+    {
+      "file": "js/stages/39-theme-c-base-interior-the-cryo.js",
+      "section": "theme C base interior: the Cryo-Quantum Lab"
+    },
+    {
+      "file": "js/bosses/40-theme-c-boss-roster-patterns-and.js",
+      "section": "theme C: boss roster, patterns and shared glue"
+    },
+    {
+      "file": "js/bosses/41-omega-star.js",
+      "section": "Omega Star (space phase)"
+    },
+    {
+      "file": "js/bosses/42-the-trench.js",
+      "section": "the Trench (side phase)"
+    },
+    {
+      "file": "js/bosses/43-omega-the-first-light.js",
+      "section": "OMEGA, the First Light (final boss)"
+    },
+    {
+      "file": "js/bosses/44-dive-into-the-omega-star-and-the.js",
+      "section": "dive into the Omega Star, and the ending"
+    },
+    {
+      "file": "js/world/45-adaptive-flight-speed-kill-fast-and.js",
+      "section": "adaptive flight speed: kill fast and the flight speeds up; kill slowly and it eases back to the base pace"
+    },
+    {
+      "file": "js/player/46-developer-only-ultimate-weapon.js",
+      "section": "developer-only ultimate weapon · STARBREAKER: piercing star column + homing star darts + nova pulse"
+    },
+    {
+      "file": "js/player/47-earned-super-weapon-every-10-w.js",
+      "section": "earned super weapon (normal mode): every 10 W = Starbreaker for 10 s; every 10 M = one nova pulse charge"
+    },
+    {
+      "file": "js/ui/48-first-flight-coaching-weapon-switch.js",
+      "section": "first-flight coaching: weapon switch, missiles, black holes, the W/M meters and both super weapons (shown once per device)"
+    },
+    {
+      "file": "js/world/49-stage-transitions.js",
+      "section": "stage transitions"
+    },
+    {
+      "file": "js/combat/50-effects.js",
+      "section": "effects"
+    },
+    {
+      "file": "js/player/51-player-weapons-spread-laser-beam.js",
+      "section": "player weapons: spread laser & beam laser (shared level 1-10)"
+    },
+    {
+      "file": "js/player/52-player-actions.js",
+      "section": "player actions"
+    },
+    {
+      "file": "js/combat/53-kills.js",
+      "section": "kills"
+    },
+    {
+      "file": "js/world/54-sectors.js",
+      "section": "sectors"
+    },
+    {
+      "file": "js/combat/55-enemy-fire.js",
+      "section": "enemy fire"
+    },
+    {
+      "file": "js/combat/56-beams.js",
+      "section": "beams"
+    },
+    {
+      "file": "js/world/57-black-hole-capture.js",
+      "section": "black hole capture"
+    },
+    {
+      "file": "js/enemies/58-planetary-defense-satellites.js",
+      "section": "planetary defense satellites"
+    },
+    {
+      "file": "js/combat/59-boss-parts.js",
+      "section": "boss parts"
+    },
+    {
+      "file": "js/core/60-update.js",
+      "section": "update"
+    },
+    {
+      "file": "js/player/61-drawing-actors.js",
+      "section": "drawing: actors"
+    },
+    {
+      "file": "js/player/62-v-7-vega-interceptor-layered-hull.js",
+      "section": "V-7 VEGA interceptor: layered hull, wingtip railgun pods, reactor core, energy conduits tinted by the active weapon"
+    },
+    {
+      "file": "js/ui/63-hud.js",
+      "section": "HUD"
+    },
+    {
+      "file": "js/core/64-render.js",
+      "section": "render"
+    },
+    {
+      "file": "js/ui/65-launch-screen-hero.js",
+      "section": "launch screen hero"
+    },
+    {
+      "file": "js/core/66-input.js",
+      "section": "input"
+    },
+    {
+      "file": "js/ui/67-ui.js",
+      "section": "UI"
+    },
+    {
+      "file": "js/ui/68-developer-mode-password-gated-panel.js",
+      "section": "developer mode: password-gated panel to jump to any stage, sector or boss for testing"
+    },
+    {
+      "file": "js/ui/69-leaderboard-every-pilot-s-best-run.js",
+      "section": "leaderboard: every pilot's best run in the artifact's shared db (scores/<their id>); this device's records when offline"
+    },
+    {
+      "file": "js/core/70-sizing-loop.js",
+      "section": "sizing + loop"
+    }
+  ]
+}

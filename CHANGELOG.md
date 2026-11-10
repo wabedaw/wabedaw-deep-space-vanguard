@@ -1,5 +1,12 @@
 # 更新记录 / Changelog
 
+## 未发布 / Unreleased — 1.0 开发中
+
+### M1 架构重构
+- 第 1 步：8,700 行单文件按系统拆成 71 个源文件（`src/js/<系统>/`），`tools/build.mjs` 按 `src/manifest.json` 的顺序拼回单文件并生成网站包。拼出的游戏与 v0.1 逐字节一致，玩法零变化。
+- 构建改用 Node（`npm run build`），网站版静态资源移到 `assets/web/`，产物输出到 `dist/`。
+- 项目定名《烬翼：弑光》/ ASHWING: Slay the First Light；游戏内的标题和图标在后续换皮时更新。
+
 ## v0.1.0 — 测试版 / Test build (2026-11-10)
 
 首个可公开测试的版本，用于真人试玩、收集难度与手感数据。

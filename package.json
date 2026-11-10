@@ -1,0 +1,12 @@
+{
+  "name": "ashwing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "烬翼：弑光 / ASHWING: Slay the First Light (formerly 深空先锋 / Deep Space Vanguard)",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "test": "node tools/build.mjs && python3 tests/smoke_test.py",
+    "test:campaign": "node tools/build.mjs && python3 tests/campaign_bot.py dist/claude/ashwing.html desk 1280 800"
+  }
+}

@@ -1,0 +1,115 @@
+
+
+<div id="game"><canvas id="c" aria-label="Deep Space Vanguard game view" data-zh-aria="深空先锋游戏画面"></canvas></div>
+<div id="insetProbe"></div>
+
+<div class="overlay hero" id="menu">
+  <header class="hero-head">
+    <h1 class="hero-title"><span class="ht-main" data-zh="深空先锋">Deep Space<br>Vanguard</span><span class="ht-sub" data-zh="DEEP SPACE VANGUARD">V-7 VEGA INTERCEPTOR</span></h1>
+  </header>
+  <div class="hero-foot">
+    <div class="help-sheet" id="helpSheet" hidden>
+      <dl class="keys">
+        <div><dt><kbd>W A S D</kbd><kbd data-zh="方向键">Arrows</kbd><kbd data-zh="拖动">Drag</kbd></dt><dd data-zh="移动">Move</dd></div>
+        <div><dt><kbd data-zh="空格">Space</kbd><kbd>F</kbd></dt><dd data-zh="射击 · 切换自动">Fire · toggle auto</dd></div>
+        <div><dt><kbd>Shift</kbd><kbd>X</kbd><kbd data-zh="右键">Right-click</kbd></dt><dd data-zh="追踪飞弹">Homing missiles</dd></div>
+        <div><dt><kbd>Q</kbd><kbd>1</kbd><kbd>2</kbd></dt><dd data-zh="切换武器 · 散射 / 激光束">Switch weapon · Spread / Beam</dd></div>
+        <div><dt><kbd>E</kbd></dt><dd data-zh="湮星脉冲：每收集 10 个 M 充能一次 · 每收集 10 个 W 启动歼星炮 10 秒">Nova pulse: every 10 M charges one · every 10 W fires the Starbreaker for 10 s</dd></div>
+        <div><dt><kbd>P</kbd><kbd>M</kbd><kbd>N</kbd></dt><dd data-zh="暂停 · 静音 · 音乐">Pause · mute · music</dd></div>
+      </dl>
+      <button class="help-btn tut-reset" id="tutResetBtn" type="button" data-zh="重看新手指引">Replay flight guide</button>
+    </div>
+    <button class="launch" id="startBtn" type="button">
+      <span class="launch-frame" aria-hidden="true"></span>
+      <span class="launch-core"><span class="launch-label" data-zh="启航">Launch</span><span class="launch-chev" aria-hidden="true"><i></i><i></i><i></i></span></span>
+    </button>
+    <button class="cont-btn" id="stageBtn" type="button" hidden><span class="cont-core"><span class="cont-label" id="contLabel">Continue</span><span class="cont-stage" id="contStage"></span><span class="cont-chev" aria-hidden="true">›</span></span></button>
+    <div class="hero-meta">
+      <span><span data-zh="最高纪录">Best</span> <b id="bestMenu">0</b></span>
+      <button class="help-btn lb-btn" id="lbBtn" type="button" data-zh="排行榜">Leaderboard</button>
+      <button class="help-btn" id="helpBtn" type="button" aria-expanded="false" aria-controls="helpSheet" data-zh="操作说明">Controls</button>
+      <button class="help-btn lang-btn" id="langBtn" type="button" aria-label="Language / 语言" data-zh="English">中文</button>
+      <button class="help-btn dev-btn" id="devBtn" type="button" data-zh="开发者">Dev</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="over" hidden>
+  <div class="frame"><div class="panel">
+    <p class="eyebrow red" id="overEyebrow" data-zh="任务报告 · 信号中断">Mission report · signal lost</p>
+    <h2 class="red" id="overTitle" data-zh="舰体损毁&lt;small&gt;VESSEL LOST&lt;/small&gt;">Vessel lost<small>HULL INTEGRITY 0%</small></h2>
+    <p class="newbest" id="newBest" hidden data-zh="新纪录">NEW RECORD</p>
+    <dl class="stats">
+      <div class="hi"><dt data-zh="得分">Score</dt><dd id="oScore">0</dd></div>
+      <div><dt data-zh="最高纪录">Best</dt><dd id="oBest">0</dd></div>
+      <div><dt data-zh="抵达扇区">Sector reached</dt><dd id="oSector">01</dd></div>
+      <div><dt data-zh="击毁敌舰">Ships destroyed</dt><dd id="oKills">0</dd></div>
+      <div><dt data-zh="击碎陨石">Asteroids shattered</dt><dd id="oRocks">0</dd></div>
+      <div><dt data-zh="航程">Distance</dt><dd id="oDist">0 AU</dd></div>
+    </dl>
+    <p class="lbnote" id="lbNote" hidden></p>
+    <button class="btn" id="againBtn" type="button" data-zh="再次出击&lt;span&gt;ENTER&lt;/span&gt;">Fly again<span>ENTER</span></button>
+    <button class="btn ghost" id="overLbBtn" type="button" data-zh="查看排行榜">View leaderboard</button>
+  </div></div>
+</div>
+
+<div class="overlay" id="pauseOv" hidden>
+  <div class="frame"><div class="panel">
+    <p class="eyebrow" data-zh="系统待机">Systems on standby</p>
+    <h2 data-zh="已暂停&lt;small&gt;STANDBY&lt;/small&gt;">Paused<small>ALL SYSTEMS HOLDING</small></h2>
+    <button class="btn" id="resumeBtn" type="button" data-zh="继续任务&lt;span&gt;P&lt;/span&gt;">Resume mission<span>P</span></button>
+    <button class="btn ghost" id="quitBtn" type="button" data-zh="返回简报&lt;span&gt;ESC&lt;/span&gt;">Back to brief<span>ESC</span></button>
+    <button class="btn ghost" id="pauseDevBtn" type="button" hidden data-zh="开发者面板&lt;span&gt;DEV&lt;/span&gt;">Developer panel<span>DEV</span></button>
+  </div></div>
+</div>
+
+<div class="overlay" id="lbOv" hidden role="dialog" aria-modal="true" aria-labelledby="lbH">
+  <div class="frame"><div class="panel">
+    <p class="eyebrow" data-zh="全体飞行员 · 最高分">All pilots · best runs</p>
+    <h2 id="lbH" data-zh="排行榜&lt;small&gt;LEADERBOARD&lt;/small&gt;">Leaderboard<small>HALL OF VANGUARDS</small></h2>
+    <p class="lb-status" id="lbStatus"></p>
+    <ol class="lb-list" id="lbList"></ol>
+    <form class="lb-call" id="lbCallForm" autocomplete="off"><div class="lb-call-row" id="lbCallRow" hidden>
+      <label for="lbCall" data-zh="我的呼号">My callsign</label>
+      <input id="lbCall" maxlength="16" autocomplete="off" spellcheck="false" enterkeyhint="done">
+      <button class="help-btn" type="submit" data-zh="保存">Save</button><span class="lb-msg" id="lbCallMsg" aria-live="polite"></span>
+    </div></form>
+    <button class="btn ghost" id="lbClose" type="button" data-zh="关闭&lt;span&gt;ESC&lt;/span&gt;">Close<span>ESC</span></button>
+  </div></div>
+</div>
+
+<div class="overlay" id="devOv" hidden role="dialog" aria-modal="true" aria-labelledby="devH">
+  <div class="frame"><div class="panel">
+    <p class="eyebrow" data-zh="测试专用 · 不计入纪录">Testing only · runs are not recorded</p>
+    <h2 id="devH" data-zh="开发者模式&lt;small&gt;DEVELOPER MODE&lt;/small&gt;">Dev console<small>DEVELOPER MODE</small></h2>
+    <form class="dev-lock" id="devLock" autocomplete="off">
+      <label for="devPw" data-zh="请输入开发者密码">Enter the developer password</label>
+      <div class="dev-row"><input id="devPw" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"><button class="btn" type="submit" data-zh="解锁">Unlock</button></div>
+      <p class="dev-err" id="devErr" hidden data-zh="密码错误，请重试">Wrong password, try again</p>
+    </form>
+    <div class="dev-body" id="devBody" hidden>
+      <p class="dev-h"><span data-zh="选择关卡">Choose a stage</span></p>
+      <div class="dev-stages" id="devStages"></div>
+      <p class="dev-h"><b id="devTitle"></b><span data-zh="从扇区开头出发 · ◆ 有BOSS">Start at a sector · ◆ has a boss</span></p>
+      <div class="dev-secs" id="devSecs"></div>
+      <p class="dev-h"><span data-zh="直接进入BOSS战">Straight to a boss fight</span></p>
+      <div class="dev-bosses" id="devBosses"></div>
+      <div class="dev-opts">
+        <label><input type="checkbox" id="devGod" checked><span data-zh="无敌（不会坠毁）">Invincible</span></label>
+        <label><input type="checkbox" id="devMax" checked><span data-zh="满级火力 + 无限飞弹">Max weapons + unlimited missiles</span></label>
+        <label><input type="checkbox" id="devUlt" checked><span data-zh="终极武器 · 歼星炮">Ultimate weapon · Starbreaker</span></label>
+      </div>
+    </div>
+    <div class="dev-foot">
+      <button class="btn ghost" id="devClose" type="button" data-zh="关闭&lt;span&gt;ESC&lt;/span&gt;">Close<span>ESC</span></button>
+      <button class="help-btn" id="devLockBtn" type="button" hidden data-zh="锁定开发者模式">Lock developer mode</button>
+    </div>
+  </div></div>
+</div>
+
+<button class="hudbtn" id="soundBtn" type="button" aria-label="Sound" data-zh-aria="声音"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h3l4-3.5v13L7 15H4z" fill="currentColor" stroke="none"/><g class="i-wave"><path d="M14.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M17 7a7 7 0 0 1 0 10"/></g><g class="i-note"><path d="M20 3.5v5.5"/><circle cx="18.6" cy="9.3" r="1.5" fill="currentColor" stroke="none"/></g><g class="i-x"><path d="M15 9.5l5 5M20 9.5l-5 5"/></g></svg></button>
+<button class="hudbtn" id="pauseBtn" type="button" aria-label="Pause" data-zh-aria="暂停" hidden></button>
+<button class="hudbtn" id="missileBtn" type="button" hidden data-zh="飞弹">MISSILE</button>
+<button class="hudbtn" id="novaBtn" type="button" hidden aria-label="Nova pulse" data-zh-aria="湮星脉冲"></button>
+<button class="hudbtn" id="weaponBtn" type="button" aria-label="Switch weapon" data-zh-aria="切换武器" hidden data-zh="光束">BEAM</button>
+
