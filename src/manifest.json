@@ -282,6 +282,10 @@
       "section": "leaderboard: every pilot's best run in the artifact's shared db (scores/<their id>); this device's records when offline"
     },
     {
+      "file": "js/core/70a-fixed-step.js",
+      "section": "fixed-step simulation + render interpolation"
+    },
+    {
       "file": "js/core/70-sizing-loop.js",
       "section": "sizing + loop"
     }

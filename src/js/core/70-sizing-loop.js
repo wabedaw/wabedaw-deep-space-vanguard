@@ -22,19 +22,22 @@ function resize() {
 let rt = null;
 addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 120); });
 
-let last = performance.now();
+let last = performance.now(), acc = 0;
 function frame(now) {
   let dt = (now - last) / 1000; last = now;
-  if (dt > .05) dt = .05;
+  if (dt > .05) dt = .05;   // after a stall, slow down rather than jump ahead
   requestAnimationFrame(frame);
   try {
     if (S.mode !== 'pause') {
-      // substep for stability under gravity
-      const steps = dt > .025 ? 2 : 1;
-      for (let i = 0; i < steps; i++) update(dt / steps);
-    }
-  } catch (err) { console.error(err); }
-  try { render(); } catch (err) { ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; console.error(err); }
+      acc += dt;
+      let n = 0;
+      while (acc >= STEP && n < 4) { simStep(); acc -= STEP; n++; }
+      if (acc >= STEP) acc = 0;
+    } else acc = 0;
+  } catch (err) { acc = 0; console.error(err); }
+  try { lerpApply(S.mode === 'pause' ? 1 : acc / STEP); render(); }
+  catch (err) { ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; console.error(err); }
+  finally { lerpRestore(); }
 }
 
 function boot() {
