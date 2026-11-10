@@ -10,7 +10,7 @@ function vlanceVolley(mode, o = {}) {
     for (let i = 1; i < 3; i++) { const x = px + d * i * gap; if (x < lo - 4 || x > hi + 4) break; addLance(x, { ...base, charge: ch + i * .4, quiet: true }); }
   } else if (mode === 'wall') {
     const n = Math.max(3, Math.floor((hi - lo) / (w * 1.5 + 34))), sp = (hi - lo) / n, cur = clamp(Math.floor((px - lo) / sp), 0, n - 1);
-    let safe = clamp(cur + (Math.random() < .5 ? -1 : 1) * (1 + ((Math.random() * 2) | 0)), 0, n - 1); if (safe === cur) safe = cur > 0 ? cur - 1 : cur + 1;
+    let safe = clamp(cur + (rnd() < .5 ? -1 : 1) * (1 + ((rnd() * 2) | 0)), 0, n - 1); if (safe === cur) safe = cur > 0 ? cur - 1 : cur + 1;
     let last = null;
     for (let i = 0; i < n; i++) if (i !== safe) last = addLance(lo + (i + .5) * sp, { ...base, w: sp * .62, charge: ch + .5, quiet: !!last });
     return last;

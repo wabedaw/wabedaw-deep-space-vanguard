@@ -1,6 +1,6 @@
 /* ---------- the Trench (side phase) ---------- */
 function trenchWave() {
-  const [minY, maxY] = baseBand(), r = Math.random(), n = 4 + ((Math.random() * 3) | 0), y0 = rand(minY + 20, Math.max(minY + 21, maxY - 20));
+  const [minY, maxY] = baseBand(), r = rnd(), n = 4 + ((rnd() * 3) | 0), y0 = rand(minY + 20, Math.max(minY + 21, maxY - 20));
   if (r < .3) for (let i = 0; i < 2; i++) spawnAir('ace', W + 40 + i * 70, rand(minY, maxY));
   else for (let i = 0; i < n; i++) { const m = i - (n - 1) / 2; spawnAir('fighter', W + 40 + Math.abs(m) * 34, clamp(y0 + m * 26, minY, maxY), { amp: 6 }); }
 }
@@ -14,7 +14,7 @@ function finalLogic(dt) {
   const lv = levelOf(S.sector); S.sectorT += dt * (S.flow || 1);
   if (lv === 1) {
     if (S.boss || S.bossPending) return;
-    S.tShip -= dt * (S.flow || 1); if (S.tShip <= 0 && S.sectorT < 24) { if (ships.length < 30) (Math.random() < .5 ? spawnWaveC : spawnWaveB)(); S.tShip = rand(1, 1.6); }
+    S.tShip -= dt * (S.flow || 1); if (S.tShip <= 0 && S.sectorT < 24) { if (ships.length < 30) (rnd() < .5 ? spawnWaveC : spawnWaveB)(); S.tShip = rand(1, 1.6); }
     S.tRock -= dt; if (S.tRock <= 0) { spawnRock(); S.tRock = rand(1, 2); }
     if (S.sectorT >= 26) { S.bossPending = true; S.warn = 3.4; sfx.warn(); S.warnName = BOSSES.omega.name; S.events.push({ t: 3, fn: spawnOmega }); }
   } else {

@@ -37,7 +37,7 @@ function updateBeams(dt) {
         const dx = k.x - b.x, dy = k.y - b.y;
         if (dx * cx + dy * cy > 0 && Math.abs(-dx * cy + dy * cx) < b.w * .5 + k.r * .7) { k.dead = true; explode(k.x, k.y, k.r * .7, DUST); }
       }
-    } else if (parts.length < 1500 && Math.random() < .6) {
+    } else if (parts.length < 1500 && rnd() < .6) {
       const a = rand(0, TAU), rr = b.w * 2.6;
       parts.push({ k: 'spark', x: b.x + Math.cos(a) * rr, y: b.y + Math.sin(a) * rr, vx: -Math.cos(a) * rr * 5, vy: -Math.sin(a) * rr * 5, life: .18, max: .18, c: pick([b.c, '255,255,255']), w: 1.2 });
     }

@@ -33,7 +33,7 @@ function updateGod(e, dt, canFire, spK) {
     if (!live) continue;
     p.fireT -= dt; if (p.fireT > 0) continue;
     switch (p.role) {
-      case 'lance': bossLance(e, Math.random() < .5 ? 'double' : 'single', L); p.fireT = 6 / L; break;
+      case 'lance': bossLance(e, rnd() < .5 ? 'double' : 'single', L); p.fireT = 6 / L; break;
       case 'spiral': { const o = rand(0, TAU); for (let i = 0; i < 16; i++) eFire('orb', p.x, p.y, o + i / 16 * TAU, 170 * s, { c: GODC, silent: i > 0 }); p.fireT = 2.6 / L; break; }
       case 'homing': for (let k = 0; k < 3; k++) eFire('homing', p.x, p.y, Math.PI + (k - 1) * .6, 160 * s, { seek: 2.6, turn: 2.4, c: GODC, silent: k > 0 }); p.fireT = 3.4 / L; break;
       case 'laser': addBeam({ owner: p, ox: 0, oy: 0, w: 14, charge: 1.2, fire: 1.4, mode: 'track', sweep: .24 * spK, c: '255,230,170', dmg: 16 }); p.fireT = 5 / L; break;
@@ -44,7 +44,7 @@ function updateGod(e, dt, canFire, spK) {
   if (e.gravT > 0) {
     e.gravT -= dt; const dx = e.gravX - P.x, dy = e.gravY - P.y, d = Math.hypot(dx, dy) || 1;
     if (P.alive && !P.cap) { P.gx += dx / d * 300 * dt; P.gy += dy / d * 300 * dt; }
-    if (Math.random() < .6 && parts.length < 1300) { const a = rand(0, TAU), rr = rand(60, 160); parts.push({ k: 'spark', x: e.gravX + Math.cos(a) * rr, y: e.gravY + Math.sin(a) * rr, vx: -Math.cos(a) * 200, vy: -Math.sin(a) * 200, life: .5, max: .5, c: GODC, w: 1.2 }); }
+    if (rnd() < .6 && parts.length < 1300) { const a = rand(0, TAU), rr = rand(60, 160); parts.push({ k: 'spark', x: e.gravX + Math.cos(a) * rr, y: e.gravY + Math.sin(a) * rr, vx: -Math.cos(a) * 200, vy: -Math.sin(a) * 200, life: .5, max: .5, c: GODC, w: 1.2 }); }
   }
   if (e.phase >= 2 && !e.haloGone) {
     e.haloGone = true; e.shield = false; shieldDown(e);

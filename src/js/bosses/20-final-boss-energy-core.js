@@ -24,7 +24,7 @@ function updateCore(e, dt, canFire) {
   e.hw = e.hh = coreRad(e);
   e.spin += dt * (e.phase === 3 ? 1.7 : e.phase === 2 ? 1.2 : .8);
   mountParts(e, dt, canFire && e.entered);
-  if (Math.random() < .25 && parts.length < 1300) { const a = rand(0, TAU), rr = e.r * rand(1, 1.4); parts.push({ k: 'spark', x: e.x + Math.cos(a) * rr, y: e.y + Math.sin(a) * rr, vx: Math.cos(a) * 60, vy: Math.sin(a) * 60, life: .3, max: .3, c: pick([coreCol(e), WHITE]), w: 1.2 }); }
+  if (rnd() < .25 && parts.length < 1300) { const a = rand(0, TAU), rr = e.r * rand(1, 1.4); parts.push({ k: 'spark', x: e.x + Math.cos(a) * rr, y: e.y + Math.sin(a) * rr, vx: Math.cos(a) * 60, vy: Math.sin(a) * 60, life: .3, max: .3, c: pick([coreCol(e), WHITE]), w: 1.2 }); }
 }
 function coreCol(e) { return e.phase === 3 ? '255,80,80' : e.phase === 2 ? '255,170,90' : '120,220,255'; }
 function coreShieldHit(e, dmg, x, y) {
@@ -49,7 +49,7 @@ function coreDown(e) {
 }
 function updateCoreDying(e, dt) {
   e.dyingT += dt; e.x = e.wx - S.wx;
-  if (!e.gone) { e.spin += dt * 4; if (Math.random() < .6 && parts.length < 1300) { const a = rand(0, TAU); parts.push({ k: 'spark', x: e.x, y: e.y, vx: Math.cos(a) * rand(200, 500), vy: Math.sin(a) * rand(200, 500), life: .4, max: .4, c: pick([coreCol(e), WHITE]), w: 1.6 }); } }
+  if (!e.gone) { e.spin += dt * 4; if (rnd() < .6 && parts.length < 1300) { const a = rand(0, TAU); parts.push({ k: 'spark', x: e.x, y: e.y, vx: Math.cos(a) * rand(200, 500), vy: Math.sin(a) * rand(200, 500), life: .4, max: .4, c: pick([coreCol(e), WHITE]), w: 1.6 }); } }
   else if (e.dyingT > 6) e.dead = true;
 }
 

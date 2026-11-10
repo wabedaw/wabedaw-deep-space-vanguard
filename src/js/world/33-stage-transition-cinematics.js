@@ -7,8 +7,8 @@ const CINE_PAL = {
 };
 const cinePal = tr => CINE_PAL[tr.th] || CINE_PAL[1];
 function cineSprites(tr) { if (!tr.spr) tr.spr = makeCloudSprites(cinePal(tr).cloud); return tr.spr; }
-function puffV(tr) { tr.puffs.push({ x: rand(-260, W), y: -rand(140, 320), s: rand(1.4, 3.2), i: (Math.random() * 4) | 0, a: rand(.55, .95), f: Math.random() < .4, vx: 0, vy: rand(900, 1500) }); }
-function puffS(tr, x) { tr.puffs.push({ x: x ?? W + rand(20, 200), y: rand(-60, H * .9), s: rand(1.5, 3.4), i: (Math.random() * 4) | 0, a: rand(.55, .95), f: Math.random() < .5, vx: -rand(1100, 1700), vy: rand(-40, 60) }); }
+function puffV(tr) { tr.puffs.push({ x: rand(-260, W), y: -rand(140, 320), s: rand(1.4, 3.2), i: (rnd() * 4) | 0, a: rand(.55, .95), f: rnd() < .4, vx: 0, vy: rand(900, 1500) }); }
+function puffS(tr, x) { tr.puffs.push({ x: x ?? W + rand(20, 200), y: rand(-60, H * .9), s: rand(1.5, 3.4), i: (rnd() * 4) | 0, a: rand(.55, .95), f: rnd() < .5, vx: -rand(1100, 1700), vy: rand(-40, 60) }); }
 function updPuffs(tr, dt) { for (const p of tr.puffs) { p.x += p.vx * dt; p.y += p.vy * dt; } tr.puffs = tr.puffs.filter(p => p.y < H + 60 && p.x > -320 * p.s - 40); }
 function drawPuffs(tr, front, fade = 1) {
   if (!tr.puffs || !tr.puffs.length || fade <= 0) return;
@@ -68,7 +68,7 @@ function updateTransition(dt) {
     if (!tr.switched) {
       S.scrollT = 460; P.x += (W * .8 - P.x) * Math.min(1, dt * 1.2); P.y += (H * .5 - P.y) * Math.min(1, dt * 1.5); P.evx = 500; P.bank *= .9;
       transExhaust(1, 0, ['120,200,255', '200,240,255', '255,255,255'], 3); shake(4);
-      if (Math.random() < .25 && parts.length < 1300) explode(rand(0, W * .45), rand(H * .2, H * .8), rand(20, 50), FIRE);
+      if (rnd() < .25 && parts.length < 1300) explode(rand(0, W * .45), rand(H * .2, H * .8), rand(20, 50), FIRE);
       S.wflash = Math.max(S.wflash, clamp((tr.t - 1.5) / .7, 0, 1));
       if (tr.t >= 2.2) {
         tr.switched = true; S.wflash = 1; leaveSurface(); S.sector++; S.sectorT = 0; S.bossPending = false; planet = null; planetTimer = 14; parts.length = 0;
@@ -180,7 +180,7 @@ const ICEP = [ICE, '235,250,255', '120,180,255', WHITE];
 
 function initCryoShip(e, d) {
   if (e.type === 'comet') {
-    const fromL = Math.random() < .5; e.x = fromL ? rand(-30, W * .35) : rand(W * .65, W + 30); e.bx = e.x;
+    const fromL = rnd() < .5; e.x = fromL ? rand(-30, W * .35) : rand(W * .65, W + 30); e.bx = e.x;
     const tx = clamp(P.x + rand(-60, 60), 30, W - 30), ty = Math.max(P.y, H * .6), a = Math.atan2(ty - e.y, tx - e.x), sp = rand(430, 540) * Math.min(1.35, Math.sqrt(d));
     e.vx = Math.cos(a) * sp; e.vy = Math.sin(a) * sp; e.aim = a; e.warnT = .55;
   } else { e.vy = rand(150, 190); e.state = 0; e.zz = rand(1.6, 2.4); e.fireT = rand(.4, 1); }
@@ -205,10 +205,10 @@ function updateCryo(e, dt, canFire, spK, d) {
   if (e.y > H + 40) e.dead = true;
 }
 function spawnWaveC() {
-  const r = Math.random(), lv = levelOf(S.sector);
+  const r = rnd(), lv = levelOf(S.sector);
   if (r < .1) spawnShip('gunship', rand(W * .2, W * .8));
-  else if (r < .2) spawnShip(Math.random() < .5 ? 'brood' : 'lancer', rand(W * .2, W * .8));
-  else if (r < .32) spawnShip(Math.random() < .5 ? 'prism' : 'lancer', rand(W * .15, W * .85));
+  else if (r < .2) spawnShip(rnd() < .5 ? 'brood' : 'lancer', rand(W * .2, W * .8));
+  else if (r < .32) spawnShip(rnd() < .5 ? 'prism' : 'lancer', rand(W * .15, W * .85));
   else if (r < .44) { for (let i = 0; i < 2; i++) spawnShip(i ? 'mantis' : 'raider', rand(W * .15, W * .85), -40 - i * 60); }
   else if (r < .56) { const n = 3 + Math.min(3, lv >> 1); for (let i = 0; i < n; i++) spawnShip('urchin', rand(40, W - 40), -30 - i * 60); }
   else if (r < .72) { const n = 3 + Math.min(2, lv >> 2); for (let i = 0; i < n; i++) S.events.push({ t: i * .28, fn: () => { if (P.alive && S.mode === 'play') spawnShip('comet', 0, -30); } }); }

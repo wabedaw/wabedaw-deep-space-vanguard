@@ -14,9 +14,22 @@ if (ZH) {
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 const TAU = Math.PI * 2;
-const rand = (a, b) => a + Math.random() * (b - a);
+/* Randomness has two streams. The simulation (spawns, enemy AI, bullet patterns, drops) draws from a seeded
+   generator, so the same seed and the same inputs replay the same run: weekly challenges, replays and bug repro
+   depend on it. Drawing, particles, sound and the menu draw from Math.random, so frame rate, sound or the
+   reduced-motion setting can never change what happens in the game. render() switches to the fx stream. */
+const RNG = (() => {
+  let s = (Math.random() * 4294967296) >>> 0, fx = false;
+  const sim = () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  return { seed(v) { s = v >>> 0; }, get state() { return s; }, get fx() { return fx; }, set fx(v) { fx = !!v; }, next() { return fx ? Math.random() : sim(); } };
+})();
+const SEED_URL = (() => { const m = location.search.match(/[?&]seed=(\d+)/); return m ? (+m[1]) >>> 0 : null; })();
+const rnd = () => RNG.next();
+const rand = (a, b) => a + rnd() * (b - a);
+const frand = (a, b) => a + Math.random() * (b - a);
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
-const pick = a => a[(Math.random() * a.length) | 0];
+const pick = a => a[(rnd() * a.length) | 0];
+const fpick = a => a[(Math.random() * a.length) | 0];
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COARSE = matchMedia('(pointer: coarse)').matches;
 

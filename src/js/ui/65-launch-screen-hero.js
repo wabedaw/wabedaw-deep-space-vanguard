@@ -19,7 +19,7 @@ function heroExhaust() {
   if (parts.length > 1400) return;
   const h = heroPose(), boost = S.mode === 'launch' ? 1.8 : 1, bank = Math.sin(S.t * .8) * .3, sx = 1 - Math.abs(bank) * .28;
   for (const sd of [-5, 5]) for (let i = 0; i < (S.mode === 'launch' ? 3 : 2); i++) {
-    parts.push({ k: 'ember', x: h.x + sd * sx * h.k + rand(-1, 1) * h.k, y: h.y + 28 * h.k, vx: rand(-20, 20) * h.k * .3, vy: rand(260, 440) * boost * h.k / 3, life: rand(.18, .34), max: .34, c: pick(['120,200,255', '200,240,255', '90,160,255']), r: rand(1.4, 2.6) * h.k / 2.4 });
+    parts.push({ k: 'ember', x: h.x + sd * sx * h.k + frand(-1, 1) * h.k, y: h.y + 28 * h.k, vx: frand(-20, 20) * h.k * .3, vy: frand(260, 440) * boost * h.k / 3, life: frand(.18, .34), max: .34, c: fpick(['120,200,255', '200,240,255', '90,160,255']), r: frand(1.4, 2.6) * h.k / 2.4 });
   }
 }
 function drawHero() {

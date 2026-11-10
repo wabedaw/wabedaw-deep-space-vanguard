@@ -78,7 +78,7 @@ function gateDown(e) {
 function updateGateDying(e, dt) {
   e.dyingT += dt; gateGeo(e);
   if (e.dyingT > 1.2) e.open = Math.min(1, e.open + dt * .9);
-  if (Math.random() < .3 && parts.length < 1300) parts.push({ k: 'smoke', x: e.x + rand(-.5, 1.2) * e.hw, y: e.y + rand(-1, 1) * e.hh * .8, vx: -S.scroll * .4, vy: -rand(20, 50), life: rand(1.2, 2), max: 2, r: rand(8, 18), g: 16, c: '40,36,40' });
+  if (rnd() < .3 && parts.length < 1300) parts.push({ k: 'smoke', x: e.x + rand(-.5, 1.2) * e.hw, y: e.y + rand(-1, 1) * e.hh * .8, vx: -S.scroll * .4, vy: -rand(20, 50), life: rand(1.2, 2), max: 2, r: rand(8, 18), g: 16, c: '40,36,40' });
   if (e.x < -e.hw * 4) e.dead = true;
 }
 

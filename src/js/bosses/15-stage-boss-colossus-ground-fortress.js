@@ -79,7 +79,7 @@ function colossusDown(e) {
 }
 function updateColossusDying(e, dt) {
   e.dyingT += dt; e.x = e.wx - S.wx;
-  if (Math.random() < .35 && parts.length < 1300) parts.push({ k: 'smoke', x: e.x + rand(-.2, 1.4) * e.hw, y: e.y + rand(-1.1, .6) * e.hh, vx: -S.scroll * .4, vy: -rand(20, 50), life: rand(1.2, 2.2), max: 2.2, r: rand(10, 22), g: 18, c: '36,32,36' });
+  if (rnd() < .35 && parts.length < 1300) parts.push({ k: 'smoke', x: e.x + rand(-.2, 1.4) * e.hw, y: e.y + rand(-1.1, .6) * e.hh, vx: -S.scroll * .4, vy: -rand(20, 50), life: rand(1.2, 2.2), max: 2.2, r: rand(10, 22), g: 18, c: '36,32,36' });
   if (e.x < -e.hw * 3) e.dead = true;
 }
 function drawColossus(e, pulse) {
@@ -148,7 +148,7 @@ function drawColossus(e, pulse) {
     }
   } else {
     ctx.fillStyle = '#0b0a0d'; ctx.beginPath(); ctx.arc(0, 0, h * .42, 0, TAU); ctx.fill();
-    ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, h * .5, '255,120,40', .35 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over';
+    ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, h * .5, '255,120,40', .35 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over';
   }
   for (const p of e.parts) if (!p.hidden || p.dead) drawModule(e, p, pulse);
 }

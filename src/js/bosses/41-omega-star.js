@@ -103,7 +103,7 @@ function omegaDown(e) {
   S.events.push({ t: 1.7, fn: () => { explode(gx, gy, 140, FIRE, { debris: '120,120,130' }); sfx.boom(180, gx, 'huge'); shake(26); S.wflash = .7; ebul.length = 0; clearBeams(); addScore(e.score, gx, gy); for (const s2 of ships) if (s2 !== e && !s2.dead) killShip(s2, true); floatText(gx, gy - 70, I18('极地大门洞开', 'POLAR GATE OPEN'), FLARE, true); } });
   S.events.push({ t: 3.6, fn: () => beginTransition('dive') });
 }
-function updateOmegaDying(e, dt) { e.dyingT += dt; updateOmega(e, dt, false, 1); if (Math.random() < .3 && parts.length < 1300) sparks(e.x + e.gox + rand(-e.gr, e.gr), e.y + e.goy + rand(-e.gr, e.gr), 2, FIRE); }
+function updateOmegaDying(e, dt) { e.dyingT += dt; updateOmega(e, dt, false, 1); if (rnd() < .3 && parts.length < 1300) sparks(e.x + e.gox + rand(-e.gr, e.gr), e.y + e.goy + rand(-e.gr, e.gr), 2, FIRE); }
 function drawOmega(e, pulse) {
   const PR = e.PR, live = !e.dying, C = e.stage === 3 ? '255,90,70' : OMEGA_C;
   ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, PR * 1.35, '255,120,90', .18); ctx.globalCompositeOperation = 'source-over';
@@ -145,7 +145,7 @@ function drawOmega(e, pulse) {
   }
   for (const p of e.parts) if (p.type === 'pylon') {
     const px = p.ox, py = p.oy, a = p.ang, nx = Math.cos(a), ny = Math.sin(a);
-    if (p.dead) { ctx.globalCompositeOperation = 'lighter'; drawGlow(px, py, 16, '255,120,40', .35 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over'; continue; }
+    if (p.dead) { ctx.globalCompositeOperation = 'lighter'; drawGlow(px, py, 16, '255,120,40', .35 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over'; continue; }
     ctx.strokeStyle = '#7a7e8a'; ctx.lineWidth = p.r * .6; ctx.beginPath(); ctx.moveTo(px - nx * p.r, py - ny * p.r); ctx.lineTo(px + nx * p.r * 1.6, py + ny * p.r * 1.6); ctx.stroke();
     ctx.fillStyle = '#c8ccd6'; ctx.beginPath(); ctx.arc(px + nx * p.r * 1.6, py + ny * p.r * 1.6, p.r * .55, 0, TAU); ctx.fill();
     ctx.globalCompositeOperation = 'lighter'; drawGlow(px + nx * p.r * 1.6, py + ny * p.r * 1.6, p.r * 1.3, '255,200,140', .6 + .3 * pulse);

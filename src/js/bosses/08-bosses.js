@@ -114,7 +114,7 @@ const BOSS_FN = {
     if (c.t > 1 && c.ft <= 0) { c.ft = .55 / L; const [x, y] = ab(e, G.core); eShot(x, y, aimAng(x, y), 230 * s, PLASMA, 6); }
   },
   wheel(e, c, G, s, L) {
-    if (!c.n) { c.n = 1; e.hold = 5.2; const n = e.phase === 3 ? 7 : 5, o = rand(0, TAU), dir = Math.random() < .5 ? 1 : -1; for (let i = 0; i < n; i++) addBeam({ owner: e, ox: 0, oy: 0, w: 12, charge: 1.4, fire: 3.6, mode: 'spin', ang: o + i / n * TAU, spin: dir * (.26 + .05 * L), c: '150,255,200', dmg: 14, quiet: i > 0 }); }
+    if (!c.n) { c.n = 1; e.hold = 5.2; const n = e.phase === 3 ? 7 : 5, o = rand(0, TAU), dir = rnd() < .5 ? 1 : -1; for (let i = 0; i < n; i++) addBeam({ owner: e, ox: 0, oy: 0, w: 12, charge: 1.4, fire: 3.6, mode: 'spin', ang: o + i / n * TAU, spin: dir * (.26 + .05 * L), c: '150,255,200', dmg: 14, quiet: i > 0 }); }
     if (c.t > 1.5 && c.ft <= 0) { c.ft = .9 / L; const [x, y] = ab(e, G.main); eFire('wave', x, y, aimAng(x, y), 150 * s, { amp: 22, f: 7 }); }
   },
   waves(e, c, G, s, L) { if (c.ft > 0) return; c.ft = .5 / L; e.alt = !e.alt; const [x, y] = ab(e, G.main); for (let i = 0; i < 5; i++) eFire('wave', x, y, (e.dir ?? Math.PI / 2) + (i - 2) * .32, 150 * s, { amp: 30, f: 6, ph: e.alt ? Math.PI : 0, silent: i > 0 }); },

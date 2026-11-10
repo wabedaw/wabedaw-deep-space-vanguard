@@ -24,7 +24,7 @@ function makeRockSprite(r, giant) {
   }
   const nc = giant ? 22 : 2 + ((r / 10) | 0);
   for (let i = 0; i < nc; i++) {
-    const a = rand(0, TAU), d = Math.sqrt(Math.random()) * r * .72, x = Math.cos(a) * d, y = Math.sin(a) * d, cr = rand(r * .05, r * (giant ? .16 : .24));
+    const a = rand(0, TAU), d = Math.sqrt(rnd()) * r * .72, x = Math.cos(a) * d, y = Math.sin(a) * d, cr = rand(r * .05, r * (giant ? .16 : .24));
     const cg = g.createRadialGradient(x + cr * .35, y + cr * .35, 0, x, y, cr);
     cg.addColorStop(0, 'rgba(255,235,210,.16)'); cg.addColorStop(.55, 'rgba(0,0,0,.22)'); cg.addColorStop(1, 'rgba(0,0,0,.5)');
     g.fillStyle = cg; g.beginPath(); g.arc(x, y, cr, 0, TAU); g.fill();
@@ -82,7 +82,7 @@ function makeIronSprite(r, kind) {
 }
 function spawnRock(o = {}) {
   let iron = o.iron || null;
-  if (!iron && o.r === undefined && S.mode === 'play' && rocks.reduce((n, k) => n + (k.iron && !k.dead ? 1 : 0), 0) < 3 && Math.random() < Math.min(.2, .07 + S.sector * .012)) iron = Math.random() < .6 ? 'iron' : 'obsid';
+  if (!iron && o.r === undefined && S.mode === 'play' && rocks.reduce((n, k) => n + (k.iron && !k.dead ? 1 : 0), 0) < 3 && rnd() < Math.min(.2, .07 + S.sector * .012)) iron = rnd() < .6 ? 'iron' : 'obsid';
   const r = o.r ?? (iron === 'obsid' ? rand(36, 54) : iron ? rand(20, 38) : rand(13, 44));
   const giant = !iron && r > 70;
   const d = diff(), sk = 1 + (S.sector - 1) * .05;
@@ -103,8 +103,8 @@ function spawnShip(type, x, y = -40) {
   const e = { type, x, y, bx: x, r: def.r, hp: def.hp * (1 + (S.sector - 1) * .15), score: def.score, t: 0, hitT: 0,
     fireT: rand(.8, 1.8), vx: 0, vy: 0, ph: rand(0, TAU), alt: 0, aim: Math.PI / 2 };
   e.maxhp = e.hp;
-  if (type === 'drone') { e.vy = rand(110, 160) * Math.min(1.4, Math.sqrt(d)); e.amp = rand(30, 80); e.wf = rand(1.5, 2.6); e.needle = Math.random() < (S.sector > 1 ? .45 : .25); }
-  if (type === 'raider') { e.ty = inset.t + rand(90, Math.max(110, H * .3)); e.vx = rand(90, 140) * (Math.random() < .5 ? -1 : 1); e.state = 0; }
+  if (type === 'drone') { e.vy = rand(110, 160) * Math.min(1.4, Math.sqrt(d)); e.amp = rand(30, 80); e.wf = rand(1.5, 2.6); e.needle = rnd() < (S.sector > 1 ? .45 : .25); }
+  if (type === 'raider') { e.ty = inset.t + rand(90, Math.max(110, H * .3)); e.vx = rand(90, 140) * (rnd() < .5 ? -1 : 1); e.state = 0; }
   if (type === 'gunship') { e.ty = inset.t + rand(110, Math.max(130, H * .26)); e.state = 0; }
   if (type === 'lancer') { e.ty = inset.t + rand(110, Math.max(130, H * .32)); e.state = 0; e.shots = 0; e.tx = x; e.fireT = 1; }
   if (HIVE_TYPES.has(type)) initHiveShip(e, d);
@@ -114,17 +114,17 @@ function spawnShip(type, x, y = -40) {
   return e;
 }
 function spawnWave() {
-  const r = Math.random();
+  const r = rnd();
   if ((S.sector >= 2 || S.t > 70) && r < .18) spawnShip('gunship', rand(W * .2, W * .8));
   else if (S.t > 22 && r < .36) spawnShip('lancer', rand(W * .15, W * .85));
   else if (S.t > 12 && r < .6) {
-    const n = S.sector >= 3 && Math.random() < .5 ? 2 : 1;
+    const n = S.sector >= 3 && rnd() < .5 ? 2 : 1;
     for (let i = 0; i < n; i++) spawnShip('raider', rand(W * .15, W * .85), -40 - i * 60);
   } else {
-    const n = 3 + Math.min(3, S.sector - 1 + ((Math.random() * 2) | 0));
+    const n = 3 + Math.min(3, S.sector - 1 + ((rnd() * 2) | 0));
     const gap = Math.min(40, (W - 80) / n);
     const cx = rand(40 + gap * n / 2, W - 40 - gap * n / 2);
-    const v = Math.random() < .5;
+    const v = rnd() < .5;
     for (let i = 0; i < n; i++) {
       const m = i - (n - 1) / 2;
       spawnShip('drone', cx + m * gap, -30 - (v ? Math.abs(m) * 34 : i * 42));

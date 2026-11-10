@@ -20,13 +20,13 @@ function maybeUnit(c) {
   let type = null, wx = c.wx;
   if (sg.b === 'sea') {
     const hw = SIDE_DEF.carrier.hw * sc;
-    if (c.w && lv >= 4 && c.wx - GW.lastCarrier > 1700 && c.wx > sg.start + 450 && c.wx + hw * 2 < sg.end - 450 && Math.random() < .6) { type = 'carrier'; wx = c.wx + hw; GW.lastCarrier = wx; }
-    else if (c.w && lv >= 5 && c.wx > sg.start + 300 && c.wx + 220 < sg.end - 300 && Math.random() < .45) { type = 'seabase'; wx = c.wx + 80; }
+    if (c.w && lv >= 4 && c.wx - GW.lastCarrier > 1700 && c.wx > sg.start + 450 && c.wx + hw * 2 < sg.end - 450 && rnd() < .6) { type = 'carrier'; wx = c.wx + hw; GW.lastCarrier = wx; }
+    else if (c.w && lv >= 5 && c.wx > sg.start + 300 && c.wx + 220 < sg.end - 300 && rnd() < .45) { type = 'seabase'; wx = c.wx + 80; }
   } else if (!c.w) {
     if (sg.b === 'base' && lv >= 6 && c.wx - GW.lastBase > 1500 && c.wx > sg.start + 450 && c.wx + 300 < sg.end) { type = 'base'; GW.lastBase = c.wx; }
     else {
       const wts = [['aa', 3 + (sg.b === 'mountains' ? 1.5 : 0)], ['sam', lv >= 2 ? 2 : 0], ['mlrs', lv >= 3 && sg.b !== 'mountains' ? 2 : 0], ['bunker', lv >= 4 ? 1 + lv * .1 : 0]];
-      let tot = wts.reduce((a, w) => a + w[1], 0), r = Math.random() * tot;
+      let tot = wts.reduce((a, w) => a + w[1], 0), r = rnd() * tot;
       for (const [k, w] of wts) { r -= w; if (r <= 0) { type = k; break; } }
     }
   }
@@ -45,14 +45,14 @@ function maybeUnit(c) {
 function spawnAir(type, x, y, o = {}) {
   const e = sideUnit(type, x, y), sp = sideSp();
   e.air = true; e.by = y;
-  if (type === 'fighter') { e.vx = -rand(250, 330) * sp; e.amp = o.amp ?? rand(8, 34); e.wf = rand(1.4, 2.8); e.hunt = Math.random() < .5; }
+  if (type === 'fighter') { e.vx = -rand(250, 330) * sp; e.amp = o.amp ?? rand(8, 34); e.wf = rand(1.4, 2.8); e.hunt = rnd() < .5; }
   if (type === 'ace') { e.state = 0; e.tx = W * rand(.62, .8); e.vx = -300; }
   if (type === 'bomber') { e.vx = -48 * sp; e.bombT = 0; }
   if (o.climb) { e.climb = 1.2; e.vx = -150; e.vy = -230; }
   return e;
 }
 function sideWave() {
-  const lv = levelOf(S.sector), r = Math.random(), minY = inset.t + 70, maxY = Math.max(minY + 80, Math.min(H * .62, minTopAhead() - 70));
+  const lv = levelOf(S.sector), r = rnd(), minY = inset.t + 70, maxY = Math.max(minY + 80, Math.min(H * .62, minTopAhead() - 70));
   if (lv >= 2 && r < .22) { const n = lv >= 5 ? 2 : 1; for (let i = 0; i < n; i++) spawnAir('ace', W + 40 + i * 80, rand(minY, maxY)); }
   else if (r < .6) {
     const n = 3 + Math.min(2, Math.floor(lv / 3)), y0 = rand(minY + 40, Math.max(minY + 41, maxY - 40));
@@ -210,7 +210,7 @@ function sideKill(e) {
   if (e.sea) splash(e.x, 30);
   addScore(e.score, e.x, e.y);
   const ch = { carrier: 2, base: 2, bunker: .6, seabase: .7, bomber: .8, ace: .3, hatch: .5, pod: .14, emit: .18 }[e.type] ?? .06;
-  if (ch >= 2) { dropPower(e.x - 20, e.y); dropPower(e.x + 20, e.y); } else if (Math.random() < ch) dropPower(e.x, e.y);
+  if (ch >= 2) { dropPower(e.x - 20, e.y); dropPower(e.x + 20, e.y); } else if (rnd() < ch) dropPower(e.x, e.y);
   if (e.ground && !e.sea && GW) GW.wrecks.push({ wx: e.wx, y: e.base, w: e.hw, t: 0 });
 }
 

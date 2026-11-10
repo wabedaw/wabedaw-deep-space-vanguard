@@ -14,6 +14,7 @@ playable with keyboard/mouse or touch. v0.1 is the public test build; 1.0 is in 
 npm run build        # = node tools/build.mjs
 npm test             # 构建 + 网站包冒烟测试（需要 Python Playwright）
 npm run test:campaign  # 构建 + 机器人跑完 101 个扇区（开无敌，只验证流程）
+npm run test:determinism  # 构建 + 同一种子跑两次必须完全一致
 ```
 
 | 产物 | 用途 |

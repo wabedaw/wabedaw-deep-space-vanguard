@@ -15,7 +15,7 @@ function resize() {
   if (S.side && GW) regenTerrain();
   if (typeof measureHero === 'function') measureHero();
   lensA = null;
-  if (first) { P.x = W / 2; P.y = H * .78; planet = makePlanet(); planet.y = H * rand(.15, .35); planet.x = W * (W > 700 ? .2 : .25);
+  if (first) { P.x = W / 2; P.y = H * .78; planet = makePlanet(); planet.y = H * frand(.15, .35); planet.x = W * (W > 700 ? .2 : .25);
     galaxy = { x: W * .62, y: H * .2, s: Math.max(.6, Math.min(W, H) / 700), rot: -.5, vy: 4 }; }
   if (S.mode === 'menu') { holes.length = 0; }
 }

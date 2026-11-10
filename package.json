@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node tools/build.mjs",
     "test": "node tools/build.mjs && python3 tests/smoke_test.py",
-    "test:campaign": "node tools/build.mjs && python3 tests/campaign_bot.py dist/claude/ashwing.html desk 1280 800"
+    "test:campaign": "node tools/build.mjs && python3 tests/campaign_bot.py dist/claude/ashwing.html desk 1280 800",
+    "test:determinism": "node tools/build.mjs && python3 tests/determinism_test.py"
   }
 }

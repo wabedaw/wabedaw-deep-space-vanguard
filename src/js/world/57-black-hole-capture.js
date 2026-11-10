@@ -6,7 +6,7 @@ function spiralStep(o, c, dt) {
   const rad = h.r * .12 + (c.rad0 - h.r * .12) * (1 - Math.pow(p, 1.5));
   c.ang += dt * h.spin * (1.6 + 13 * p * p);
   o.x = h.x + Math.cos(c.ang) * rad; o.y = h.y + Math.sin(c.ang) * rad * .82;
-  if (parts.length < 1500 && Math.random() < .8) parts.push({ k: 'ember', x: o.x + rand(-4, 4), y: o.y + rand(-4, 4), vx: -Math.sin(c.ang) * h.spin * 120, vy: Math.cos(c.ang) * h.spin * 100, life: .5, max: .5, c: pick(['255,190,120', '255,140,70', '160,210,255']), r: rand(1.2, 2.4) });
+  if (parts.length < 1500 && rnd() < .8) parts.push({ k: 'ember', x: o.x + rand(-4, 4), y: o.y + rand(-4, 4), vx: -Math.sin(c.ang) * h.spin * 120, vy: Math.cos(c.ang) * h.spin * 100, life: .5, max: .5, c: pick(['255,190,120', '255,140,70', '160,210,255']), r: rand(1.2, 2.4) });
   return p;
 }
 function startCapture(h) {

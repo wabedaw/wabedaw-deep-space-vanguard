@@ -14,25 +14,25 @@ function buildNebula() {
   g.fillStyle = bg; g.fillRect(0, 0, w, h);
   const cols = ['40,70,160', '110,40,160', '25,110,140', '150,45,100', '60,40,140', '30,90,170'];
   // a diagonal band like a galactic plane
-  const ang = rand(-.6, .6), cx = w * rand(.3, .7), cy = h * rand(.3, .6);
+  const ang = frand(-.6, .6), cx = w * frand(.3, .7), cy = h * frand(.3, .6);
   g.globalCompositeOperation = 'lighter';
   for (let i = 0; i < 26; i++) {
-    const t = rand(-1, 1), off = rand(-.18, .18) * Math.max(w, h);
+    const t = frand(-1, 1), off = frand(-.18, .18) * Math.max(w, h);
     const x = cx + Math.cos(ang) * t * w * .8 - Math.sin(ang) * off;
     const y = cy + Math.sin(ang) * t * w * .8 + Math.cos(ang) * off;
-    const r = rand(.12, .38) * Math.max(w, h);
+    const r = frand(.12, .38) * Math.max(w, h);
     const gr = g.createRadialGradient(x, y, 0, x, y, r);
-    const col = pick(cols);
-    gr.addColorStop(0, `rgba(${col},${rand(.09, .2)})`); gr.addColorStop(1, `rgba(${col},0)`);
+    const col = fpick(cols);
+    gr.addColorStop(0, `rgba(${col},${frand(.09, .2)})`); gr.addColorStop(1, `rgba(${col},0)`);
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
   }
   // dark dust lanes
   g.globalCompositeOperation = 'source-over';
   for (let i = 0; i < 14; i++) {
-    const t = rand(-1, 1), off = rand(-.06, .06) * Math.max(w, h);
+    const t = frand(-1, 1), off = frand(-.06, .06) * Math.max(w, h);
     const x = cx + Math.cos(ang) * t * w * .7 - Math.sin(ang) * off;
     const y = cy + Math.sin(ang) * t * w * .7 + Math.cos(ang) * off;
-    const r = rand(.04, .12) * Math.max(w, h);
+    const r = frand(.04, .12) * Math.max(w, h);
     const gr = g.createRadialGradient(x, y, 0, x, y, r);
     gr.addColorStop(0, 'rgba(2,3,8,.55)'); gr.addColorStop(1, 'rgba(2,3,8,0)');
     g.fillStyle = gr; g.fillRect(0, 0, w, h);
@@ -41,11 +41,11 @@ function buildNebula() {
   for (let i = 0; i < (w * h) / 55; i++) {
     let x, y;
     if (Math.random() < .6) {
-      const t = rand(-1, 1), off = (Math.random() + Math.random() - 1) * .25 * Math.max(w, h);
+      const t = frand(-1, 1), off = (Math.random() + Math.random() - 1) * .25 * Math.max(w, h);
       x = cx + Math.cos(ang) * t * w - Math.sin(ang) * off;
       y = cy + Math.sin(ang) * t * w + Math.cos(ang) * off;
-    } else { x = rand(0, w); y = rand(0, h); }
-    g.fillStyle = `rgba(${pick(['220,230,255', '255,240,220', '200,215,255'])},${rand(.08, .45)})`;
+    } else { x = frand(0, w); y = frand(0, h); }
+    g.fillStyle = `rgba(${fpick(['220,230,255', '255,240,220', '200,215,255'])},${frand(.08, .45)})`;
     g.fillRect(x, y, .6, .6);
   }
   nebula = c;
@@ -87,11 +87,11 @@ function buildStars() {
   const n = Math.min(520, Math.floor((W * H) / 2600));
   for (let i = 0; i < n; i++) {
     const z = Math.random() < .62 ? 0 : Math.random() < .7 ? 1 : 2;
-    stars.push({ x: rand(0, W), y: rand(0, H), z, b: rand(.35, 1), tw: rand(0, TAU),
-      c: pick(['235,240,255', '255,244,228', '205,220,255', '255,225,200', '235,240,255']) });
+    stars.push({ x: frand(0, W), y: frand(0, H), z, b: frand(.35, 1), tw: frand(0, TAU),
+      c: fpick(['235,240,255', '255,244,228', '205,220,255', '255,225,200', '235,240,255']) });
   }
   dust.length = 0;
-  for (let i = 0; i < 26; i++) dust.push({ x: rand(0, W), y: rand(0, H), v: rand(380, 760), l: rand(18, 46), a: rand(.05, .16) });
+  for (let i = 0; i < 26; i++) dust.push({ x: frand(0, W), y: frand(0, H), v: frand(380, 760), l: frand(18, 46), a: frand(.05, .16) });
 }
 
 function makePlanet() {
@@ -106,7 +106,7 @@ function makePlanet() {
     { kind: 'ice', base: [196, 222, 238], spot: [150, 188, 216], atm: '170,220,255' },
   ];
   const T = pick(types);
-  const ring = T.kind === 'gas' && Math.random() < .65;
+  const ring = T.kind === 'gas' && rnd() < .65;
   const size = r * (ring ? 4.8 : 2.8);
   const sc = Math.min(DPR, 1.5);
   const c = document.createElement('canvas');
@@ -188,14 +188,14 @@ function updateBackground(dt, speedK) {
   for (const s of stars) {
     const v = [14, 46, 130][s.z] * speedK;
     s.y += v * dt; s.tw += dt * 2;
-    if (s.y > H + 4) { s.y = -4; s.x = rand(0, W); }
+    if (s.y > H + 4) { s.y = -4; s.x = frand(0, W); }
   }
   for (const d of dust) {
     d.y += d.v * speedK * dt;
-    if (d.y > H + 50) { d.y = rand(-200, -50); d.x = rand(0, W); }
+    if (d.y > H + 50) { d.y = frand(-200, -50); d.x = frand(0, W); }
   }
   if (galaxy) { galaxy.y += galaxy.vy * dt; if (galaxy.y - galaxy.s * 100 > H) galaxy = null; }
-  else galaxy = { x: rand(W * .1, W * .9), y: -rand(80, 200), s: rand(.6, 1.1) * Math.max(.6, Math.min(W, H) / 700), rot: rand(-.8, .8), vy: rand(3, 6) };
+  else galaxy = { x: frand(W * .1, W * .9), y: -frand(80, 200), s: frand(.6, 1.1) * Math.max(.6, Math.min(W, H) / 700), rot: frand(-.8, .8), vy: frand(3, 6) };
   if (planet) { planet.y += planet.vy * dt; if (planet.y - planet.size / 2 > H) { planet = null; planetTimer = rand(20, 40); } }
   else { planetTimer -= dt; if (planetTimer <= 0) { planet = makePlanet(); if (S.mode === 'play') { addSats(planet); S.toast = { txt: I18('侦测到行星防御卫星', 'Planetary defense satellites detected'), t: 2.2 }; } } }
 }

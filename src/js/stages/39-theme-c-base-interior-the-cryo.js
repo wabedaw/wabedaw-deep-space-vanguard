@@ -108,8 +108,8 @@ function drawBasePropsC() {
   }
 }
 function cryoAmbient(dt) {
-  if (Math.random() < dt * 5 && parts.length < 1200) { const x = rand(W * .05, W), y = ceilAt(x); parts.push({ k: 'ember', x, y: y + 4, vx: -S.scroll * .3 + rand(-15, 15), vy: rand(30, 70), life: rand(1.4, 2.4), max: 2.4, c: '235,248,255', r: rand(1, 2) }); }
-  if (Math.random() < dt * 2 && parts.length < 1200) parts.push({ k: 'ember', x: rand(0, W), y: rand(H * .2, H * .8), vx: -S.scroll * .4, vy: rand(-8, 8), life: rand(1.5, 3), max: 3, c: pick(['200,240,255', '210,190,255']), r: rand(.8, 1.4) });
+  if (rnd() < dt * 5 && parts.length < 1200) { const x = rand(W * .05, W), y = ceilAt(x); parts.push({ k: 'ember', x, y: y + 4, vx: -S.scroll * .3 + rand(-15, 15), vy: rand(30, 70), life: rand(1.4, 2.4), max: 2.4, c: '235,248,255', r: rand(1, 2) }); }
+  if (rnd() < dt * 2 && parts.length < 1200) parts.push({ k: 'ember', x: rand(0, W), y: rand(H * .2, H * .8), vx: -S.scroll * .4, vy: rand(-8, 8), life: rand(1.5, 3), max: 3, c: pick(['200,240,255', '210,190,255']), r: rand(.8, 1.4) });
 }
 function drawBaseWorldC() {
   if (!IW.bg || IW.bgW !== W || IW.bgH !== H) { IW.bg = makeCryoBg(); IW.bgW = W; IW.bgH = H; }
@@ -172,7 +172,7 @@ function drawZero(e, pulse) {
     ctx.fillStyle = 'rgba(235,248,255,.8)'; for (let yy = y0 + 18; yy < y1; yy += 42) ctx.fillRect(-R * .34, yy, R * .68, 5);
     if (!e.gone) { ctx.globalCompositeOperation = 'lighter'; const L = Math.abs(y1 - y0); for (let j = 0; j < 4; j++) { const t = ((S.t * .9 + j / 4) % 1), yy = d < 0 ? y0 + L * t : y1 - L * t; drawGlow(0, yy, R * .2, C, .8); } ctx.globalCompositeOperation = 'source-over'; }
   }
-  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, ICE, .35 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over'; return; }
+  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, ICE, .35 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over'; return; }
   ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 3, C, .3 + .15 * pulse);
   for (let k = 0; k < 6; k++) { ctx.save(); ctx.rotate(k / 6 * TAU + e.spin * .3); ctx.strokeStyle = `rgba(${C},.35)`; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(R * 1.1, 0); ctx.lineTo(R * 1.6, 0); ctx.moveTo(R * 1.35, 0); ctx.lineTo(R * 1.5, -R * .12); ctx.moveTo(R * 1.35, 0); ctx.lineTo(R * 1.5, R * .12); ctx.stroke(); ctx.restore(); }
   ctx.globalCompositeOperation = 'source-over';
@@ -180,7 +180,7 @@ function drawZero(e, pulse) {
   const V = []; for (let i = 0; i < n; i++) { const a = i / n * TAU + sp * .5; V.push([Math.cos(a) * R, Math.sin(a) * R * .92]); }
   for (let i = 0; i < n; i++) { const a = V[i], b = V[(i + 1) % n], lit = (Math.cos(i / n * TAU + sp * .5 - .8) + 1) / 2; iceFacet([[Math.cos(sp) * R * .15, Math.sin(sp * .7) * R * .15], a, b], lit > .6 ? '#ffffff' : '#c8e8fa', `rgba(${Math.round(90 + 120 * lit)},${Math.round(170 + 70 * lit)},255,1)`, '#1a3a60', 'rgba(240,250,255,.7)'); }
   ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * .6, C, .8); drawGlow(0, 0, R * .22, WHITE, 1);
-  if (Math.random() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .9, Math.cos(a) * R * 1.6, Math.sin(a) * R * 1.6, rand(0, 99), 8); }
+  if (rnd() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .9, Math.cos(a) * R * 1.6, Math.sin(a) * R * 1.6, rand(0, 99), 8); }
   ctx.globalCompositeOperation = 'source-over';
   if (e.shp > 0 && !e.dying) {
     const fl = .5 + .5 * Math.sin(S.t * 3), hit = Math.max(0, e.shieldHit || 0) * 3, rr = e.sr, k = .45 + .55 * e.shp / e.smax;

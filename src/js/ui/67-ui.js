@@ -5,7 +5,10 @@ $('bestMenu').textContent = String(best).padStart(7, '0');
 function startGame() {
   audioInit();
   menuEl.hidden = true; overEl.hidden = true; pauseEl.hidden = true;
+  const seed = S.nextSeed != null ? S.nextSeed >>> 0 : SEED_URL != null ? SEED_URL : (Math.random() * 4294967296) >>> 0;
+  RNG.seed(seed);
   resetGame();
+  S.seed = seed; S.nextSeed = null;
   S.dev = DEV.run; LB.last = null; tutReset();
   if (P.weapon === 'ult' && !ultAvail()) P.weapon = P.superPrev || 'spread';
   P.superPrev = null;

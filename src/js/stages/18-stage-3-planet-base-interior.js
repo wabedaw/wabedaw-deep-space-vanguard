@@ -23,11 +23,11 @@ function newBlock(init) {
   else if (!prev || (init && start < W * .9)) { c = pr.c; f = pr.f; w = rand(240, 360); }
   else {
     w = rand(150, 330); c = pr.c + rand(-pr.v, pr.v); f = pr.f + rand(-pr.v, pr.v);
-    if (lv > 3 && Math.random() < .22) { const sh = rand(-.07, .07); c += sh; f += sh; }
+    if (lv > 3 && rnd() < .22) { const sh = rand(-.07, .07); c += sh; f += sh; }
     c = clamp(c, .04, .32); f = clamp(f, .68, .96);
     const mg = Math.max(.5, 270 / H); if (f - c < mg) { const m = (c + f) / 2; c = m - mg / 2; f = m + mg / 2; }
   }
-  const b = { start, end: start + w, c, f, haz: Math.random() < .38, lamp: Math.random() < .65, k: (Math.random() * 1000) | 0 };
+  const b = { start, end: start + w, c, f, haz: rnd() < .38, lamp: rnd() < .65, k: (rnd() * 1000) | 0 };
   B.push(b);
   if (!init) populateBlock(b);
 }
@@ -55,11 +55,11 @@ function populateBlock(b) {
   if (lv === 10) return;
   for (const s of len > 250 ? [.3, .74] : [.5]) {
     const wx = b.start + len * s;
-    if (wx - IW.lastObj < 170 || Math.random() > .42 + lv * .05) continue;
-    const att = Math.random() < .5 ? 'c' : 'f';
+    if (wx - IW.lastObj < 170 || rnd() > .42 + lv * .05) continue;
+    const att = rnd() < .5 ? 'c' : 'f';
     const wts = [['tur', 3], ['pod', lv >= 2 ? 1.5 : 0], ['emit', lv >= 4 ? 1.3 : 0], ['hatch', lv >= 2 ? .55 : 0], ['crusher', lv >= 2 ? 1.3 : 0], ['vent', 1], ['arc', lv >= 4 ? 1 : 0]];
     let tot = 0; for (const w of wts) tot += w[1];
-    let r = Math.random() * tot, type = 'tur';
+    let r = rnd() * tot, type = 'tur';
     for (const [k, w] of wts) { r -= w; if (r <= 0) { type = k; break; } }
     IW.lastObj = wx;
     if (type === 'crusher' || type === 'vent' || type === 'arc') IW.props.push({ k: type, wx, att, t: rand(0, 3), cyc: type === 'arc' ? 3.2 : type === 'crusher' ? 2.8 : 3, hp: 26 * sideK(), maxhp: 26 * sideK(), dead: false, hitT: 0, ext: 0, x: wx - S.wx, prevPh: 0 });
@@ -172,8 +172,8 @@ function updateBaseWorld(dt) {
   ensureBase(); updateBaseProps(dt);
   if (IW.theme === 2) hiveAmbient(dt);
   else if (IW.theme === 3) cryoAmbient(dt);
-  else if (Math.random() < dt * 1.4 && parts.length < 1200) {
-    const x = rand(W * .15, W), top = Math.random() < .5, y = top ? ceilAt(x) : floorAt(x);
+  else if (rnd() < dt * 1.4 && parts.length < 1200) {
+    const x = rand(W * .15, W), top = rnd() < .5, y = top ? ceilAt(x) : floorAt(x);
     parts.push({ k: 'smoke', x, y, vx: -S.scroll * .25 + rand(-10, 10), vy: top ? rand(18, 46) : -rand(18, 46), life: rand(1, 1.8), max: 1.8, r: rand(6, 12), g: 14, c: '120,132,150' });
   }
 }
@@ -183,7 +183,7 @@ function baseBand() {
   return [t + 40, Math.max(t + 60, b - 40)];
 }
 function baseWave() {
-  const lv = levelOf(S.sector), [minY, maxY] = baseBand(), r = Math.random();
+  const lv = levelOf(S.sector), [minY, maxY] = baseBand(), r = rnd();
   if (lv >= 3 && r < .25) { for (let i = 0; i < (lv >= 6 ? 2 : 1); i++) spawnAir('ace', W + 40 + i * 80, rand(minY, maxY)); }
   else {
     const n = 3 + Math.min(2, Math.floor(lv / 3)), y0 = rand(minY + 20, Math.max(minY + 21, maxY - 20));

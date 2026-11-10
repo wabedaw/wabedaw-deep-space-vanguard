@@ -126,7 +126,7 @@ const sfxRaw = {
   hit(x, ship) {
     if (!live()) return; const n = AC.currentTime; if (n - lastHitSfx < .035) return; lastHitSfx = n;
     const d = out(panX(x), .05);
-    if (ship) { tone('square', 560 + rand(-60, 60), 260, .05, .026, 0, d); tone('sine', 2300, 1900, .05, .018, 0, d); }
+    if (ship) { tone('square', 560 + frand(-60, 60), 260, .05, .026, 0, d); tone('sine', 2300, 1900, .05, .018, 0, d); }
     else { noise(.06, .07, 2600, 700, 'bandpass', 2.2, 0, d); tone('triangle', 240, 140, .05, .03, 0, d); }
   },
   boom(size, x, kind = 'ship') {
@@ -141,14 +141,14 @@ const sfxRaw = {
     const d = out(panX(x) * (heavy ? .45 : 1), .22 + Math.min(.55, k * .18));
     noise(.06, .3 * v, 7500, 2400, 'highpass', .8, 0, d);                                   // crack
     noise(.32 + k * .5, .55 * v, 2400 + k * 700, 85, 'lowpass', .9, .004, d, noiseBuf, .006); // fireball body
-    tone('sine', 115 + rand(-12, 12), 27, .3 + k * .5, .62 * Math.min(1, v), 0, d, .004);     // sub thump
+    tone('sine', 115 + frand(-12, 12), 27, .3 + k * .5, .62 * Math.min(1, v), 0, d, .004);     // sub thump
     tone('triangle', 68, 30, .4 + k * .4, .22 * v, .012, d, .01);
     if (kind === 'rock') noise(.22 + k * .25, .28 * v, 1000, 260, 'bandpass', 1.3, .01, d);     // stone crunch
     if (kind === 'missile') noise(.14, .22, 4200, 900, 'bandpass', 1, 0, d);                    // sharp warhead pop
-    if (kind === 'ship' || heavy) for (const f of [1170, 1740, 2480]) tone('sine', f * rand(.94, 1.06), f * .78, .24 + k * .16, .02 * v, .01, d, .003); // hull shrapnel ring
+    if (kind === 'ship' || heavy) for (const f of [1170, 1740, 2480]) tone('sine', f * frand(.94, 1.06), f * .78, .24 + k * .16, .02 * v, .01, d, .003); // hull shrapnel ring
     if (k > .6) noise(.9 + k * 1.2, .3 * Math.min(1.1, k * .6), 280, 45, 'lowpass', .7, .04, d, brownBuf, .08); // rumble tail
     const n = (3 + k * 7) | 0;                                                                   // debris crackle
-    for (let i = 0; i < n; i++) noise(rand(.012, .03), rand(.035, .09) * v, rand(1500, 5500), rand(700, 2000), 'bandpass', 3, rand(.05, .25 + k * .35), d);
+    for (let i = 0; i < n; i++) noise(frand(.012, .03), frand(.035, .09) * v, frand(1500, 5500), frand(700, 2000), 'bandpass', 3, frand(.05, .25 + k * .35), d);
     if (kind === 'huge') {
       for (let i = 0; i < 3; i++) { const t = .22 + i * .34; noise(.7, .42, 1900, 70, 'lowpass', .8, t, d); tone('sine', 95, 24, .7, .5, t, d); }
       noise(3.4, .38, 200, 35, 'lowpass', .6, .1, d, brownBuf, .25);

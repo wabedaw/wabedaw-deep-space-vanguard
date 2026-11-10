@@ -50,7 +50,7 @@ function updateRing(e, dt, live, spK) {
       p.fireT = 4.8 / L;
     } else if (p.type === 'hangar') {
       if (ships.length < 12) for (let k = 0; k < 2; k++) {
-        const d = spawnShip(e.theme === 3 ? 'glint' : e.theme === 2 ? (k === 0 && Math.random() < .5 ? 'mantis' : 'wasp') : k === 0 && S.sector > 10 && Math.random() < .5 ? 'raider' : 'drone', p.x + (k ? 16 : -16), p.y + 10);
+        const d = spawnShip(e.theme === 3 ? 'glint' : e.theme === 2 ? (k === 0 && rnd() < .5 ? 'mantis' : 'wasp') : k === 0 && S.sector > 10 && rnd() < .5 ? 'raider' : 'drone', p.x + (k ? 16 : -16), p.y + 10);
         if (d.type === 'drone') { d.vy = 120; d.amp = 40; d.bx = d.x; } else if (d.type === 'wasp') { d.vy = 130; d.bx = d.x; } else if (d.type === 'glint') d.bx = d.x;
       }
       p.fireT = 5.5 / L;
@@ -85,7 +85,7 @@ function fortressDown(e) {
 function updateFortressDying(e, dt) {
   e.dyingT += dt; e.fx.rot += e.fx.w * dt * .4; e.shieldHit = 0;
   if (e.dyingT > 3.4) e.y -= (e.dyingT - 3.4) * 130 * dt;
-  if (Math.random() < .3 && parts.length < 1400) { const th = rand(.3, Math.PI - .3), F = e.fx; sparks(e.x + Math.cos(th) * F.ra, e.y + F.cy + Math.sin(th) * F.rb, 2, FIRE); }
+  if (rnd() < .3 && parts.length < 1400) { const th = rand(.3, Math.PI - .3), F = e.fx; sparks(e.x + Math.cos(th) * F.ra, e.y + F.cy + Math.sin(th) * F.rb, 2, FIRE); }
   if (e.dyingT > 9 || e.y < -e.fx.PR * .2 - 200) e.dead = true;
 }
 function makeFortressPlanet(R, theme = 1) {
@@ -115,7 +115,7 @@ function makeFortressPlanet(R, theme = 1) {
     const cx = rand(-r, r) * .92, cy = rand(-r, r) * .92; if (cx * cx + cy * cy > r * r * .85) continue;
     const dark = clamp((cx - cy) / (r * 1.3) + .35, 0, 1); hubs.push([cx, cy, dark]);
     for (let i = 0, n = rand(25, 70); i < n; i++) {
-      const x = cx + (Math.random() + Math.random() - 1) * r * .09, y = cy + (Math.random() + Math.random() - 1) * r * .06, s = rand(1, 2.6) * u;
+      const x = cx + (rnd() + rnd() - 1) * r * .09, y = cy + (rnd() + rnd() - 1) * r * .06, s = rand(1, 2.6) * u;
       g.fillStyle = T3 ? `rgba(${pick([150, 190, 120])},${pick([230, 250])},255,${rand(.35, .9) * (.18 + .82 * dark)})` : T2 ? `rgba(${pick([170, 200, 140])},255,${pick([120, 160, 90])},${rand(.35, .9) * (.18 + .82 * dark)})` : `rgba(255,${pick([190, 210, 160])},${pick([100, 130, 70])},${rand(.35, .9) * (.18 + .82 * dark)})`; g.fillRect(x, y, s, s);
     }
   }
@@ -172,8 +172,8 @@ function drawModule(e, p, pulse) {
   ctx.save(); ctx.translate(p.ox, p.oy); const s = p.r / 22; ctx.scale(s, s);
   if (p.dead) {
     ctx.fillStyle = '#0c0d10'; ctx.beginPath(); ctx.ellipse(0, 0, 18, 11, 0, 0, TAU); ctx.fill();
-    ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, 20, '255,120,40', .3 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over';
-    if (Math.random() < .15 && !e.dying) sparks(p.x, p.y, 1, FIRE);
+    ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, 20, '255,120,40', .3 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over';
+    if (rnd() < .15 && !e.dying) sparks(p.x, p.y, 1, FIRE);
     ctx.restore(); return;
   }
   const metal = ctx.createLinearGradient(0, -20, 0, 20); metal.addColorStop(0, '#8a94a6'); metal.addColorStop(.5, '#465061'); metal.addColorStop(1, '#1d222b');
@@ -357,35 +357,35 @@ function decorate(c) {
   if (c.w) return;
   if (GW.theme === 3) {
     const b = c.b, P0 = { plains: .04, forest: .1, river: .04, mountains: .035, coast: .03 }[b] || 0;
-    if (Math.random() < P0) {
-      const q = Math.random(), k = b === 'forest' ? (q < .7 ? 'pine' : q < .85 ? 'frostbloom' : 'snowrock') : b === 'mountains' ? (q < .6 ? 'icecrystal' : q < .8 ? 'pine' : 'snowrock') : b === 'coast' ? (q < .5 ? 'icecrystal' : 'snowrock') : (q < .3 ? 'pine' : q < .55 ? 'frostbloom' : q < .8 ? 'icecrystal' : 'snowrock');
+    if (rnd() < P0) {
+      const q = rnd(), k = b === 'forest' ? (q < .7 ? 'pine' : q < .85 ? 'frostbloom' : 'snowrock') : b === 'mountains' ? (q < .6 ? 'icecrystal' : q < .8 ? 'pine' : 'snowrock') : b === 'coast' ? (q < .5 ? 'icecrystal' : 'snowrock') : (q < .3 ? 'pine' : q < .55 ? 'frostbloom' : q < .8 ? 'icecrystal' : 'snowrock');
       GW.decor.push({ wx: c.wx, y: c.g, k, s: rand(.7, 1.3), hue: ICE, ph: rand(0, TAU) });
     }
-    if ((b === 'plains' || b === 'forest') && Math.random() < .0013) { const n = 2 + ((Math.random() * 3) | 0), vx = -rand(12, 22); for (let i = 0; i < n; i++) GW.fauna.push({ k: 'mammoth', wx: c.wx + i * rand(46, 64), vx, s: rand(.85, 1.15) * (i === 0 ? 1.15 : 1), ph: rand(0, TAU) }); }
+    if ((b === 'plains' || b === 'forest') && rnd() < .0013) { const n = 2 + ((rnd() * 3) | 0), vx = -rand(12, 22); for (let i = 0; i < n; i++) GW.fauna.push({ k: 'mammoth', wx: c.wx + i * rand(46, 64), vx, s: rand(.85, 1.15) * (i === 0 ? 1.15 : 1), ph: rand(0, TAU) }); }
     return;
   }
   if (GW.theme === 2) {
     const b = c.b, P0 = { plains: .04, forest: .08, river: .04, mountains: .035, coast: .03 }[b] || 0;
-    if (Math.random() < P0) {
-      const q = Math.random(), k = b === 'mountains' ? (q < .7 ? 'spire' : 'fumarole') : b === 'forest' ? (q < .5 ? 'embertree' : q < .85 ? 'fungus' : 'spire') : b === 'coast' ? (q < .6 ? 'fumarole' : 'spire') : (q < .35 ? 'embertree' : q < .6 ? 'fumarole' : q < .85 ? 'fungus' : 'spire');
+    if (rnd() < P0) {
+      const q = rnd(), k = b === 'mountains' ? (q < .7 ? 'spire' : 'fumarole') : b === 'forest' ? (q < .5 ? 'embertree' : q < .85 ? 'fungus' : 'spire') : b === 'coast' ? (q < .6 ? 'fumarole' : 'spire') : (q < .35 ? 'embertree' : q < .6 ? 'fumarole' : q < .85 ? 'fungus' : 'spire');
       GW.decor.push({ wx: c.wx, y: c.g, k, s: rand(.7, 1.3), hue: pick(['255,140,60', '255,90,50', '255,200,90']), ph: rand(0, TAU) });
     }
-    if ((b === 'plains' || b === 'river') && Math.random() < .0014) { const n = 2 + ((Math.random() * 3) | 0), vx = -rand(14, 26); for (let i = 0; i < n; i++) GW.fauna.push({ k: 'crawler', wx: c.wx + i * rand(30, 46), vx, s: rand(.8, 1.15), ph: rand(0, TAU) }); }
+    if ((b === 'plains' || b === 'river') && rnd() < .0014) { const n = 2 + ((rnd() * 3) | 0), vx = -rand(14, 26); for (let i = 0; i < n; i++) GW.fauna.push({ k: 'crawler', wx: c.wx + i * rand(30, 46), vx, s: rand(.8, 1.15), ph: rand(0, TAU) }); }
     return;
   }
-  const b = c.b, r = Math.random();
+  const b = c.b, r = rnd();
   const P0 = { plains: .05, forest: .1, river: .045, mountains: .03, coast: .03 }[b] || 0;
   if (r < P0) {
     let k;
-    const q = Math.random();
+    const q = rnd();
     if (b === 'forest') k = q < .5 ? 'tree' : q < .8 ? 'bulb' : 'frond';
     else if (b === 'mountains') k = c.g < H * .62 ? (q < .85 ? 'crystal' : 'frond') : (q < .5 ? 'crystal' : 'tree');
     else if (b === 'coast') k = q < .5 ? 'tube' : 'frond';
     else k = q < .35 ? 'frond' : q < .6 ? 'bulb' : q < .8 ? 'tree' : 'tube';
     GW.decor.push({ wx: c.wx, y: c.g, k, s: rand(.7, 1.3), hue: pick(['190,255,230', '255,140,230', '150,200,255', '255,210,120']), ph: rand(0, TAU) });
   }
-  if ((b === 'plains' || b === 'forest') && Math.random() < .0016) {
-    const n = 3 + ((Math.random() * 3) | 0), vx = -rand(12, 24);
+  if ((b === 'plains' || b === 'forest') && rnd() < .0016) {
+    const n = 3 + ((rnd() * 3) | 0), vx = -rand(12, 24);
     for (let i = 0; i < n; i++) GW.fauna.push({ k: 'grazer', wx: c.wx + i * rand(26, 42), vx, s: rand(.8, 1.15) * (i === 0 ? 1.15 : 1), ph: rand(0, TAU) });
   }
 }

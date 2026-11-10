@@ -31,7 +31,7 @@ function updateEnemyBullets(dt) {
       a += clamp(da, -b.turn * dt, b.turn * dt);
       const sp = Math.min(b.sp * 1.6, Math.hypot(b.vx, b.vy) + 70 * dt);
       b.vx = Math.cos(a) * sp; b.vy = Math.sin(a) * sp;
-      if (parts.length < 1500 && Math.random() < .6) parts.push({ k: 'ember', x: b.x, y: b.y, vx: -b.vx * .1, vy: -b.vy * .1, life: .3, max: .3, c: b.c, r: 1.6 });
+      if (parts.length < 1500 && rnd() < .6) parts.push({ k: 'ember', x: b.x, y: b.y, vx: -b.vx * .1, vy: -b.vy * .1, life: .3, max: .3, c: b.c, r: 1.6 });
     }
     if (b.k === 'rocket') { const a = Math.atan2(b.vy, b.vx), v = Math.min(b.max, Math.hypot(b.vx, b.vy) + b.acc * dt); b.vx = Math.cos(a) * v; b.vy = Math.sin(a) * v; }
     if (b.k === 'bomb') b.vy += 320 * dt;
@@ -52,7 +52,7 @@ function updateEnemyBullets(dt) {
       b.dead = true;
       if (GW && wetAt(S.wx + b.x) && b.y < waterY() + 30) splash(b.x, 5);
       if (b.k === 'shell') shellBurst(b); else if (b.k === 'bomb' || b.k === 'rocket' || b.mis) { explode(b.x, b.y, 18, FIRE, { smoke: '60,52,48' }); sfx.boom(18, b.x, 'missile'); }
-      else if (Math.random() < .3) sparks(b.x, b.y, 2, DUST, -Math.PI / 2, 1.6);
+      else if (rnd() < .3) sparks(b.x, b.y, 2, DUST, -Math.PI / 2, 1.6);
       continue;
     }
     if (b.life <= 0 || b.y > H + 30 || b.y < -90 || b.x < -40 || b.x > W + 40 || insideHole(b, .9)) b.dead = true;

@@ -16,14 +16,14 @@ function killRock(k, byHole) {
   sfx.boom(k.r * (k.giant ? 1.4 : 1), k.x, k.giant ? 'big' : 'rock');
   addScore(k.giant ? 600 : k.r > 30 ? 90 : k.r > 20 ? 50 : 30, k.x, k.y);
   if (k.r > 26) {
-    const n = k.giant ? 4 : Math.random() < .5 ? 2 : 3;
+    const n = k.giant ? 4 : rnd() < .5 ? 2 : 3;
     for (let i = 0; i < n; i++) {
       const a = rand(0, TAU), sp = rand(40, 110);
       spawnRock({ r: k.r * (k.giant ? rand(.32, .42) : rand(.42, .58)), x: k.x + Math.cos(a) * k.r * .3, y: k.y + Math.sin(a) * k.r * .3, vx: k.vx + Math.cos(a) * sp, vy: k.vy * .8 + Math.sin(a) * sp * .6 + 30 });
     }
   }
   if (k.giant) { dropPower(k.x, k.y); dropPower(k.x + 20, k.y - 10, 'M'); }
-  else if (Math.random() < .045) dropPower(k.x, k.y);
+  else if (rnd() < .045) dropPower(k.x, k.y);
 }
 function killShip(e, silent) {
   if (e.dead || e.dying) return;
@@ -59,7 +59,7 @@ function killShip(e, silent) {
   sfx.boom(sz, e.x, big ? 'big' : 'ship');
   addScore(e.score, e.x, e.y);
   const ch = big ? .7 : e.type === 'raider' || e.type === 'mantis' || e.type === 'prism' ? .25 : .08;
-  if (Math.random() < ch) dropPower(e.x, e.y);
+  if (rnd() < ch) dropPower(e.x, e.y);
 }
 function damage(target, dmg, x, y, isShip) {
   if (target.dead || target.dying) return;

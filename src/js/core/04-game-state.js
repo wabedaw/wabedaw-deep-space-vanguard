@@ -23,6 +23,9 @@ function resetGame() {
   P.bm = null; P.arcs = []; P.beamTick = 0; P.beamOn = false; P.focus = 0; P.focusFull = false;
   Object.assign(P, { x: W / 2, y: H * .78, vx: 0, vy: 0, gx: 0, gy: 0, dx: 0, dy: 0, hull: 100, shield: 100, shieldDelay: 0, shieldHit: 0,
     inv: 1.2, hitT: 0, lvl: 1, mis: 6, misRegen: 0, fireCd: 0, misCd: 0, bank: 0, muzzle: 0, alive: true, cap: null, wCount: 0, mCount: 0, novaCh: 0, superT: 0 });
-  if (planet) addSats(planet);
+  // the run's first planet and its defense satellites come from the run's seed, not from whatever the menu showed
+  // (the launch flash covers the swap)
+  planet = makePlanet(); planet.y = H * rand(.15, .35); planet.x = W * (W > 700 ? .2 : .25); planetTimer = 4;
+  addSats(planet);
 }
 

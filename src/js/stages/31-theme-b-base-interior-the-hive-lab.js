@@ -118,8 +118,8 @@ function drawBasePropsB() {
   }
 }
 function hiveAmbient(dt) {
-  if (Math.random() < dt * 2 && parts.length < 1200) { const x = rand(W * .1, W), y = ceilAt(x); parts.push({ k: 'ember', x, y: y + 4, vx: -S.scroll * .2, vy: rand(60, 120), life: rand(.8, 1.4), max: 1.4, c: ACID, r: rand(1.2, 2.2) }); }
-  if (Math.random() < dt * 3 && parts.length < 1200) parts.push({ k: 'ember', x: rand(0, W), y: rand(H * .2, H * .8), vx: -S.scroll * .3 + rand(-8, 8), vy: rand(-12, 12), life: rand(2, 4), max: 4, c: pick(['200,255,200', '220,170,255']), r: rand(.8, 1.6) });
+  if (rnd() < dt * 2 && parts.length < 1200) { const x = rand(W * .1, W), y = ceilAt(x); parts.push({ k: 'ember', x, y: y + 4, vx: -S.scroll * .2, vy: rand(60, 120), life: rand(.8, 1.4), max: 1.4, c: ACID, r: rand(1.2, 2.2) }); }
+  if (rnd() < dt * 3 && parts.length < 1200) parts.push({ k: 'ember', x: rand(0, W), y: rand(H * .2, H * .8), vx: -S.scroll * .3 + rand(-8, 8), vy: rand(-12, 12), life: rand(2, 4), max: 4, c: pick(['200,255,200', '220,170,255']), r: rand(.8, 1.6) });
 }
 function drawBaseWorldB() {
   if (!IW.bg || IW.bgW !== W || IW.bgH !== H) { IW.bg = makeHiveBg(); IW.bgW = W; IW.bgH = H; }
@@ -234,7 +234,7 @@ function drawHiveMind(e, pulse) {
     if (!e.gone) { ctx.globalCompositeOperation = 'lighter'; const q = (S.t * .8 + k * .3 + (d > 0 ? .5 : 0)) % 1; drawGlow(x0 * 1.6 + (x0 * .5 - x0 * 1.6) * q, y0 + (d * R * .7 - y0) * q, R * .12, C, .8); ctx.globalCompositeOperation = 'source-over'; }
   }
   ctx.lineCap = 'butt';
-  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, '255,120,150', .35 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over'; return; }
+  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, '255,120,150', .35 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over'; return; }
   ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 3, C, .3 + .15 * pulse); ctx.globalCompositeOperation = 'source-over';
   const beat = 1 + .04 * Math.sin(S.t * (e.phase === 3 ? 8 : 3));
   ctx.save(); ctx.scale(beat, beat);
@@ -249,7 +249,7 @@ function drawHiveMind(e, pulse) {
   if (eo > .2) { const ax = clamp((P.x - e.x) / W, -1, 1) * R * .12, ay = clamp((P.y - e.y) / H, -1, 1) * R * .08; ctx.fillStyle = e.phase === 3 ? '#ff3030' : '#3aaa50'; ctx.beginPath(); ctx.arc(ax, R * .12 + ay, R * .16 * Math.min(1, eo + .3), 0, TAU); ctx.fill(); ctx.fillStyle = '#050205'; ctx.beginPath(); ctx.ellipse(ax, R * .12 + ay, R * .05, R * .12 * Math.min(1, eo + .3), 0, 0, TAU); ctx.fill(); }
   ctx.globalCompositeOperation = 'lighter';
   for (let i = 0; i < 6; i++) { const a = i / 6 * TAU + S.t * .4; drawGlow(Math.cos(a) * R * .6, Math.sin(a) * R * .5, R * .1, C, .5 + .4 * Math.sin(S.t * 4 + i)); }
-  if (Math.random() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .8, Math.cos(a) * R * 1.5, Math.sin(a) * R * 1.4, rand(0, 99), 8); }
+  if (rnd() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .8, Math.cos(a) * R * 1.5, Math.sin(a) * R * 1.4, rand(0, 99), 8); }
   ctx.globalCompositeOperation = 'source-over';
   if (e.shp > 0 && !e.dying) {
     const fl = .5 + .5 * Math.sin(S.t * 3), hit = Math.max(0, e.shieldHit || 0) * 3, rr = e.sr, k = .45 + .55 * e.shp / e.smax;

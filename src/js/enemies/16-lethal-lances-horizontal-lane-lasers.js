@@ -22,7 +22,7 @@ function lanceVolley(mode, o = {}) {
     if (Math.abs(y2 - py) >= gap) addLance(y2, { ...base, quiet: true });
   } else if (mode === 'wall') {
     const n = Math.max(3, Math.floor((bot - top) / (w * 1.5 + 34))), sp = (bot - top) / n, cur = clamp(Math.floor((py - top) / sp), 0, n - 1);
-    let safe = clamp(cur + (Math.random() < .5 ? -1 : 1) * (1 + ((Math.random() * 2) | 0)), 0, n - 1); if (safe === cur) safe = cur > 0 ? cur - 1 : cur + 1;
+    let safe = clamp(cur + (rnd() < .5 ? -1 : 1) * (1 + ((rnd() * 2) | 0)), 0, n - 1); if (safe === cur) safe = cur > 0 ? cur - 1 : cur + 1;
     let last = null;
     for (let i = 0; i < n; i++) if (i !== safe) last = addLance(top + (i + .5) * sp, { ...base, w: sp * .62, charge: ch + .5, quiet: !!last });
     return last;
@@ -51,12 +51,12 @@ function updateLances(dt) {
     const half = l.w * .5;
     if (l.v) {
       if (S.mode === 'play' && P.alive && !P.cap && !S.trans && P.y > l.x0 - 6 && Math.abs(P.x - l.y) < half + 8) lanceKill(l);
-      if (parts.length < 1400 && Math.random() < .5) parts.push({ k: 'spark', x: l.y + rand(-half, half), y: rand(l.x0, H), vx: rand(-90, 90), vy: rand(200, 500), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 });
+      if (parts.length < 1400 && rnd() < .5) parts.push({ k: 'spark', x: l.y + rand(-half, half), y: rand(l.x0, H), vx: rand(-90, 90), vy: rand(200, 500), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 });
       continue;
     }
     if (S.mode === 'play' && P.alive && !P.cap && !S.trans && P.x < l.x0 + 6 && Math.abs(P.y - l.y) < half + 8) lanceKill(l);
     for (const e of ships) if (e.surf && e.air && !e.dead && e.x < l.x0 && e.x > -40 && Math.abs(e.y - l.y) < half + e.hh) damage(e, 999, e.x, e.y, true);
-    if (parts.length < 1400 && Math.random() < .5) { const x = rand(0, l.x0); parts.push({ k: 'spark', x, y: l.y + rand(-half, half), vx: -rand(200, 500), vy: rand(-90, 90), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 }); }
+    if (parts.length < 1400 && rnd() < .5) { const x = rand(0, l.x0); parts.push({ k: 'spark', x, y: l.y + rand(-half, half), vx: -rand(200, 500), vy: rand(-90, 90), life: .25, max: .25, c: pick([LANCEC, '255,220,210']), w: 1.3 }); }
   }
   sweep(lances);
 }
@@ -121,7 +121,7 @@ function bossLance(e, mode, L) {
   e.hold = Math.max(e.hold, 1.2);
 }
 function flightLance(lv) {
-  const r = Math.random(), mode = lv >= 7 && r < .35 ? 'cascade' : lv >= 4 && r < (lv >= 7 ? .7 : .45) ? 'double' : 'single';
+  const r = rnd(), mode = lv >= 7 && r < .35 ? 'cascade' : lv >= 4 && r < (lv >= 7 ? .7 : .45) ? 'double' : 'single';
   lanceVolley(mode, { w: (24 + lv * 1.2) * unitScale(), charge: Math.max(1.1, 1.55 - lv * .05) });
   if (!S.lanceTip) { S.lanceTip = true; S.toast = { txt: GW && GW.theme === 3 ? I18('冰川要塞光矛锁定 · 避开红色预警线', 'Glacier lance lock · dodge the red warning lanes') : surfTheme() ? I18('熔炉要塞光矛锁定 · 避开红色预警线', 'Forge lance lock · dodge the red warning lanes') : I18('巨像要塞光矛锁定 · 避开红色预警线', 'Colossus lance lock · dodge the red warning lanes'), t: 3.4 }; }
 }

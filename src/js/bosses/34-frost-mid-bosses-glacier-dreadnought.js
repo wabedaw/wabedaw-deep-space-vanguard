@@ -38,7 +38,7 @@ function drawGlacier(e, pulse) {
   iceFacet([[0, -h * .42], [h * .3, 0], [0, h * .42]], '#ffffff', `rgb(${C})`, '#3a7aa8'); iceFacet([[0, -h * .42], [-h * .3, 0], [0, h * .42]], '#e8f8ff', '#7ac8f0', '#1c4a70');
   ctx.restore();
   ctx.globalCompositeOperation = 'lighter'; drawGlow(0, h * .15, h * .8, C, .35 + .25 * pulse); drawGlow(0, h * .15, h * .2, WHITE, .9);
-  if (Math.random() < .4 && parts.length < 1300) parts.push({ k: 'ember', x: e.x + rand(-w, w) * .8, y: e.y + rand(-h, h), vx: rand(-20, 20), vy: rand(20, 60), life: .8, max: .8, c: '235,250,255', r: 1.4 });
+  if (rnd() < .4 && parts.length < 1300) parts.push({ k: 'ember', x: e.x + rand(-w, w) * .8, y: e.y + rand(-h, h), vx: rand(-20, 20), vy: rand(20, 60), life: .8, max: .8, c: '235,250,255', r: 1.4 });
   ctx.globalCompositeOperation = 'source-over';
   for (const p of e.parts) drawModule(e, p, pulse);
 }

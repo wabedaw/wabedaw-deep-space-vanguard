@@ -42,7 +42,7 @@ function updateTransitionOld(dt) {
     if (!tr.switched) {
       S.scrollT = 460; P.x += (W * .8 - P.x) * Math.min(1, dt * 1.2); P.y += (H * .5 - P.y) * Math.min(1, dt * 1.5); P.evx = 500; P.bank *= .9;
       transExhaust(1, 0, ['120,200,255', '200,240,255', '255,255,255'], 3); shake(4);
-      if (Math.random() < .25 && parts.length < 1300) explode(rand(0, W * .45), rand(H * .2, H * .8), rand(20, 50), FIRE);
+      if (rnd() < .25 && parts.length < 1300) explode(rand(0, W * .45), rand(H * .2, H * .8), rand(20, 50), FIRE);
       S.wflash = Math.max(S.wflash, clamp((tr.t - 1.5) / .7, 0, 1));
       if (tr.t >= 2.2) {
         tr.switched = true; S.wflash = 1; leaveSurface(); S.sector++; S.sectorT = 0; S.bossPending = false;
@@ -194,7 +194,7 @@ function spawnHole(x, y, vy) {
     tilt: rand(-.28, .28), mass: (rand(3.2, 9.8)).toFixed(1), disk: [], flow: [] };
   for (let i = 0; i < 70; i++) h.flow.push({ a: rand(0, TAU), rad: rand(h.cap * .9, h.R) });
   for (let i = 0; i < 300; i++) {
-    const rad = r * (1.55 + Math.pow(Math.random(), 1.6) * 2.4);
+    const rad = r * (1.55 + Math.pow(rnd(), 1.6) * 2.4);
     h.disk.push({ a: rand(0, TAU), rad, w: 2.6 * Math.pow(r * 1.55 / rad, 1.5), s: rand(.8, 2.2) });
   }
   holes.push(h);
@@ -208,7 +208,7 @@ const PU = {
 };
 function dropPower(x, y, type) {
   if (!type) {
-    const r = Math.random();
+    const r = rnd();
     type = r < (P.lvl < 10 ? .26 : .06) ? 'W' : r < .55 ? 'M' : r < .8 ? 'S' : 'H';
   }
   powers.push({ x, y, type, t: 0, vy: 70 });

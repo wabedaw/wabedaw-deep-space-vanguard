@@ -1,5 +1,6 @@
 /* ---------- render ---------- */
-function render() {
+function render() { RNG.fx = true; try { renderFrame(); } finally { RNG.fx = false; } }
+function renderFrame() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   const sx = S.shake ? rand(-S.shake, S.shake) : 0, sy = S.shake ? rand(-S.shake, S.shake) : 0;
   ctx.save(); ctx.translate(sx, sy);

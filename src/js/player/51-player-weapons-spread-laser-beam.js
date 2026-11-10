@@ -91,7 +91,7 @@ function updatePlayerBeam(dt) {
   P.arcs = [];
   if (L >= 8) {
     const R = 80 + (L - 8) * 25, n = L - 6, cand = [];
-    const add = (x, y, info) => { const rx = x - g.ox, ry = y - g.oy, al = clamp(rx * g.ux + ry * g.uy, 0, bd), px = g.ox + g.ux * al, py = g.oy + g.uy * al, dd = Math.hypot(x - px, y - py); if (dd < R && dd > 2) cand.push({ dd, x, y, px, py, info, seed: Math.random() * 1000 }); };
+    const add = (x, y, info) => { const rx = x - g.ox, ry = y - g.oy, al = clamp(rx * g.ux + ry * g.uy, 0, bd), px = g.ox + g.ux * al, py = g.oy + g.uy * al, dd = Math.hypot(x - px, y - py); if (dd < R && dd > 2) cand.push({ dd, x, y, px, py, info, seed: rnd() * 1000 }); };
     for (const e of ships) {
       if (e.dead || e.cap || e.dying) continue;
       if (e.type === 'boss') { for (const p of e.parts) if (!p.dead && !p.hidden && !(best && best.p === p)) add(p.x ?? e.x + p.ox, p.y ?? e.y + p.oy, { k: 'part', e, p }); continue; }
@@ -110,7 +110,7 @@ function updatePlayerBeam(dt) {
     if (best) beamHit(best, amt * beamFocusMul(), hx, hy);
     for (const a of P.arcs) beamHit(a.info, amt * .5, a.x, a.y);
   }
-  if (best && parts.length < 1500 && Math.random() < .6) { const a = Math.atan2(-g.uy, -g.ux); parts.push({ k: 'spark', x: hx, y: hy, vx: Math.cos(a + rand(-1, 1)) * rand(120, 260), vy: Math.sin(a + rand(-1, 1)) * rand(120, 260), life: .2, max: .2, c: pick([BEAMC, '255,255,255', '220,200,255']), w: 1.4 }); }
+  if (best && parts.length < 1500 && rnd() < .6) { const a = Math.atan2(-g.uy, -g.ux); parts.push({ k: 'spark', x: hx, y: hy, vx: Math.cos(a + rand(-1, 1)) * rand(120, 260), vy: Math.sin(a + rand(-1, 1)) * rand(120, 260), life: .2, max: .2, c: pick([BEAMC, '255,255,255', '220,200,255']), w: 1.4 }); }
 }
 function zap(x1, y1, x2, y2, seed, jit) {
   const n = 7, dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len;

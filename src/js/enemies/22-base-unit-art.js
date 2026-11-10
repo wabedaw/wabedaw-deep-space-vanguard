@@ -40,7 +40,7 @@ const BOSS_ORDER_B = ['scarab', 'medusa', 'prismarch'];
 function initHiveShip(e, d) {
   const t = e.type;
   if (t === 'wasp') { e.vy = rand(150, 200) * Math.min(1.4, Math.sqrt(d)); e.state = 0; e.diveT = rand(.8, 2.2); }
-  else if (t === 'mantis') { e.ty = inset.t + rand(80, Math.max(100, H * .32)); e.state = 0; e.vx = rand(110, 150) * (Math.random() < .5 ? -1 : 1); }
+  else if (t === 'mantis') { e.ty = inset.t + rand(80, Math.max(100, H * .32)); e.state = 0; e.vx = rand(110, 150) * (rnd() < .5 ? -1 : 1); }
   else if (t === 'brood') { e.ty = inset.t + rand(90, Math.max(110, H * .22)); e.state = 0; e.spawnT = 1.6; e.open = 0; }
   else if (t === 'prism') { e.ty = inset.t + rand(100, Math.max(120, H * .35)); e.state = 0; e.tx = e.x; e.shots = 0; e.spin = 0; }
   else if (t === 'urchin') { e.vy = rand(45, 75); e.vx = rand(-20, 20); e.spin = rand(0, TAU); }
@@ -125,13 +125,13 @@ function updateHive(e, dt, canFire, spK, d) {
   }
 }
 function spawnWaveB() {
-  const r = Math.random(), lv = levelOf(S.sector);
+  const r = rnd(), lv = levelOf(S.sector);
   if (lv >= 2 && r < .16) spawnShip('brood', rand(W * .2, W * .8));
   else if (r < .32) spawnShip('prism', rand(W * .15, W * .85));
   else if (r < .5) { const n = lv >= 4 ? 2 : 1; for (let i = 0; i < n; i++) spawnShip('mantis', rand(W * .15, W * .85), -40 - i * 60); }
   else if (r < .62) { const n = 3 + Math.min(3, lv >> 1); for (let i = 0; i < n; i++) spawnShip('urchin', rand(40, W - 40), -30 - i * 70); }
   else {
-    const n = 5 + Math.min(4, lv >> 1), cx = rand(W * .25, W * .75), arc = Math.random() < .5;
+    const n = 5 + Math.min(4, lv >> 1), cx = rand(W * .25, W * .75), arc = rnd() < .5;
     for (let i = 0; i < n; i++) { const m = i - (n - 1) / 2; spawnShip('wasp', clamp(cx + m * 34, 20, W - 20), -30 - (arc ? m * m * 6 : Math.abs(m) * 30)); }
   }
 }

@@ -321,7 +321,7 @@ function drawSiren(e, pulse) {
   drawGlow(0, R * .12, R * .08, WHITE, 1);
   for (const s of [-1, 1]) drawGlow(s * R * .74, R * .26, 10, C, pulse);
   drawGlow(0, R * .4, R * .1, C, pulse);
-  if (dmg > .5 && Math.random() < .3) sparks(e.x + rand(-R, R) * .7, e.y + rand(-R, R) * .3, 2, FIRE);
+  if (dmg > .5 && rnd() < .3) sparks(e.x + rand(-R, R) * .7, e.y + rand(-R, R) * .3, 2, FIRE);
 }
 function drawHydra(e, pulse) {
   const w = e.hw, h = e.hh, dmg = 1 - e.hp / e.maxhp, C = e.phase === 3 ? WARN : FLARE;
@@ -352,8 +352,8 @@ function drawHydra(e, pulse) {
     ctx.save(); ctx.translate(p.ox, p.oy);
     if (p.dead) {
       ctx.fillStyle = '#0b0b0e'; ctx.beginPath(); ctx.arc(0, 0, p.r * .8, 0, TAU); ctx.fill();
-      ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, p.r, '255,120,40', .25 + .2 * Math.random());
-      if (Math.random() < .25) sparks(e.x + p.ox, e.y + p.oy, 1, FIRE);
+      ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, p.r, '255,120,40', .25 + .2 * rnd());
+      if (rnd() < .25) sparks(e.x + p.ox, e.y + p.oy, 1, FIRE);
     } else {
       const tg = ctx.createRadialGradient(-p.r * .3, -p.r * .3, 1, 0, 0, p.r);
       tg.addColorStop(0, '#9aa3b2'); tg.addColorStop(1, '#2a2f3a');
@@ -368,7 +368,7 @@ function drawHydra(e, pulse) {
   }
   ctx.globalCompositeOperation = 'lighter';
   drawGlow(0, h * 1.12, h * .3, '255,70,110', pulse);
-  if (dmg > .4 && Math.random() < .35) sparks(e.x + rand(-w, w) * .8, e.y + rand(-h, h) * .6, 2, FIRE);
+  if (dmg > .4 && rnd() < .35) sparks(e.x + rand(-w, w) * .8, e.y + rand(-h, h) * .6, 2, FIRE);
 }
 function drawLeviathan(e, pulse) {
   const R = e.r, C = e.phase === 3 ? WARN : '150,255,200', C2 = e.phase === 3 ? '255,150,80' : '120,170,255';
@@ -405,7 +405,7 @@ function drawLeviathan(e, pulse) {
   ctx.globalCompositeOperation = 'lighter';
   drawGlow(0, 0, R * .55, C, .45 * pulse);
   for (let i = 0; i < 6; i++) { const a = i / 6 * TAU + e.ring; drawGlow(Math.cos(a) * R * .8, Math.sin(a) * R * .8, R * .09, C, pulse); }
-  if (e.hp / e.maxhp < .5 && Math.random() < .3) sparks(e.x + rand(-R, R) * .7, e.y + rand(-R, R) * .7, 2, [C, '255,255,255']);
+  if (e.hp / e.maxhp < .5 && rnd() < .3) sparks(e.x + rand(-R, R) * .7, e.y + rand(-R, R) * .7, 2, [C, '255,255,255']);
 }
 
 function drawEnemyBullets() {

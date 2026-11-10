@@ -113,7 +113,7 @@ function drawBaseProps() {
       ctx.fillStyle = '#12161e'; ctx.fillRect(p.x - 18, s > 0 ? wall : wall - 8, 36, 8);
       ctx.fillStyle = '#2c3442'; for (let i = -2; i <= 2; i++) ctx.fillRect(p.x + i * 7 - 1.5, s > 0 ? wall + 1 : wall - 7, 3, 6);
       ctx.globalCompositeOperation = 'lighter';
-      if (p.warn) drawGlow(p.x, wall + s * 4, 16 + 6 * Math.random(), '255,140,60', .6);
+      if (p.warn) drawGlow(p.x, wall + s * 4, 16 + 6 * rnd(), '255,140,60', .6);
       if (p.on && p.len > 2) {
         const L = p.len, g = ctx.createLinearGradient(0, wall, 0, wall + s * L); g.addColorStop(0, 'rgba(255,240,200,.95)'); g.addColorStop(.35, 'rgba(255,150,60,.75)'); g.addColorStop(1, 'rgba(255,60,30,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(p.x - 12, wall); ctx.lineTo(p.x - 20 - 4 * Math.sin(S.t * 30), wall + s * L); ctx.lineTo(p.x + 20 + 4 * Math.cos(S.t * 27), wall + s * L); ctx.lineTo(p.x + 12, wall); ctx.closePath(); ctx.fill();
@@ -129,7 +129,7 @@ function drawBaseProps() {
       }
       ctx.globalCompositeOperation = 'lighter';
       const tip1 = yT + 24, tip2 = yB - 24;
-      if (p.warn) { drawGlow(p.x, tip1, 10 + 6 * Math.random(), '160,210,255', .8); drawGlow(p.x, tip2, 10 + 6 * Math.random(), '160,210,255', .8); if (Math.random() < .5) { ctx.strokeStyle = 'rgba(190,225,255,.6)'; ctx.lineWidth = 1; zap(p.x, tip1, p.x + rand(-10, 10), tip1 + 26, rand(0, 99), 6); } }
+      if (p.warn) { drawGlow(p.x, tip1, 10 + 6 * rnd(), '160,210,255', .8); drawGlow(p.x, tip2, 10 + 6 * rnd(), '160,210,255', .8); if (rnd() < .5) { ctx.strokeStyle = 'rgba(190,225,255,.6)'; ctx.lineWidth = 1; zap(p.x, tip1, p.x + rand(-10, 10), tip1 + 26, rand(0, 99), 6); } }
       if (p.on) {
         ctx.strokeStyle = 'rgba(120,180,255,.35)'; ctx.lineWidth = 9; zap(p.x, tip1, p.x, tip2, p.t * 7, 14);
         ctx.strokeStyle = 'rgba(230,245,255,.95)'; ctx.lineWidth = 2; zap(p.x, tip1, p.x, tip2, p.t * 7 + 3, 14); zap(p.x, tip1, p.x, tip2, p.t * 9 + 11, 10);
@@ -216,7 +216,7 @@ function drawCore(e, pulse) {
     ctx.fillStyle = '#2c3548'; for (let yy = y0 + 20; yy < y1; yy += 46) ctx.fillRect(-R * .36, yy, R * .72, 8);
     if (!e.gone) { ctx.globalCompositeOperation = 'lighter'; const L = Math.abs(y1 - y0); for (let j = 0; j < 4; j++) { const t = ((S.t * .9 + j / 4) % 1), yy = d < 0 ? y0 + L * t : y1 - L * t; drawGlow(0, yy, R * .22, C, .8); } ctx.globalCompositeOperation = 'source-over'; }
   }
-  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, '255,120,40', .35 + .2 * Math.random()); ctx.globalCompositeOperation = 'source-over'; return; }
+  if (e.gone) { ctx.globalCompositeOperation = 'lighter'; drawGlow(0, 0, R * 1.2, '255,120,40', .35 + .2 * rnd()); ctx.globalCompositeOperation = 'source-over'; return; }
   ctx.globalCompositeOperation = 'lighter';
   drawGlow(0, 0, R * 3, C, .35 + .15 * pulse);
   for (let k = 0; k < 3; k++) {
@@ -232,7 +232,7 @@ function drawCore(e, pulse) {
   ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1.4;
   for (let i = 0; i < 3; i++) { const a = e.spin * 2 + i * 2.1; ctx.beginPath(); ctx.arc(0, 0, R * (.45 + i * .15), a, a + 1.6); ctx.stroke(); }
   drawGlow(0, 0, R * .55, WHITE, .9);
-  if (Math.random() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .9, Math.cos(a) * R * 1.6, Math.sin(a) * R * 1.6, rand(0, 99), 8); }
+  if (rnd() < .5) { ctx.strokeStyle = `rgba(${C},.8)`; ctx.lineWidth = 1.3; const a = rand(0, TAU); zap(Math.cos(a) * R * .9, Math.sin(a) * R * .9, Math.cos(a) * R * 1.6, Math.sin(a) * R * 1.6, rand(0, 99), 8); }
   ctx.globalCompositeOperation = 'source-over';
   if (e.shp > 0 && !e.dying) {
     const fl = .5 + .5 * Math.sin(S.t * 3), hit = Math.max(0, e.shieldHit || 0) * 3, rr = e.sr, k = .45 + .55 * e.shp / e.smax;

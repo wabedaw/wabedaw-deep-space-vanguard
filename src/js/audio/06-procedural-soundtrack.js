@@ -28,7 +28,7 @@ const MUS = {
     if (s === 0) mPad(ch, t, spb * 16, m);
     if (m === 'menu' || m === 'over') {
       if (s === 0) mBass(root, t, spb * 15, .55, true);
-      if (m === 'menu' && s % 4 === 2 && Math.random() < .55) mPluck(pick(ch) + 24, t, .045);
+      if (m === 'menu' && s % 4 === 2 && Math.random() < .55) mPluck(fpick(ch) + 24, t, .045);
       if (m === 'menu' && s === 8 && bar % 2 === 1) mBell(ch[2] + 24, t);
       if (m === 'over' && s === 0 && bar === 0) mBell(ch[0] + 12, t);
       return;

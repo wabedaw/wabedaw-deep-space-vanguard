@@ -1,9 +1,9 @@
 /* ---------- planetary defense satellites ---------- */
 const SAT_RANGE = 300;
 function addSats(pl) {
-  const n = Math.min(5, 2 + Math.floor((S.sector - 1) / 2) + (Math.random() < .5 ? 1 : 0));
+  const n = Math.min(5, 2 + Math.floor((S.sector - 1) / 2) + (rnd() < .5 ? 1 : 0));
   const a = pl.r * rand(1.7, 2.05);
-  pl.satW = rand(.22, .32) * (Math.random() < .5 ? 1 : -1);
+  pl.satW = rand(.22, .32) * (rnd() < .5 ? 1 : -1);
   pl.sats = [];
   for (let i = 0; i < n; i++) pl.sats.push({ r: 10, ang: i / n * TAU + rand(-.25, .25), a, b: a * .34, hp: 4 + S.sector, maxhp: 4 + S.sector, fireT: rand(1.2, 2.4), hitT: 0, x: 0, y: 0, front: true, hidden: false, locked: false, aim: Math.PI / 2, alt: 0, blink: rand(0, 1), dead: false });
 }
@@ -39,7 +39,7 @@ function damageSat(s, dmg, x, y) {
     s.dead = true; S.kills++;
     explode(s.x, s.y, 26, FIRE, { debris: '200,180,120' }); sfx.boom(26, s.x, 'ship');
     addScore(180, s.x, s.y);
-    if (Math.random() < .18) dropPower(s.x, s.y);
+    if (rnd() < .18) dropPower(s.x, s.y);
   }
 }
 

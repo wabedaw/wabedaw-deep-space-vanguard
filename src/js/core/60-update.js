@@ -63,7 +63,7 @@ function update(dt) {
     gravityOn(l, dt, 1);
     l.x += l.vx * dt; l.y += l.vy * dt; l.life -= dt;
     if (l.life <= 0 || l.y < -40 || l.y > H + 40 || l.x < -40 || l.x > W + 40 || insideHole(l, .9)) l.dead = true;
-    else if (S.side && (GW || IW) && (l.y > solidTopAt(l.x) || (IW && l.y < ceilAt(l.x)))) { l.dead = true; if (Math.random() < .4) sparks(l.x, l.y, 2, DUST, -Math.PI / 2, 1.6); }
+    else if (S.side && (GW || IW) && (l.y > solidTopAt(l.x) || (IW && l.y < ceilAt(l.x)))) { l.dead = true; if (rnd() < .4) sparks(l.x, l.y, 2, DUST, -Math.PI / 2, 1.6); }
   }
   // missiles
   for (const m of missiles) updateMissile(m, dt);
