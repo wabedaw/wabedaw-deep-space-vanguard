@@ -76,6 +76,8 @@ async def main():
             if boss_start is None and game_t - sector_start > 240 and not tr:
                 stuck.append((sec, 'sector-timeout')); print(TAG, 'SECTOR STALL', sec, flush=True); sector_start = game_t
             if sec >= 101 and game_t - sector_start > 20: done = True
+        ach = await pg.evaluate("() => typeof SAVE === 'object' ? { ach: Object.keys(SAVE.data.ach).sort(), stats: SAVE.data.stats } : null")
+        print(TAG, 'ACHIEVEMENTS', json.dumps(ach), flush=True)
         print(TAG, 'DONE', json.dumps({'wall': round(time.time() - t0), 'game_t': game_t, 'sector': sec, 'stuck': stuck, 'pageerrors': errs[:4]}), flush=True)
         log.close(); await b.close()
 asyncio.run(main())

@@ -17,12 +17,12 @@ function updateDive(tr, dt) {
 const ENDING_LINES = [
   [2.2, I18('始源之光，已然熄灭', 'The First Light fades')],
   [4.6, I18('新的星辰，在你身后诞生', 'New stars are born in your wake')],
-  [7.0, I18('深空先锋 · 任务完成', 'DEEP SPACE VANGUARD · MISSION COMPLETE')],
+  [7.0, I18('烬翼 · 任务完成', 'ASHWING · MISSION COMPLETE')],
 ];
 function updateEnding(tr, dt) {
   tr.t += dt; P.inv = Math.max(P.inv, 2); P.alive = true; P.fireCd = 1; S.scrollT = 0;
   P.x += (W * .3 - P.x) * Math.min(1, dt); P.y += (H * .5 - P.y) * Math.min(1, dt);
-  if (!tr.saved) { tr.saved = true; tr.score = S.score; if (!S.dev) try { localStorage.setItem('dsv-cleared', '1'); } catch (e) {} saveStage(stageOf(S.sector) + 1); }
+  if (!tr.saved) { tr.saved = true; tr.score = S.score; if (!S.dev) { SAVE.set('cleared', true); award('ACH_FINAL_CLEAR'); } saveStage(stageOf(S.sector) + 1); }
   if (tr.t >= 15) {
     S.trans = null; leaveSurface(); S.sector = stageOf(S.sector) * 10 + 1; S.sectorT = 0; S.bossPending = false; planet = null; planetTimer = 10;
     P.x = W / 2; P.y = H * .78; P.gx = P.gy = 0; P.hull = 100; P.shield = 100; P.mis = P.misMax;

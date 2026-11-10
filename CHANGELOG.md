@@ -8,7 +8,18 @@
 - 项目定名《烬翼：弑光》/ ASHWING: Slay the First Light；游戏内的标题和图标在后续换皮时更新。
 - 第 2 步：可复现的随机数。模拟层（刷怪、敌人行为、弹幕、掉落、粒子、背景行星与防御卫星）改用可设种子的随机数，同一种子加同样的操作会重放出完全相同的一局。绘制、星空、星尘、天空、音效和首页动画用独立的表现层随机数，所以帧率、静音、语言、"减少动态效果"和触屏都不会改变游戏里实际发生的事。开局种子来自网址参数 `?seed=N`、测试或开发者面板，否则随机生成，记录在 `S.seed`；种子在 `resetGame()` 之前设置。新增 `tests/determinism_test.py`。
 - 玩法上唯一可见的变化：每局开始时用本局种子重新生成第一颗行星和它的防御卫星（发射时的白光遮住切换），所以第 1 扇区总会出现卫星；以前取决于菜单画面里碰巧有没有行星。
-- 已知限制：游戏区域仍随窗口尺寸缩放，不同屏幕尺寸下同一种子的过程不完全相同；每周挑战上线前会改成固定的逻辑分辨率和固定步长模拟（M1 后续步骤）。
+- ~~已知限制：游戏区域仍随窗口尺寸缩放~~（第 3 步已解决）。
+- 第 3 步：固定逻辑分辨率 + 固定步长模拟。横屏的游戏画面固定为 1280×720，按窗口等比缩放并加黑边（Steam Deck 1280×800 上下各 40 像素）；手机竖屏用 450 宽、高度随屏幕在 800–1000 之间（网站版专用，没有全球榜）。模拟每步固定 1/60 秒：高刷新率显示器不再加速，掉帧时游戏放慢而不是跳步；常见刷新间隔会对齐，60 Hz 下每帧正好一步。触屏拖动、新手指引指向按钮、首页战机位置都换算到游戏坐标。确定性测试新增：1920×1080 与 1366×768@2x 窗口必须和 1280×800 完全一致；144 Hz 与不均匀帧间隔必须和逐步模拟完全一致且不加速。顺带修掉一个会让 144 Hz 显示器加速 20% 的对齐误差（开发中发现，未发布）。
+- 合并云端分支（`origin/m1-refactor` 的 `93d33a6` 第 3a 步、`9eb3f90` 第 3b 步，交接说明见 `04_docs/M1-云端第3步交接.md`）：两边第 3 步重叠，以主线为准，吸收云端的四项：① 插值绘制：每帧都画，位置按上一步和这一步插值，120/144/165 Hz 屏幕平滑（`core/70a-fixed-step.js`，`LERP_JUMP` 避免瞬移拖影）；② `SIM.hooks`：每一步模拟前调用，留给回放录制和测试；③ 菜单层、暂停 / 静音按钮和触屏按钮收进战场（CSS 变量 `--vt --vr --vb --vl`），带鱼屏上不再跑到黑边外；④ 首页战机位置按菜单层的位置计算。黑边加上云端的四角细框。确定性测试加入 2560×1080 带鱼屏。云端的 `tests/framerate_test.py` 没有搬：主线确定性测试里的 144 Hz 和不均匀帧检查已覆盖，并且现在会在每帧做插值绘制。
+- 第 6 步（存档部分）：所有本地数据合并为一个带版本号的存档 `ashwing-save`，经平台层读写；v0.1 的 12 个 `dsv-*` 键在第一次打开时自动迁移；无法解析的存档另存为 `ashwing-save.bad`；更新版本写的存档只读不覆盖。新增 `tests/save_test.py`。
+- 平台层 `PLATFORM`（`src/js/platform/platform.js`）：同一份游戏代码在 Steam 桌面版、Claude、网站三种环境运行，存储、成就、统计、语言、退出、全屏都经它调用。
+- Steam 桌面版（`platform/steam/`）：Electron 外壳 + steamworks.js（主进程）、存档文件原子写入（供 Steam 自动云同步）、全屏（F11 / Alt+Enter）、桌面版菜单"退出游戏"、内容安全策略、单实例、`--selftest` 自检。`npm run steam:dist:win` 打包 Windows 版；`platform/steam/steampipe/make-build.mjs` 生成上传脚本。
+- 成就与统计：11 个成就、3 个统计接到现有玩法（只读观察模拟，不影响确定性；开发者模式不计）。名称见 `07_release/成就设计.csv`。
+- 手柄：标准映射手柄可玩完整一局（左摇杆 / 十字键移动、A 飞弹、X / LB 换武器、Y / RB 湮星脉冲、RT 射击、View 自动射击、Start 暂停；菜单 A 启航 / 重试 / 继续，B 退出）。
+- 第 5 步：四种语言。代码仍写 `I18(简中, 英文)`；繁体中文和日文放在 `src/lang/zh-Hant.json`、`ja.json`，以英文原文为键；`node tools/i18n.mjs` 生成给校对用的 `src/lang/catalog.csv`，`--import` 导回。首页语言改为下拉菜单；玩家没选过时跟随浏览器（网站）或 Steam 客户端语言。字体：Noto Sans SC / TC / JP 各自子集化（`tools/subset_fonts.py` 改用 Google Fonts 的可变字体）。新增 `tests/i18n_test.py`。
+- 改名：游戏内标题改为 ASHWING / 烬翼：弑光；超级武器 Starbreaker / 歼星炮 改为 VEGA LANCE / 织女光矛（Steam 上已有同名游戏）。
+- 排行榜：npm 上的 steamworks.js 0.4.0 没有排行榜，改用自带的修改版（`platform/steam/native/steamworks.js`，上游 `80c5fd7c49` + 新增 `src/api/leaderboard.rs`，说明见 `native/PATCHES.md`）。主进程经 `platform/steam/leaderboards.js` 提供上传和下载（检查榜名、分数、details）；`PLATFORM.boards` 只在二进制有补丁时出现。Steam 版的排行榜界面显示 `CAMPAIGN_NORMAL_SOLO` 全球前 50 名和自己的名次，跑完一局按最好成绩上传；Steam 失败或没有补丁时显示本机成绩。macOS 二进制已在本机编译；Windows、Linux 由新的 GitHub Actions 工作流 `steamworks native` 编译。新增测试 `platform/steam/leaderboards.test.js`、`tests/steam_board_test.py`；桌面版自检加 `--leaderboard <榜名>` 读真实排行榜。打包时排除原生库的源码和编译目录。
+- 构建时编译整份脚本：两个文件声明同名变量或出现语法错误时，构建失败并指出文件和行号。
 
 ## v0.1.0 — 测试版 / Test build (2026-11-10)
 

@@ -1,10 +1,10 @@
 /* ---------- developer mode: password-gated panel to jump to any stage, sector or boss for testing ---------- */
 const DEV_HASH = 4017947777;
 const devHash = s => { let h = 0x811c9dc5; for (const c of 'dsv-dev:' + s) { h ^= c.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h; };
-let devUnlocked = false; try { devUnlocked = localStorage.getItem('dsv-dev') === '1'; } catch (e) {}
+let devUnlocked = SAVE.get('dev') === true;
 const DEV = { run: null, st: 1, from: 'menu' };
 const devOv = $('devOv'), devPw = $('devPw'), devGod = $('devGod'), devMax = $('devMax'), devUlt = $('devUlt'), pauseDevBtn = $('pauseDevBtn');
-try { const o = JSON.parse(localStorage.getItem('dsv-dev-opts') || 'null'); if (o) { devGod.checked = !!o.god; devMax.checked = !!o.max; devUlt.checked = o.ult !== false; } } catch (e) {}
+{ const o = SAVE.get('devOpts'); if (o && typeof o === 'object') { devGod.checked = !!o.god; devMax.checked = !!o.max; devUlt.checked = o.ult !== false; } }
 devPw.placeholder = I18('密码', 'Password');
 const DEV_KIND = { space: I18('太空', 'Space'), surface: I18('地表', 'Surface'), base: I18('基地', 'Base'), final: I18('终局', 'Finale') };
 const pad2 = n => String(n).padStart(2, '0');
@@ -65,7 +65,7 @@ function closeDev(launching) {
 }
 function devStart(st, lv, boss) {
   DEV.run = { god: devGod.checked, max: devMax.checked, ult: devUlt.checked };
-  try { localStorage.setItem('dsv-dev-opts', JSON.stringify(DEV.run)); } catch (e) {}
+  SAVE.set('devOpts', Object.assign({}, DEV.run));
   closeDev(true);
   if (S.mode !== 'menu') quitToMenu();
   menuEl.classList.remove('leaving');
@@ -98,11 +98,11 @@ function drawDevHud(L, y) {
 $('devBtn').addEventListener('click', e => { e.stopPropagation(); openDev('menu'); });
 pauseDevBtn.addEventListener('click', () => openDev('pause'));
 $('devClose').addEventListener('click', () => closeDev(false));
-$('devLockBtn').addEventListener('click', () => { devUnlocked = false; try { localStorage.removeItem('dsv-dev'); } catch (e) {} devRender(); devPw.focus({ preventScroll: true }); });
+$('devLockBtn').addEventListener('click', () => { devUnlocked = false; SAVE.set('dev', false); devRender(); devPw.focus({ preventScroll: true }); });
 $('devLock').addEventListener('submit', e => {
   e.preventDefault();
   if (devHash(devPw.value.trim().toLowerCase()) === DEV_HASH) {
-    devUnlocked = true; try { localStorage.setItem('dsv-dev', '1'); } catch (er) {} devPw.value = ''; $('devErr').hidden = true; devRender(); $('devClose').focus({ preventScroll: true });
+    devUnlocked = true; SAVE.set('dev', true); devPw.value = ''; $('devErr').hidden = true; devRender(); $('devClose').focus({ preventScroll: true });
   } else {
     devPw.value = ''; const er = $('devErr'); er.hidden = false; er.classList.remove('shake'); void er.offsetWidth; er.classList.add('shake'); devPw.focus({ preventScroll: true });
   }

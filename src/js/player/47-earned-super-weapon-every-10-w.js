@@ -1,22 +1,23 @@
-/* ---------- earned super weapon (normal mode): every 10 W = Starbreaker for 10 s; every 10 M = one nova pulse charge ---------- */
+/* ---------- earned super weapon (normal mode): every 10 W = VEGA LANCE (formerly Starbreaker) for 10 s; every 10 M = one nova pulse charge ---------- */
 const SUPER_T = 10, NOVA_MAX = 3;
 function startSuper() {
   if (ultAvail()) return;
   if (P.superT > 0) { P.superT = SUPER_T; return; }
   P.superPrev = P.weapon === 'ult' ? (P.superPrev || 'spread') : P.weapon;
   if (P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; }
+  award('ACH_SUPER_WEAPON');
   P.weapon = 'ult'; P.superT = SUPER_T; P.bm = null; P.arcs = []; P.focus = 0; P.focusFull = false; P.beamOn = false;
   S.wflash = Math.max(S.wflash || 0, .3); shake(8); sfx.shieldBreak(); sfx.weaponSwitch();
   waves.push({ x: P.x, y: P.y, r: 20, max: 160, life: .45, maxl: .45, c: ULTC });
-  floatText(P.x, P.y - 64, I18('歼星炮启动 · 10 秒', 'STARBREAKER ONLINE · 10 s'), ULTC, true);
-  if (TUT.done.superW) S.toast = { txt: I18('集齐 10 个 W · 歼星光柱与追踪光弹全开 10 秒', '10 W collected · star column and homing darts for 10 s'), t: 2.4 };
+  floatText(P.x, P.y - 64, I18('织女光矛启动 · 10 秒', 'VEGA LANCE ONLINE · 10 s'), ULTC, true);
+  if (TUT.done.superW) S.toast = { txt: I18('集齐 10 个 W · 光矛光柱与追踪光弹全开 10 秒', '10 W collected · star column and homing darts for 10 s'), t: 2.4 };
   tutPush('superW', true);
   updateWeaponBtn();
 }
 function endSuper() {
   P.superT = 0; P.ultOn = false; P.weapon = P.superPrev || 'spread'; P.superPrev = null; P.lvl = 10;
   sfx.weaponSwitch(); updateWeaponBtn();
-  floatText(P.x, P.y - 52, I18('歼星炮冷却 · 武器 MK.X', 'STARBREAKER OFFLINE · WEAPON MK.X'), wcolOf(P.weapon), true);
+  floatText(P.x, P.y - 52, I18('织女光矛冷却 · 武器 MK.X', 'VEGA LANCE OFFLINE · WEAPON MK.X'), wcolOf(P.weapon), true);
 }
 const wcolOf = w => w === 'ult' ? ULTC : w === 'beam' ? BEAMC : ION;
 function gainNova() {
@@ -29,7 +30,7 @@ function useNova() {
   if (S.mode !== 'play' || !P.alive || S.trans) return;
   if (ultAvail()) { ultNova(); return; }
   if ((P.novaCh || 0) <= 0) { sfx.empty(); S.toast = { txt: I18('湮星脉冲未充能 · 每收集 10 个 M 充能一次', 'Nova not charged · every 10 M pickups charge one'), t: 1.8 }; return; }
-  if (ultNova()) { P.novaCh--; updateNovaBtn(); }
+  if (ultNova()) { P.novaCh--; updateNovaBtn(); if (countStat('STAT_NOVAS') >= 10) award('ACH_NOVA_10'); }
 }
 function updateNovaBtn() {
   const b = document.getElementById('novaBtn'); if (!b) return;

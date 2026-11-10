@@ -1,9 +1,9 @@
 {
-  "note": "Website title, descriptions and app names. Still the v0.1 branding; switch to 烬翼：弑光 / ASHWING when the in-game rebrand lands.",
-  "title": "Deep Space Vanguard · 深空先锋",
-  "shortName": "深空先锋",
-  "ogTitle": "深空先锋 · Deep Space Vanguard",
-  "manifestName": "深空先锋 · Deep Space Vanguard",
-  "descZh": "驾驶 V-7 VEGA 截击机执行深空任务：穿越太空、外星地表与敌方基地，击败 38 位首领，直捣终焉之星。",
-  "descEn": "Fly the V-7 VEGA interceptor on a deep-space mission across space, alien surfaces and fortress bases. Defeat 38 bosses and strike the Omega Star."
+  "note": "Website title, descriptions and app names (tools/build.mjs puts them in dist/web/index.html and manifest.webmanifest).",
+  "title": "ASHWING: Slay the First Light · 烬翼：弑光",
+  "shortName": "ASHWING",
+  "ogTitle": "烬翼：弑光 · ASHWING: Slay the First Light",
+  "manifestName": "烬翼：弑光 · ASHWING: Slay the First Light",
+  "descZh": "驾驶 V-7 VEGA 战机，穿越太空、外星地表与敌方基地，击败 38 位首领，熄灭终焉之星的“初光”。纵横切换的弹幕射击。",
+  "descEn": "Fly the V-7 VEGA through space, alien surfaces and enemy bases, defeat 38 bosses and put out the First Light at the heart of the Omega Star. A shoot-'em-up that switches between vertical and horizontal flight."
 }

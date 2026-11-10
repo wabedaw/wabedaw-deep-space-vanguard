@@ -1,5 +1,5 @@
 /* ---------- HUD ---------- */
-const FD = '"Chakra Petch","Noto Sans SC",sans-serif';
+const FD = '"Chakra Petch","' + CJK_FONT + '",sans-serif';
 function setLS(v) { if ('letterSpacing' in ctx) ctx.letterSpacing = v; }
 function segBar(x, y, w, f, col, label, val) {
   const n = 20, gap = 2, sw = (w - gap * (n - 1)) / n;
@@ -110,7 +110,7 @@ function drawHUD() {
     ctx.fillStyle = 'rgba(255,90,79,.14)'; ctx.fillRect(0, y - 30, W, 60);
     ctx.fillStyle = 'rgba(255,90,79,.8)'; ctx.fillRect(0, y - 30, W, 1.5); ctx.fillRect(0, y + 28.5, W, 1.5);
     ctx.font = `700 ${W < 420 ? 17 : 22}px ${FD}`; setLS('5px'); ctx.textAlign = 'center'; ctx.fillStyle = '#ffd9d6';
-    ctx.fillText((ZH ? '警告 · 大型敌舰接近' : W < 520 ? 'MOTHERSHIP INBOUND' : 'WARNING · MOTHERSHIP INBOUND'), W / 2, y + 2); setLS('2px');
+    ctx.fillText(W < 520 && !CJK ? 'MOTHERSHIP INBOUND' : I18('警告 · 大型敌舰接近', 'WARNING · MOTHERSHIP INBOUND'), W / 2, y + 2); setLS('2px');
     ctx.font = `600 12px ${FD}`; ctx.fillStyle = `rgb(${WARN})`; ctx.fillText(S.warnName || '', W / 2, y + 21); setLS('0px'); ctx.textAlign = 'left';
   }
   if (P.cap && S.mode === 'play') {

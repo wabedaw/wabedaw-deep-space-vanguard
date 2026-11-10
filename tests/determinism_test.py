@@ -9,7 +9,11 @@ campaign bot, and logs every sector change, every boss start/end, and a checksum
   B  seed 12345 again                                   -> must equal A
   C  seed 12345, Chinese, muted, reduced motion, phone   -> must equal A (settings never change the game)
   D  seed 777                                           -> must differ from A
-All runs use the same 1280x800 view: the play field still scales with the window (see CHANGELOG).
+  E  seed 12345 in a 1920x1080 window                   -> must equal A (fixed logical play field)
+  F  seed 12345 in a 1366x768 window at 2x pixel density -> must equal A
+  G  seed 12345 in a 2560x1080 ultrawide window          -> must equal A
+Then checks the real frame loop: feeding it 144 Hz (and uneven) frame times must give exactly the same state as
+stepping the simulation 1/60 s at a time (fixed-step simulation), with interpolated drawing every frame.
 """
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
@@ -19,7 +23,7 @@ GAME = os.path.join(ROOT, 'dist', 'claude', 'ashwing.html')
 SECS = float(sys.argv[1]) if len(sys.argv) > 1 else 420
 html = open(GAME, encoding='utf-8').read().replace(
     "const hot = window.claude && window.claude.hot;",
-    "window.__dbg={S,P,K,RNG,update,render,startGame,ships,holes,ebul,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;", 1)
+    "window.__dbg={S,P,K,RNG,update,render,startGame,frame,ships,holes,ebul,ceilAt,floorAt,solidTopAt,get IW() { return IW; }, get W() { return W; }, get H() { return H; }};\nconst hot = window.claude && window.claude.hot;", 1)
 assert '__dbg' in html
 
 STOP_LOOP = "window.requestAnimationFrame = () => 0;"   # the test drives every frame itself
@@ -61,8 +65,8 @@ window.run = (secs) => {
 };
 """
 
-async def one(b, seed, variant=False):
-    ctx = await b.new_context(viewport={'width': 1280, 'height': 800}, locale='zh-CN' if variant else 'en-US',
+async def one(b, seed, variant=False, view=(1280, 800), scale=1):
+    ctx = await b.new_context(viewport={'width': view[0], 'height': view[1]}, device_scale_factor=scale, locale='zh-CN' if variant else 'en-US',
                               reduced_motion='reduce' if variant else 'no-preference', has_touch=variant)
     await ctx.add_init_script(STOP_LOOP)
     if variant:
@@ -79,13 +83,47 @@ async def one(b, seed, variant=False):
         errs += res['errs']
     log = await pg.evaluate("() => window.log")
     used = await pg.evaluate("() => window.__dbg.S.seed")
+    field = await pg.evaluate("() => [window.__dbg.W, window.__dbg.H]")
     await ctx.close()
-    return {'seed': used, 'sector': res['sector'], 'log': log, 'errors': errs}
+    return {'seed': used, 'sector': res['sector'], 'log': log, 'errors': errs, 'field': field}
+
+LOOP = r"""
+window.sum = () => { const D = window.__dbg, S = D.S; return [+S.t.toFixed(6), S.score, S.sector, D.ships.length, D.ebul.length, D.RNG.state, +D.P.x.toFixed(4), +D.P.y.toFixed(4)]; };
+window.direct = (n) => { for (let i = 0; i < n; i++) window.__dbg.update(1 / 60); return sum(); };
+window.looped = (secs, hz, jitter) => {   // hz 144: never lines up with 1/60 s; jitter: alternating 31.7 / 9.2 ms frames
+  // drive the page's own frame() with synthetic timestamps; uneven mode alternates short and long frames
+  // the first call only syncs the loop's clock (a paused frame takes no steps)
+  const S = window.__dbg.S, m = S.mode; let now = performance.now(), i = 0; S.mode = 'pause'; window.__dbg.frame(now); S.mode = m;
+  const t0 = S.t, t1 = now;
+  while (S.t - t0 < secs - 1e-9 && i < 100000) { now += 1000 / hz * (jitter ? (i % 3 === 0 ? 1.9 : .55) : 1); i++; window.__dbg.frame(now); }
+  window.wall = (now - t1) / 1000; return sum();
+};
+"""
+
+async def loop_check(b):
+    out = []
+    for mode in ['direct', 'loop144', 'loop60uneven']:
+        ctx = await b.new_context(viewport={'width': 1280, 'height': 800})
+        await ctx.add_init_script(STOP_LOOP)
+        pg = await ctx.new_page(); errs = []
+        pg.on('pageerror', lambda e: errs.append(str(e)))
+        await pg.set_content('<!doctype html><html><head><meta charset="utf-8"></head><body>' + html + '</body></html>')
+        await pg.wait_for_timeout(300)
+        await pg.evaluate("() => {" + LOOP + "}")
+        await pg.evaluate("() => { const D = window.__dbg; D.S.startStage = 1; D.S.nextSeed = 4242; D.startGame(); D.P.inv = 1e9; }")
+        r = await pg.evaluate("() => direct(600)") if mode == 'direct' else \
+            await pg.evaluate("() => looped(10, 144, false)") if mode == 'loop144' else await pg.evaluate("() => looped(10, 60, true)")
+        wall = await pg.evaluate("() => window.wall || 0")
+        out.append((mode, r, errs, wall)); await ctx.close()
+    return out
 
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
-        A, B, C, D = await asyncio.gather(one(b, 12345), one(b, 12345), one(b, 12345, True), one(b, 777))
+        A, B, C, D, E, F, G = await asyncio.gather(one(b, 12345), one(b, 12345), one(b, 12345, True), one(b, 777),
+                                                   one(b, 12345, view=(1920, 1080)), one(b, 12345, view=(1366, 768), scale=2),
+                                                   one(b, 12345, view=(2560, 1080)))
+        L = await loop_check(b)
         await b.close()
     ok = True
     def check(name, cond, info=''):
@@ -95,6 +133,12 @@ async def main():
     check('same seed replays the same run (A == B)', A['log'] == B['log'], first_diff(A['log'], B['log']))
     check('language, sound, reduced motion and touch do not change the run (A == C)', A['log'] == C['log'], first_diff(A['log'], C['log']))
     check('a different seed gives a different run (A != D)', A['log'] != D['log'])
+    check('the play field has the same logical size in every window', A['field'] == E['field'] == F['field'] == G['field'] == [1280, 720], (A['field'], E['field'], F['field'], G['field']))
+    check('window size and pixel density do not change the run (A == E == F == G)', A['log'] == E['log'] == F['log'] == G['log'], first_diff(A['log'], E['log']) or first_diff(A['log'], F['log']) or first_diff(A['log'], G['log']))
+    (_, dr, de, _w), (_, lr, le, lw), (_, ur, ue, uw) = L
+    check('the frame loop at 144 Hz gives the same state as fixed 1/60 s steps', dr == lr and not de and not le, (dr, lr))
+    check('uneven frame times give the same state as fixed 1/60 s steps', dr == ur and not ue, (dr, ur))
+    check('10 game seconds take 10 seconds of real time at 144 Hz and with uneven frames', abs(lw - 10) < .05 and abs(uw - 10) < .05, (round(lw, 3), round(uw, 3)))
     print(f"A: sector {A['sector']}, {len(A['log'])} log entries over {SECS:.0f} game seconds")
     sys.exit(0 if ok else 1)
 

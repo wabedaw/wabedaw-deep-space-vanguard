@@ -1,7 +1,7 @@
 /* ---------- first-flight coaching: weapon switch, missiles, black holes, the W/M meters and both super weapons (shown once per device) ---------- */
 const TUT = { done: {}, cur: null, queue: [], clock: 0, gap: 0, next: 0, w0: '', fired: false };
-try { const v = JSON.parse(localStorage.getItem('dsv-tut') || '{}'); if (v && typeof v === 'object') TUT.done = v; } catch (e) {}
-const tutSave = () => { try { localStorage.setItem('dsv-tut', JSON.stringify(TUT.done)); } catch (e) {} };
+TUT.done = SAVE.get('tut');
+const tutSave = () => SAVE.set('tut', TUT.done);
 const TIPS = {
   weapon: { col: ION, title: I18('切换武器', 'SWITCH WEAPONS'), dur: 9, target: 'weapon', done: () => P.weapon !== TUT.w0,
     text: COARSE ? I18('点右下角的武器按钮，在「散射」和「光束」之间切换', 'Tap the weapon button to swap between SPREAD and BEAM') : I18('按 Q（或数字键 1 / 2）在散射和光束之间切换', 'Press Q (or 1 / 2) to swap between SPREAD and BEAM'),
@@ -14,8 +14,8 @@ const TIPS = {
     sub: I18('靠近时引力会把你往里拖，提前朝反方向飞', 'Its gravity drags you in · steer away early') },
   meter: { col: ULTC, title: I18('超级武器能量', 'SUPER WEAPON METERS'), dur: 7, target: 'meter',
     text: I18('左下角 W 和 M 各集满 10 格，就能发动超级武器', 'Fill 10 W or 10 M (bottom-left) to unleash a super weapon'),
-    sub: I18('W 满：歼星炮 10 秒 · M 满：一次全屏爆炸', 'W full: Starbreaker for 10 s · M full: one screen-wide blast') },
-  superW: { col: ULTC, title: I18('歼星炮已启动！', 'STARBREAKER ONLINE!'), dur: 6, target: 'meter',
+    sub: I18('W 满：织女光矛 10 秒 · M 满：一次全屏爆炸', 'W full: VEGA LANCE for 10 s · M full: one screen-wide blast') },
+  superW: { col: ULTC, title: I18('织女光矛已启动！', 'VEGA LANCE ONLINE!'), dur: 6, target: 'meter',
     text: I18('集满 10 个 W：光柱和追踪光弹自动开火 10 秒', '10 W collected: star column and homing darts fire for 10 s'),
     sub: I18('结束后武器恢复为 MK.X 满级', 'Your weapon comes back at MK.X afterwards') },
   superM: { col: ULTC, title: I18('全屏爆炸可以发动了！', 'NOVA PULSE READY!'), dur: 10, target: 'nova', done: () => (P.novaCh || 0) === 0,
@@ -47,12 +47,12 @@ function updateTut(dt) {
   if (c.ok > 1.1 || c.t > d.dur) { TUT.done[c.id] = 1; tutSave(); TUT.cur = null; TUT.gap = 1.4; if (c.id === 'weapon') TUT.next = TUT.clock + 2.5; }
 }
 function tutWrap(txt, maxW) {
-  const toks = ZH ? Array.from(txt) : txt.split(/(\s+)/), lines = []; let cur = '';
+  const toks = CJK ? Array.from(txt) : txt.split(/(\s+)/), lines = []; let cur = '';
   for (const t of toks) { const nx = cur + t; if (cur && ctx.measureText(nx).width > maxW) { lines.push(cur.trim()); cur = t.trimStart(); } else cur = nx; }
   if (cur.trim()) lines.push(cur.trim()); return lines;
 }
 function tutTarget(kind, L, B) {
-  const btn = id => { const el = document.getElementById(id); if (!el || el.hidden) return null; const r = el.getBoundingClientRect(); return r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2, r: r.width / 2 + 8 } : null; };
+  const btn = id => { const el = document.getElementById(id); if (!el || el.hidden) return null; const r = el.getBoundingClientRect(); if (!r.width) return null; const f = toField(r.left + r.width / 2, r.top + r.height / 2); return { x: f.x, y: f.y, r: (r.width / 2 + 8) / VIEW.s }; };
   if (kind === 'weapon') return (COARSE && btn('weaponBtn')) || { x: L + 70, y: B - 96, r: 30 };
   if (kind === 'missile') return (COARSE && btn('missileBtn')) || { x: L + 74, y: B - 2, r: 30 };
   if (kind === 'nova') return (COARSE && btn('novaBtn')) || { x: L + 190, y: B - 124, r: 30 };

@@ -58,7 +58,7 @@ function quitToMenu() {
 }
 $('startBtn').addEventListener('click', () => launchFromMenu(1));
 const stageBtn = $('stageBtn');
-function lastStage() { try { return Math.max(0, parseInt(localStorage.getItem('dsv-last') || '0', 10) || 0); } catch (e) { return 0; } }
+function lastStage() { return Math.max(0, SAVE.get('last') | 0); }
 function refreshStageBtn() {
   const h = +((location.hash.match(/^#stage(\d+)$/) || [])[1]) || 0, b = bestStage(), n = h || lastStage() || (b > 1 ? b : 0);
   stageBtn.hidden = n < 2; stageBtn.dataset.st = n; stageBtn.parentElement.classList.toggle('has-cont', n >= 2);
@@ -77,7 +77,13 @@ function launchFromMenu(st) {
   S.mode = 'launch'; S.launchT = 0; menuEl.classList.add('leaving'); sfx.launch();
 }
 const helpBtn = $('helpBtn'), helpSheet = $('helpSheet');
-$('langBtn').addEventListener('click', e => { e.stopPropagation(); const next = ZH ? 'en' : 'zh'; try { localStorage.setItem('dsv-lang', next); } catch (er) {} location.hash = '#' + next; location.reload(); });
+// desktop (Steam) build only: a way out of the full-screen game without Alt+F4
+if (PLATFORM.canQuit) { $('quitBtn').hidden = false; $('quitBtn').addEventListener('click', e => { e.stopPropagation(); SAVE.flush(); PLATFORM.quit(); }); }
+{ const sel = $('langSel');
+  for (const l of LANGS) { const o = document.createElement('option'); o.value = l; o.lang = l; o.textContent = LANG_NAMES[l]; sel.appendChild(o); }
+  sel.value = LANG;
+  sel.addEventListener('click', e => e.stopPropagation());
+  sel.addEventListener('change', () => { SAVE.set('lang', sel.value); SAVE.flush(); location.hash = '#' + sel.value; location.reload(); }); }
 helpBtn.addEventListener('click', e => { e.stopPropagation(); const open = helpSheet.hidden; helpSheet.hidden = !open; helpBtn.setAttribute('aria-expanded', String(open)); });
 menuEl.addEventListener('click', e => { if (!helpSheet.hidden && !helpSheet.contains(e.target)) { helpSheet.hidden = true; helpBtn.setAttribute('aria-expanded', 'false'); } });
 $('againBtn').addEventListener('click', () => { S.startStage = S.diedStage || 1; startGame(); });

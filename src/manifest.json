@@ -2,6 +2,14 @@
   "note": "Script parts in load order. tools/build.mjs concatenates them into one classic <script>; order matters.",
   "parts": [
     {
+      "file": "js/platform/platform.js",
+      "section": "platform: steam / claude / web host services"
+    },
+    {
+      "file": "js/core/save.js",
+      "section": "save data: one versioned object, migrated from v0.1 keys"
+    },
+    {
       "file": "js/core/00-language-english-by-default-chinese.js",
       "section": "language: English by default, Chinese on request"
     },
@@ -20,6 +28,10 @@
     {
       "file": "js/core/04-game-state.js",
       "section": "game state"
+    },
+    {
+      "file": "js/core/achievements.js",
+      "section": "achievements & lifetime stats (read-only observer of the simulation)"
     },
     {
       "file": "js/audio/05-audio.js",
@@ -270,6 +282,10 @@
       "section": "input"
     },
     {
+      "file": "js/core/gamepad.js",
+      "section": "gamepad: standard-mapping controllers and Steam Deck"
+    },
+    {
       "file": "js/ui/67-ui.js",
       "section": "UI"
     },
@@ -280,6 +296,10 @@
     {
       "file": "js/ui/69-leaderboard-every-pilot-s-best-run.js",
       "section": "leaderboard: every pilot's best run in the artifact's shared db (scores/<their id>); this device's records when offline"
+    },
+    {
+      "file": "js/core/70a-fixed-step.js",
+      "section": "fixed-step simulation + render interpolation (from the cloud branch, step 3a)"
     },
     {
       "file": "js/core/70-sizing-loop.js",

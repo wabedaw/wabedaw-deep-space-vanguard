@@ -12,7 +12,7 @@ function flowEscape(e) {
 }
 function updateFlow(dt) {
   if (S.mode !== 'play') return;
-  if (!S.dev) { const st = stageOf(S.sector); if (st !== updateFlow.st) { updateFlow.st = st; try { localStorage.setItem('dsv-last', String(st)); } catch (e) {} } }
+  if (!S.dev) { const st = stageOf(S.sector); if (st !== updateFlow.st) { updateFlow.st = st; SAVE.set('last', st); } }
   if (S.dev) devTick();
   for (const e of ships) if (e.seen === undefined && (S.side ? e.x < W - 10 : e.y > 10)) e.seen = S.t;
   if (flowLive()) S.mom = Math.max(0, (S.mom || 0) - dt * .25);

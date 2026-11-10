@@ -1,0 +1,5 @@
+/target
+node_modules
+# dist/ is committed: the game installs these prebuilt binaries, so building it never needs Rust
+sdk/*
+!sdk/redistributable_bin

@@ -3,7 +3,7 @@ let AC = null, master = null, sfxBus = null, musBus = null, musDuck = null, musF
 let noiseBuf = null, brownBuf = null, holeGain = null, lastLaserSfx = 0, lastHitSfx = 0, musFilterT = 0;
 const boomLog = [];
 let soundMode = 0; // 0 all on, 1 effects only, 2 muted
-try { soundMode = clamp(parseInt(localStorage.getItem('dsv-sound') || '0', 10) || 0, 0, 2); } catch (e) {}
+soundMode = clamp(SAVE.get('sound') | 0, 0, 2);
 const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
 const panX = x => !Number.isFinite(x) || !W ? 0 : clamp((x / W) * 2 - 1, -1, 1) * .75;
 
@@ -66,7 +66,7 @@ function applySound() {
 }
 function setSoundMode(m) {
   soundMode = m;
-  try { localStorage.setItem('dsv-sound', String(m)); } catch (e) {}
+  SAVE.set('sound', m);
   audioInit(); applySound();
   if (S.mode === 'play') S.toast = { txt: [I18('声音 · 音乐与音效全开', 'Sound · music and effects on'), I18('仅音效 · 音乐关闭', 'Effects only · music off'), I18('已静音', 'Muted')][m], t: 1.5 };
 }

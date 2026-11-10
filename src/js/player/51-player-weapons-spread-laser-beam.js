@@ -5,14 +5,14 @@ const SPREAD = [
   [-26, -.34, 1, 1, 5], [26, .34, 1, 1, 5], [-12, -.05, 1, 1, 6], [12, .05, 1, 1, 6], [-30, -.46, 1, 1, 7], [30, .46, 1, 1, 7],
   [-34, -.58, 1, 1, 9], [34, .58, 1, 1, 9], [-38, -.7, 1, 1, 10], [38, .7, 1, 1, 10],
 ];
-const weaponName = () => P.weapon === 'ult' ? (P.superT > 0 ? I18('歼星炮 · ', 'STARBREAKER · ') + Math.max(0, P.superT).toFixed(1) + 's' : I18('歼星炮 · 终极武器', 'STARBREAKER · ULTIMATE')) : P.weapon === 'beam' ? I18('激光束', 'BEAM LASER') : I18('散射激光', 'SPREAD LASER');
+const weaponName = () => P.weapon === 'ult' ? (P.superT > 0 ? I18('织女光矛 · ', 'VEGA LANCE · ') + Math.max(0, P.superT).toFixed(1) + 's' : I18('歼星炮 · 终极武器', 'STARBREAKER · ULTIMATE')) : P.weapon === 'beam' ? I18('激光束', 'BEAM LASER') : I18('散射激光', 'SPREAD LASER');
 const weaponPerk = () => P.weapon === 'ult' ? '' : P.lvl >= 8 ? (P.weapon === 'beam' ? I18(' · 辐射', ' · ARC') : I18(' · 爆裂', ' · BURST')) : '';
 const beamWidth = () => 5 + P.lvl * 1.3;
 const beamDps = () => 34 + P.lvl * 11;
 const beamFocusMul = () => 1 + .7 * (P.focus || 0);
 function switchWeapon(w) {
   if (S.mode !== 'play' || !P.alive) return;
-  if (P.superT > 0) { S.toast = { txt: I18('歼星炮运转中 · 结束后自动恢复原武器', 'Starbreaker active · your weapon returns when it ends'), t: 1.4 }; return; }
+  if (P.superT > 0) { S.toast = { txt: I18('织女光矛运转中 · 结束后自动恢复原武器', 'VEGA LANCE active · your weapon returns when it ends'), t: 1.4 }; return; }
   const next = w || (P.weapon === 'spread' ? 'beam' : P.weapon === 'beam' && ultAvail() ? 'ult' : 'spread');
   if (next === P.weapon || (next === 'ult' && !ultAvail())) return;
   P.weapon = next; P.bm = null; P.arcs = []; P.focus = 0; P.focusFull = false;
@@ -21,7 +21,7 @@ function switchWeapon(w) {
 }
 function updateWeaponBtn() {
   const b = document.getElementById('weaponBtn'), m = document.getElementById('missileBtn'), nx = P.weapon === 'spread' ? 'beam' : P.weapon === 'beam' && ultAvail() ? 'ult' : 'spread';
-  if (b) { b.textContent = P.superT > 0 ? I18('歼星', 'ULTRA') : { spread: I18('散射', 'SPREAD'), beam: I18('光束', 'BEAM'), ult: I18('终极', 'ULTRA') }[nx]; b.dataset.w = P.weapon; }
+  if (b) { b.textContent = P.superT > 0 ? I18('光矛', 'LANCE') : { spread: I18('散射', 'SPREAD'), beam: I18('光束', 'BEAM'), ult: I18('终极', 'ULTRA') }[nx]; b.dataset.w = P.weapon; }
   if (m) { const nv = P.weapon === 'ult' && ultAvail(); m.textContent = nv ? I18('脉冲', 'NOVA') : I18('飞弹', 'MISSILE'); m.dataset.w = nv ? 'ult' : ''; }
 }
 function laserBoom(x, y) {

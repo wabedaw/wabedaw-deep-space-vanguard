@@ -1,13 +1,30 @@
-/* ---------- language: English by default, Chinese on request ---------- */
-const LANG = (() => { const h = location.hash; if (h === '#zh' || h === '#en') return h.slice(1); try { const v = localStorage.getItem('dsv-lang'); if (v === 'zh' || v === 'en') return v; } catch (e) {} return 'en'; })();
-const ZH = LANG === 'zh';
-const I18 = (zh, en) => ZH ? zh : en;
-document.documentElement.lang = ZH ? 'zh-CN' : 'en';
-if (ZH) {
-  document.documentElement.classList.add('zh'); document.title = '深空先锋 · Deep Space Vanguard';
-  const lk = document.createElement('link'); lk.rel = 'stylesheet'; lk.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap'; document.head.appendChild(lk);
-  for (const el of document.querySelectorAll('[data-zh]')) el.innerHTML = el.dataset.zh;
-  for (const el of document.querySelectorAll('[data-zh-aria]')) el.setAttribute('aria-label', el.dataset.zhAria);
+/* ---------- language: English by default; Simplified Chinese, Traditional Chinese and Japanese on request ---------- */
+// Every visible string is written in the code as I18(Simplified Chinese, English); markup carries the English inside
+// the element and the Simplified Chinese in data-zh. Traditional Chinese and Japanese come from src/lang/<code>.json,
+// keyed by the English text: tools/i18n.mjs extracts the catalog for translators, tools/build.mjs injects the tables
+// as LANG_TABLES. A missing entry falls back to Simplified Chinese (Traditional) or English (Japanese).
+// Choice: #hash (shareable links: #en #zh #zh-Hans #zh-Hant #ja) > the player's choice > Steam's language > default
+const LANGS = ['en', 'zh-Hans', 'zh-Hant', 'ja'];
+const LANG_NAMES = { en: 'English', 'zh-Hans': '简体中文', 'zh-Hant': '繁體中文', ja: '日本語' };
+const DEFAULT_LANG = () => 'en';   // the artifact opens in English; the web build follows the browser (tools/build.mjs)
+const LANG = (() => {
+  const fix = v => v === 'zh' ? 'zh-Hans' : v, ok = v => LANGS.includes(v);
+  const h = fix(decodeURIComponent(location.hash.slice(1)));
+  return ok(h) ? h : ok(SAVE.get('lang')) ? SAVE.get('lang') : ok(PLATFORM.hostLang()) ? PLATFORM.hostLang() : DEFAULT_LANG();
+})();
+const ZH = LANG === 'zh-Hans';   // the code's own strings are Simplified Chinese
+const CJK = LANG !== 'en';       // Chinese or Japanese: CJK fonts, line breaks between any two characters
+const LT = (typeof LANG_TABLES === 'object' && LANG_TABLES[LANG]) || null;
+const I18 = (zh, en) => ZH ? zh : LT ? (LT[en] ?? (LANG === 'zh-Hant' ? zh : en)) : en;
+const I18f = (zh, en, ...a) => I18(zh, en).replace(/\{(\d)\}/g, (_, i) => a[i]);   // placeholders {0} {1}… take the extra arguments
+const CJK_FONT = { 'zh-Hant': 'Noto Sans TC', ja: 'Noto Sans JP' }[LANG] || 'Noto Sans SC';
+document.documentElement.lang = LANG;
+if (CJK) {
+  document.documentElement.classList.add('zh');   // CJK layout rules in style.css; :lang() there picks the font
+  document.title = I18('烬翼：弑光', 'ASHWING: Slay the First Light');
+  const lk = document.createElement('link'); lk.rel = 'stylesheet'; lk.href = 'https://fonts.googleapis.com/css2?family=' + CJK_FONT.replace(/ /g, '+') + ':wght@400;500;700;900&display=swap'; document.head.appendChild(lk);
+  for (const el of document.querySelectorAll('[data-zh]')) el.innerHTML = I18(el.dataset.zh, el.innerHTML.trim());
+  for (const el of document.querySelectorAll('[data-zh-aria]')) el.setAttribute('aria-label', I18(el.dataset.zhAria, el.getAttribute('aria-label')));
 }
 (() => {
 'use strict';
@@ -43,5 +60,6 @@ const SECTOR_NAMES_C = [I18('霜冻前线', 'Frost Front'), I18('彗星风暴', 
 const SECTOR_LEN = 45;
 
 let W = 0, H = 0, DPR = 1;
+const VIEW = { s: 1, cw: 1, ch: 1, dpr: 1, ox: 0, oy: 0, vx: 0, vy: 0 };   // field -> window mapping, set by resize()
 const inset = { t: 0, r: 0, b: 0, l: 0 };
 

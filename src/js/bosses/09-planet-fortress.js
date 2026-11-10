@@ -1,5 +1,5 @@
 /* ---------- planet fortress (stage boss every 10 sectors) ---------- */
-const STAGE_CLEAR = st => ZH ? stageTag(st) + ' 完成' : 'STAGE ' + st + ' CLEAR';
+const STAGE_CLEAR = st => LANG.startsWith('zh') ? stageTag(st) + ' 完成' : 'STAGE ' + st + ' CLEAR';
 const FORT_MODS = ['turret', 'missile', 'laser', 'hangar', 'turret', 'laser', 'missile', 'turret'];
 function fortressGeo() {
   const nw = W < 520, PR = nw ? W * .95 : Math.max(W * .6, H * .62);
@@ -251,7 +251,7 @@ function drawCitadel(e, pulse) {
 
 /* ===================== SURFACE STAGES (side-scrolling) ===================== */
 const CN_NUM = I18('一二三四五六七八九十', '');
-const stageTag = st => ZH ? '第' + CN_NUM[(st - 1) % 10] + '关' : 'STAGE ' + st;
+const stageTag = st => LANG === 'zh-Hans' ? '第' + CN_NUM[(st - 1) % 10] + '关' : LANG === 'zh-Hant' ? '第' + CN_NUM[(st - 1) % 10] + '關' : 'STAGE ' + st;
 const stageOf = sec => Math.ceil(sec / 10);
 const levelOf = sec => sec - (stageOf(sec) - 1) * 10;
 const stageKind = st => st === 10 ? 'final' : ['space', 'surface', 'base'][(st > 10 ? st - 11 : st - 1) % 3];

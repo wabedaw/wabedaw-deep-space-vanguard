@@ -12,7 +12,7 @@ const diff = () => { const st = Math.ceil(S.sector / 10); return 1 + (S.sector -
 const mult = () => Math.min(8, 1 + Math.floor(S.combo / 6));
 
 function resetGame() {
-  clearBeams();
+  clearBeams(); progressReset();
   for (const a of [lasers, missiles, ebul, rocks, ships, holes, powers, parts, waves, texts]) a.length = 0;
   Object.assign(S, { t: 0, score: 0, sector: 1, sectorT: 0, dist: 0, shake: 0, dmgFlash: 0, combo: 0, comboT: 0, kills: 0, rocks: 0,
     banner: { big: I18('扇区 01', 'SECTOR 01'), sub: SECTOR_NAMES[0], t: 0, dur: 3.2 }, warn: 0, toast: null, boss: null, bossPending: false,

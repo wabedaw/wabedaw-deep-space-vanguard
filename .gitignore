@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+platform/steam/app/
+platform/steam/node_modules/
+# prebuilt native binaries of the patched steamworks.js are committed (see platform/steam/native/PATCHES.md)
+!platform/steam/native/steamworks.js/dist/

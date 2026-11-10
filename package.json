@@ -8,6 +8,17 @@
     "build": "node tools/build.mjs",
     "test": "node tools/build.mjs && python3 tests/smoke_test.py",
     "test:campaign": "node tools/build.mjs && python3 tests/campaign_bot.py dist/claude/ashwing.html desk 1280 800",
-    "test:determinism": "node tools/build.mjs && python3 tests/determinism_test.py"
+    "test:determinism": "node tools/build.mjs && python3 tests/determinism_test.py",
+    "test:save": "node tools/build.mjs && python3 tests/save_test.py",
+    "steam:install": "npm --prefix platform/steam install",
+    "steam:start": "node tools/build.mjs && npm --prefix platform/steam start",
+    "steam:selftest": "node tools/build.mjs && npm --prefix platform/steam run selftest",
+    "steam:dist:win": "node tools/build.mjs && npm --prefix platform/steam run dist:win",
+    "steam:dist:mac": "node tools/build.mjs && npm --prefix platform/steam run dist:mac",
+    "steam:dist:linux": "node tools/build.mjs && npm --prefix platform/steam run dist:linux",
+    "test:i18n": "node tools/build.mjs && python3 tests/i18n_test.py",
+    "test:all": "node tools/build.mjs && python3 tests/smoke_test.py && python3 tests/save_test.py && python3 tests/i18n_test.py && node --test platform/steam/leaderboards.test.js && python3 tests/steam_board_test.py && python3 tests/determinism_test.py",
+    "i18n": "node tools/i18n.mjs",
+    "test:steam": "node tools/build.mjs && node --test platform/steam/leaderboards.test.js && python3 tests/steam_board_test.py"
   }
 }

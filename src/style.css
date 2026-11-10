@@ -20,7 +20,7 @@ body{font-family:var(--f-body);touch-action:none;user-select:none;-webkit-user-s
 #c{display:block;width:100%;height:100%;cursor:crosshair}
 #insetProbe{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 
-.overlay{position:fixed;inset:0;z-index:5;display:flex;overflow-y:auto;
+.overlay{position:fixed;inset:var(--vt,0px) var(--vr,0px) var(--vb,0px) var(--vl,0px);z-index:5;display:flex;overflow-y:auto;
   padding-block:max(66px,calc(env(safe-area-inset-top,0px) + 62px)) max(20px,env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   background:radial-gradient(ellipse at 50% 50%,rgba(3,5,11,.05),rgba(3,5,11,.6))}
@@ -79,25 +79,25 @@ kbd{font:600 11.5px/1 var(--f-display);letter-spacing:.06em;color:var(--hull);pa
   font:700 13px/1 var(--f-display);letter-spacing:.08em;background:rgba(7,12,24,.5);
   border:1px solid rgba(94,242,255,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .hudbtn:focus-visible{outline:2px solid var(--ion);outline-offset:2px}
-#pauseBtn{top:calc(env(safe-area-inset-top,0px) + 14px);right:calc(env(safe-area-inset-right,0px) + 14px);width:40px;height:40px}
+#pauseBtn{top:calc(env(safe-area-inset-top,0px) + var(--vt,0px) + 14px);right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 14px);width:40px;height:40px}
 #pauseBtn::before{content:"";width:12px;height:14px;border-inline:4px solid currentColor;box-sizing:border-box}
-#soundBtn{z-index:6;top:calc(env(safe-area-inset-top,0px) + 14px);right:calc(env(safe-area-inset-right,0px) + 14px);width:40px;height:40px;color:var(--ion)}
-body.in-play #soundBtn{right:calc(env(safe-area-inset-right,0px) + 62px)}
+#soundBtn{z-index:6;top:calc(env(safe-area-inset-top,0px) + var(--vt,0px) + 14px);right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 14px);width:40px;height:40px;color:var(--ion)}
+body.in-play #soundBtn{right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 62px)}
 #soundBtn svg{width:21px;height:21px}
 #soundBtn .i-x,#soundBtn .i-note{display:none}
 #soundBtn[data-mode="0"] .i-note{display:inline}
 #soundBtn[data-mode="2"]{color:var(--dim)}
 #soundBtn[data-mode="2"] .i-wave{display:none}
 #soundBtn[data-mode="2"] .i-x{display:inline}
-#missileBtn{letter-spacing:.06em;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);right:calc(env(safe-area-inset-right,0px) + 22px);
+#missileBtn{letter-spacing:.06em;bottom:calc(env(safe-area-inset-bottom,0px) + var(--vb,0px) + 22px);right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 22px);
   width:84px;height:84px;border-radius:50%;border:1px solid rgba(255,179,71,.65);color:var(--flare);font-size:12px;
   box-shadow:inset 0 0 22px rgba(255,179,71,.18)}
 #missileBtn:active{background:rgba(255,179,71,.22)}
-#weaponBtn{bottom:calc(env(safe-area-inset-bottom,0px) + 120px);right:calc(env(safe-area-inset-right,0px) + 34px);width:60px;height:60px;border-radius:50%;
+#weaponBtn{bottom:calc(env(safe-area-inset-bottom,0px) + var(--vb,0px) + 120px);right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 34px);width:60px;height:60px;border-radius:50%;
   border:1px solid rgba(190,140,255,.7);color:#d2b8ff;font-size:10.5px;letter-spacing:.04em;box-shadow:inset 0 0 18px rgba(190,140,255,.2)}
 #weaponBtn[data-w="beam"]{border-color:rgba(94,242,255,.7);color:var(--ion);box-shadow:inset 0 0 18px rgba(94,242,255,.2)}
 #weaponBtn:active{background:rgba(190,140,255,.22)}
-#novaBtn{bottom:calc(env(safe-area-inset-bottom,0px) + 34px);right:calc(env(safe-area-inset-right,0px) + 122px);width:62px;height:62px;border-radius:50%;border:1px solid rgba(255,214,120,.85);color:#ffe2a0;font-size:11px;letter-spacing:.04em;box-shadow:inset 0 0 20px rgba(255,214,120,.3)}
+#novaBtn{bottom:calc(env(safe-area-inset-bottom,0px) + var(--vb,0px) + 34px);right:calc(env(safe-area-inset-right,0px) + var(--vr,0px) + 122px);width:62px;height:62px;border-radius:50%;border:1px solid rgba(255,214,120,.85);color:#ffe2a0;font-size:11px;letter-spacing:.04em;box-shadow:inset 0 0 20px rgba(255,214,120,.3)}
 #novaBtn:active{background:rgba(255,214,120,.25)}
 html.zh #novaBtn{font-size:13px;letter-spacing:0}
 #weaponBtn[data-w="ult"]{border-color:rgba(255,214,120,.85);color:#ffe2a0;box-shadow:inset 0 0 18px rgba(255,214,120,.25)}
@@ -197,7 +197,10 @@ html.zh #missileBtn{letter-spacing:0;font-size:15px}
 html.zh #weaponBtn{font-size:12px;letter-spacing:.06em}
 html.zh .ht-main{font:900 clamp(54px,12vw,128px)/.95 var(--f-body);letter-spacing:.14em;padding-left:.14em;text-transform:none}
 html.zh .launch-label{font:900 clamp(28px,6vw,38px)/1 var(--f-body);letter-spacing:.5em;padding-left:.5em;text-transform:none}
-.lang-btn{font-family:var(--f-body)}
+.lang-sel{font-family:var(--f-body);letter-spacing:.04em;padding-right:26px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 13px) 50%,calc(100% - 9px) 50%;background-size:4px 4px;background-repeat:no-repeat}
+.lang-sel option{background:#070c18;color:#dbe5f0}
+html.zh:lang(zh-Hant){--f-display:"Chakra Petch","Noto Sans TC",system-ui,sans-serif;--f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+html.zh:lang(ja){--f-display:"Chakra Petch","Noto Sans JP",system-ui,sans-serif;--f-body:"Noto Sans JP","Hiragino Sans","Yu Gothic UI",Meiryo,system-ui,sans-serif}
 
 
 /* leaderboard */

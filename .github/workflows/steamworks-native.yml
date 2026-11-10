@@ -1,0 +1,66 @@
+# Builds the patched steamworks.js (platform/steam/native/steamworks.js) for every platform the game ships on.
+# Run it from GitHub → Actions → "steamworks native" → Run workflow (it also runs when the native code changes),
+# then download the "steamworks-native-dist" artifact into platform/steam/native/steamworks.js/dist/ and commit it.
+# See platform/steam/native/PATCHES.md.
+name: steamworks native
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'platform/steam/native/steamworks.js/src/**'
+      - 'platform/steam/native/steamworks.js/Cargo.*'
+      - '.github/workflows/steamworks-native.yml'
+
+defaults:
+  run:
+    working-directory: platform/steam/native/steamworks.js
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22.x }
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: x86_64-pc-windows-msvc }
+      - run: npm ci
+      - run: npm run build -- --target x86_64-pc-windows-msvc
+      - run: node check-binaries.mjs --require win64
+      - uses: actions/upload-artifact@v4
+        with: { name: win64, path: platform/steam/native/steamworks.js/dist/win64, if-no-files-found: error }
+
+  linux:
+    runs-on: ubuntu-latest
+    # an old glibc keeps the binary loadable on older distributions and in the Steam Linux Runtime
+    container: { image: 'ubuntu:20.04' }
+    steps:
+      - run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl build-essential git
+        working-directory: /
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22.x }
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: x86_64-unknown-linux-gnu }
+      - run: npm ci
+      - run: npm run build -- --target x86_64-unknown-linux-gnu
+      - run: node check-binaries.mjs --require linux64
+      - uses: actions/upload-artifact@v4
+        with: { name: linux64, path: platform/steam/native/steamworks.js/dist/linux64, if-no-files-found: error }
+
+  macos:
+    runs-on: macos-latest
+    env: { MACOSX_DEPLOYMENT_TARGET: '10.13' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22.x }
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: 'x86_64-apple-darwin, aarch64-apple-darwin' }
+      - run: npm ci
+      - run: npm run build -- --target x86_64-apple-darwin
+      - run: npm run build -- --target aarch64-apple-darwin
+      - run: node check-binaries.mjs --require osx
+      - uses: actions/upload-artifact@v4
+        with: { name: osx, path: platform/steam/native/steamworks.js/dist/osx, if-no-files-found: error }

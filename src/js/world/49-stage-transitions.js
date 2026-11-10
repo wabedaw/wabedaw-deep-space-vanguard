@@ -84,8 +84,8 @@ function leaveSurface() {
   for (const a of [ships, ebul, powers, missiles, lasers, holes, rocks]) a.length = 0;
   clearBeams(); S.boss = null; S.tShip = 2; S.tRock = 1; S.tHole = 26; S.tGiant = 16;
 }
-function saveStage(st) { if (S.dev) return; try { const v = parseInt(localStorage.getItem('dsv-stage') || '1', 10) || 1; if (st > v) localStorage.setItem('dsv-stage', String(st)); } catch (e) {} }
-function bestStage() { try { return Math.max(1, parseInt(localStorage.getItem('dsv-stage') || '1', 10) || 1); } catch (e) { return 1; } }
+function saveStage(st) { if (S.dev) return; stageReached(st); if (st > (SAVE.get('stage') | 0)) SAVE.set('stage', st); }
+function bestStage() { return Math.max(1, SAVE.get('stage') | 0); }
 function startAtStage(st) {
   S.sector = (st - 1) * 10 + 1; S.sectorT = 0;
   P.lvl = [1, 5, 7, 8, 8, 9, 9, 10, 10][Math.min(st, 9) - 1]; P.mis = P.misMax;

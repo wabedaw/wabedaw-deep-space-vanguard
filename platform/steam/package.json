@@ -1,0 +1,102 @@
+{
+  "name": "ashwing",
+  "productName": "ASHWING",
+  "version": "0.1.0",
+  "description": "ASHWING: Slay the First Light — desktop app for Steam",
+  "private": true,
+  "main": "main.js",
+  "steamAppId": 0,
+  "scripts": {
+    "start": "electron . --windowed",
+    "selftest": "electron . --windowed --selftest",
+    "dist:win": "node native/steamworks.js/check-binaries.mjs && electron-builder --win dir --x64",
+    "dist:mac": "electron-builder --mac dir --universal",
+    "dist:linux": "electron-builder --linux dir --x64",
+    "check:native": "node native/steamworks.js/check-binaries.mjs",
+    "test": "node --test leaderboards.test.js"
+  },
+  "dependencies": {
+    "steamworks.js": "file:native/steamworks.js"
+  },
+  "devDependencies": {
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "game.ashwing.desktop",
+    "productName": "ASHWING",
+    "copyright": "All rights reserved.",
+    "directories": {
+      "output": "../../dist/steam",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "leaderboards.js",
+      "package.json",
+      "app/**",
+      "!native/**",
+      "!node_modules/steamworks.js/{target,src,sdk,node_modules}/**",
+      "!node_modules/steamworks.js/{Cargo.toml,Cargo.lock,build.rs,build.js,check-binaries.mjs,package-lock.json,*.d.ts,README.md}",
+      "!node_modules/@types/**"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/steamworks.js/dist/**"
+    ],
+    "electronLanguages": [
+      "en-US",
+      "zh-CN",
+      "zh-TW",
+      "ja"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "extraFiles": [
+        {
+          "from": "node_modules/steamworks.js/dist/win64/steam_api64.dll",
+          "to": "steam_api64.dll"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Game",
+      "extraFiles": [
+        {
+          "from": "node_modules/steamworks.js/dist/linux64/libsteam_api.so",
+          "to": "libsteam_api.so"
+        }
+      ]
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dir"
+        }
+      ],
+      "category": "public.app-category.action-games",
+      "extraFiles": [
+        {
+          "from": "node_modules/steamworks.js/dist/osx/libsteam_api.dylib",
+          "to": "MacOS/libsteam_api.dylib"
+        }
+      ]
+    }
+  }
+}

@@ -561,7 +561,7 @@ function drawHole(h) {
   if (!lensA || lensA.width < sz) { lensA = document.createElement('canvas'); lensB = document.createElement('canvas'); lensA.width = lensA.height = lensB.width = lensB.height = sz; }
   const a = lensA.getContext('2d'), b = lensB.getContext('2d');
   a.setTransform(1, 0, 0, 1, 0, 0); a.clearRect(0, 0, lensA.width, lensA.height);
-  try { a.drawImage(cv, (x - L) * DPR, (y - L) * DPR, L * 2 * DPR, L * 2 * DPR, 0, 0, L * 2 * DPR, L * 2 * DPR); } catch (e) {}
+  try { a.drawImage(cv, VIEW.vx + (x - L) * DPR, VIEW.vy + (y - L) * DPR, L * 2 * DPR, L * 2 * DPR, 0, 0, L * 2 * DPR, L * 2 * DPR); } catch (e) {}
   b.setTransform(1, 0, 0, 1, 0, 0); b.clearRect(0, 0, lensB.width, lensB.height);
   b.save(); b.translate(L * DPR, L * DPR); b.rotate(Math.sin(h.t * .3) * .25 + h.t * .05); b.scale(1.5, 1.5); b.drawImage(lensA, -L * DPR, -L * DPR); b.restore();
   b.globalCompositeOperation = 'destination-in';
@@ -618,12 +618,12 @@ function drawHole(h) {
 }
 function drawHoleTag(h) {
   if (h.y < -h.r * 2 || h.y > H) return;
-  const ax = h.x + h.r * 2.4, ay = h.y - h.r * 2.2, flip = ax + (ZH ? 175 : 200) > W - inset.r;
+  const ax = h.x + h.r * 2.4, ay = h.y - h.r * 2.2, flip = ax + (CJK ? 175 : 200) > W - inset.r;
   const ex = flip ? h.x - h.r * 2.4 : ax;
   const tx = flip ? ex - 18 : ex + 18;
   ctx.strokeStyle = 'rgba(255,179,71,.55)'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(h.x + (flip ? -1 : 1) * h.r * 1.4, h.y - h.r * 1.3); ctx.lineTo(ex, ay); ctx.lineTo(tx, ay); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,179,71,.95)'; ctx.font = '600 11px "Chakra Petch","Noto Sans SC",sans-serif';
+  ctx.fillStyle = 'rgba(255,179,71,.95)'; ctx.font = '600 11px ' + FD;
   ctx.textAlign = flip ? 'right' : 'left'; ctx.textBaseline = 'bottom';
   ctx.fillText(I18('引力奇点 · ', 'SINGULARITY · ') + h.mass + ' M☉', tx + (flip ? -4 : 4), ay - 3);
   ctx.fillStyle = 'rgba(255,179,71,.6)'; ctx.textBaseline = 'top';
@@ -706,7 +706,7 @@ function drawTexts() {
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const t of texts) {
     const f = t.life / t.max;
-    ctx.font = t.big ? '700 15px "Chakra Petch","Noto Sans SC",sans-serif' : '600 12px "Chakra Petch",sans-serif';
+    ctx.font = t.big ? '700 15px ' + FD : '600 12px ' + FD;
     ctx.fillStyle = `rgba(${t.c},${Math.min(1, f * 2)})`;
     ctx.fillText(t.txt, t.x, t.y);
   }

@@ -13,7 +13,7 @@ function insideHole(o, f = 1) {
   return null;
 }
 
-function update(dt) {
+function updateSim(dt) {
   S.t += dt;
   const playing = S.mode === 'play';
   MUS.setMode(S.mode === 'menu' || S.mode === 'launch' ? 'menu' : (S.mode === 'over' || !P.alive) ? 'over' : (S.boss || S.bossPending) ? 'boss' : 'play');
@@ -123,8 +123,10 @@ function sweepLife(a) { let j = 0; for (let i = 0; i < a.length; i++) if (a[i].l
 
 function updatePlayer(dt) {
   if (P.cap) { updateCapture(dt); return; }
-  const ix = (K.right ? 1 : 0) - (K.left ? 1 : 0), iy = (K.down ? 1 : 0) - (K.up ? 1 : 0);
-  const n = ix && iy ? .7071 : 1, sp = 430;
+  let ix = (K.right ? 1 : 0) - (K.left ? 1 : 0), iy = (K.down ? 1 : 0) - (K.up ? 1 : 0), n = ix && iy ? .7071 : 1;
+  // analog stick (gamepad.js) adds to the keys; the combined vector is capped at full speed
+  if (K.ax || K.ay) { ix += K.ax; iy += K.ay; const m = Math.hypot(ix, iy); n = m > 1 ? 1 / m : 1; }
+  const sp = 430;
   P.vx += (ix * n * sp - P.vx) * Math.min(1, dt * 9);
   P.vy += (iy * n * sp - P.vy) * Math.min(1, dt * 9);
   P.gx *= Math.max(0, 1 - dt * 1.4); P.gy *= Math.max(0, 1 - dt * 1.4);
@@ -305,7 +307,7 @@ function applyPower(u) {
   sfx.power();
   if ((u.type === 'W' || u.type === 'M') && !ultAvail() && !TUT.done.meter) tutPush('meter');
   if (u.type === 'W' && !ultAvail()) { P.wCount = (P.wCount || 0) + 1; if (P.wCount >= 10) { P.wCount = 0; S.events.push({ t: .35, fn: () => { if (S.mode === 'play' && P.alive) startSuper(); } }); } }
-  if (u.type === 'W') { if (P.lvl < 10) { P.lvl++; floatText(P.x, P.y - 40, I18('武器 MK.', 'WEAPON MK.') + ROMAN[P.lvl - 1] + (P.lvl === 8 ? (P.weapon === 'beam' ? I18(' · 辐射解锁', ' · ARC UNLOCKED') : I18(' · 爆裂解锁', ' · BURST UNLOCKED')) : ''), P.weapon === 'beam' ? BEAMC : ION, true); if (P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; } } else { S.score += 500; floatText(P.x, P.y - 40, I18('火力已满 +500', 'Max firepower +500'), ION, true); } return; }
+  if (u.type === 'W') { if (P.lvl < 10) { P.lvl++; if (P.lvl === 10) award('ACH_WEAPON_MAX'); floatText(P.x, P.y - 40, I18('武器 MK.', 'WEAPON MK.') + ROMAN[P.lvl - 1] + (P.lvl === 8 ? (P.weapon === 'beam' ? I18(' · 辐射解锁', ' · ARC UNLOCKED') : I18(' · 爆裂解锁', ' · BURST UNLOCKED')) : ''), P.weapon === 'beam' ? BEAMC : ION, true); if (P.beamSnd) { P.beamSnd.stop(); P.beamSnd = null; } } else { S.score += 500; floatText(P.x, P.y - 40, I18('火力已满 +500', 'Max firepower +500'), ION, true); } return; }
   if (u.type === 'S') P.shield = 100;
   if (u.type === 'M') { P.mis = Math.min(P.misMax, P.mis + 4); if (!ultAvail()) { P.mCount = (P.mCount || 0) + 1; if (P.mCount >= 10) { P.mCount = 0; S.events.push({ t: .35, fn: () => { if (S.mode === 'play' && P.alive) gainNova(); } }); } } }
   if (u.type === 'H') P.hull = Math.min(100, P.hull + 30);

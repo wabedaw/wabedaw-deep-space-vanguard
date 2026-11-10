@@ -1,5 +1,5 @@
 /* ---------- input ---------- */
-const K = {};
+const K = { ax: 0, ay: 0 };
 const KEYMAP = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down', Space: 'fire' };
 addEventListener('keydown', e => {
   const k = KEYMAP[e.code];
@@ -36,7 +36,7 @@ cv.addEventListener('pointerdown', e => {
 });
 cv.addEventListener('pointermove', e => {
   if (!drag || drag.id !== e.pointerId) return;
-  const k = e.pointerType === 'mouse' ? 1 : 1.35;
+  const k = (e.pointerType === 'mouse' ? 1 : 1.35) / VIEW.s;   // the ship follows the finger on screen, whatever the field scale
   P.dx += (e.clientX - drag.x) * k; P.dy += (e.clientY - drag.y) * k;
   drag.x = e.clientX; drag.y = e.clientY;
 });
